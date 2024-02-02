@@ -1,0 +1,1 @@
+window.fabric = require('fabric');

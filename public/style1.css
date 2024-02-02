@@ -1,0 +1,138 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&family=Rubik:wght@300&display=swap');
+
+
+* {
+    color: #4b4949;
+    transition: 0.2s;
+    font-family: 'Poppins', sans-serif;
+   scroll-behavior: smooth;
+   
+}
+
+.fixed {
+    opacity: 1;
+    z-index: 100000;
+    top: 0;
+    width: 100%;
+    animation: animate-nav 300ms;
+    transition: 0.5s;
+}
+#signup-container {
+    transform: translateY(0);
+    animation-name: signup_form;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+#successMessage {
+    transform: translateY(-100%);
+    animation-name: sucessMessage;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+ul li:hover {
+    background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+}
+
+
+.border-t-l {
+ border-top-left-radius: 0.75rem;   
+ border-bottom-right-radius: 0.75rem;
+}
+#card:hover .arrow{
+ transform: translateX(4px);
+}
+.p-card:hover .p-details {
+    background-color: red;
+}
+
+.p-card:hover .p-details > h6,
+.p-card:hover .p-details > p  {
+    color: white !important;
+}
+#more-btn:hover .arrow {
+   transform: translateX(4px);
+}
+
+.submitButton {
+    position:  relative;
+    overflow: hidden;
+}
+
+.submitButton:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 4px solid #fff;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-sizing: border-box;
+  transform-origin: 50% 50%;
+}
+
+.sideBarIcon:hover {
+    transform: translateX(-4px);
+}
+
+@keyframes spin {
+    0% { 
+      transform: rotate(0deg); 
+    }
+    100% { 
+      transform: rotate(360deg); 
+    }
+  }
+@keyframes  sucessMessage {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+@keyframes animate-nav {
+    0% {
+        opacity: 0;
+    }
+    50% {
+       opacity: 0.25;
+    }
+    75% {
+        opacity: 0.50;
+    }
+    100% {
+       opacity: 0.75;
+    }
+}
+
+
+@keyframes  signup_form {
+        0% {
+            transform: translateY(-100%);
+        }
+        100% {
+            transform: translateY(0);
+        }
+}
+
+@media screen and (min-width: 350px) and (max-width: 760px) {
+   .top-95 {
+    top: -97px;
+    left: -200px;
+   }
+   .left-20 {
+    left: -20px;
+    width: 192px;
+    text-align: left;
+    margin-left: 0;
+    position: relative;
+    padding: 12px;
+    padding-left: 20px;
+   }
+  }
