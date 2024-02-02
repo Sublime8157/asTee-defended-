@@ -13,8 +13,6 @@
                 <li class="cursor-pointer py-2 rounded hover:bg-gray-400 ">Orders</li>
                 <li class="cursor-pointer py-2 rounded hover:bg-gray-400 bg-gray-400">Settings</li>      
                 <a href="/logout"><li class="cursor-pointer py-2 rounded hover:bg-gray-400 ">Logout</li></a>
-                <a href="">Just a test </a>
-                    <a href="">This is just a test </a>
             </ul>
         </div>
     </div>
