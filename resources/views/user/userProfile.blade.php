@@ -8,12 +8,13 @@
             <ion-icon name="chevron-back-sharp" class="text-2xl" onclick="showSideNav(this)"></ion-icon>
         </div>
         <div class="flex  items-center h-full    justify-center  flex-col" >
-            
             <ul class="flex flex-col justify-between w-full text-center">
                <a href="/home"> <li class="cursor-pointer py-2 rounded hover:bg-gray-400 ">Home</li></a>
                 <li class="cursor-pointer py-2 rounded hover:bg-gray-400 ">Orders</li>
                 <li class="cursor-pointer py-2 rounded hover:bg-gray-400 bg-gray-400">Settings</li>      
                 <a href="/logout"><li class="cursor-pointer py-2 rounded hover:bg-gray-400 ">Logout</li></a>
+                <a href="">Just a test </a>
+                    <a href="">This is just a test </a>
             </ul>
         </div>
     </div>
