@@ -63,6 +63,7 @@ $(document).ready(function(){
     })
 })
 
+
 // Loading Button 
 signupButton = $('#submitRegister');
 

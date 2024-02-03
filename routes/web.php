@@ -24,6 +24,7 @@ Route::get('/logout',  [LoginSignupController::class, 'logout']);
 Route::get('/default', [LoginSignupController::class, 'default']);
 
 Route::get('/', [LoginSignupController::class, 'LoginSignup']);
+
 Route::post('/login/process', [LoginSignupController::class, 'process']);
 
 
@@ -38,4 +39,7 @@ Route::get('/Product', [UserController::class, 'Product']);
 
 Route::get('/DIY',  [UserController::class, 'DIY']);
 
+Route::post('/updateProfile', [UserController::class, 'updateProfile']);
+
 Route::get('/userProfile', [UserController::class, 'userProfile']);
+

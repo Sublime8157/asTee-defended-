@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -23,7 +26,11 @@ class UserController extends Controller
     public function DIY() {
         return view('user.DIY');
     }
-    // If the user logged show the users profile redirect to the homepage when not logged in
+
+    //  If the user logged in show the users profile and retrieve its data as an array and assign to user variable, 
+    // you can then get the data by calling the user variable and the table name ex: $user->colum name
+    // redirect to the homepage when not  logged in 
+
     public function userProfile() {
        if(Auth::check()) {
             $user = Auth::user(); 
@@ -33,6 +40,35 @@ class UserController extends Controller
             return rediirect()->to('\home');
        }
     }
-    // Retrieve the users data 
- 
+    
+    // Update the users information
+    public function updateProfile(Request $request){
+    // Validate the users input with Laravel default validation
+    $request->validate([
+        'fname' => 'nullable|string',
+        'mname' => 'nullable|string',
+        'lname' => 'nullable|string',
+        'age' => 'nullable|integer',
+        'email' => ['nullable', 'email', Rule::unique('customer', 'email')],
+        'username' => ['nullable', Rule::unique('customer', 'username')],
+    ]);
+
+    // Find the user assigned to the variable 'user'
+    $user = User::find(auth()->id());
+
+    // Update user information based on the filled fields in the request
+    $user->update([
+        'fname' => $request->filled('fname') ? $request->fname : $user->fname,
+        'mname' => $request->filled('mname') ? $request->mname : $user->mname,
+        'lname' => $request->filled('lname') ? $request->lname : $user->lname,
+        'age' => $request->filled('age') ? $request->age : $user->age,
+        'email' => $request->filled('email') ? $request->email : $user->email,
+        'username' => $request->filled('username') ? $request->username : $user->username,
+    ]);
+
+    return redirect()->to('userProfile');
 }
+
+    }
+ 
+
