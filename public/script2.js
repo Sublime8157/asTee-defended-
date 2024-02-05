@@ -1,6 +1,5 @@
 
 // Function for the user profile that hides and reaveal the side navigation 
-
 function showSideNav(e) {
     var sideNav = $('#sideNav');
     var sideIcon = $('#arrowIcon');
@@ -18,11 +17,14 @@ function showSideNav(e) {
        sideIcon.css('left', '12rem');
     }
 }
+
+// Toggle the updating result in updateStatus div 
 function updateSuccess(){
     var successUpdate = $('#updateStatus');
     successUpdate.text('You Successfully Updated your Profile!');
     successUpdate.css('color','yellow');
 }   
+
 // Create an ajax for the update form 
 $(document).ready(function(){
     $('#updateForm').submit(function(e){

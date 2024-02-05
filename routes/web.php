@@ -21,25 +21,19 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
-Route::get('/default', [LoginSignupController::class, 'default']);
-
 Route::get('/', [LoginSignupController::class, 'LoginSignup']);
 
 Route::post('/login/process', [LoginSignupController::class, 'process']);
-
-
 Route::post('/store', [LoginSignupController::class, 'store']);
 
-
 Route::get('/home', [UserController::class, 'home']);
-
 Route::get('/about-us', [UserController::class, 'about_us']);
 
-Route::get('/Product', [UserController::class, 'Product']);
+Route::get('/Product', [productsController::class, 'displayOnHandsProducts']);
+
 
 Route::get('/DIY',  [UserController::class, 'DIY']);
 
 Route::post('/updateProfile', [UserController::class, 'updateProfile']);
-
 Route::get('/userProfile', [UserController::class, 'userProfile']);
 

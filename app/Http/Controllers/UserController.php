@@ -19,9 +19,7 @@ class UserController extends Controller
         return view('user.about_us');
     }
     // Show the product tab 
-    public function Product() {
-        return view('user.Product');
-    }
+   
     // Show the DIY tab 
     public function DIY() {
         return view('user.DIY');
