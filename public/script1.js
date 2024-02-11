@@ -64,6 +64,8 @@ $(document).ready(function(){
 })
 
 
+
+
 // Loading Button 
 signupButton = $('#submitRegister');
 
@@ -95,3 +97,5 @@ var revPass = $('.revealPassword').on('click', function(){
         revealPass.attr('name', 'eye-off-outline');
     }
 })
+
+

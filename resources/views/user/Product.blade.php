@@ -2,39 +2,100 @@
 <x-navbar />
 
 
-    <div class="h-auto  w-full flex flex-row justify-center md:justify-start  mt-0.5   z-0"> 
-        <div class="text-xs py-10 px-10 bg-gray-50 w-auto mb-0 shadow-lg hidden md:block h-auto">
-            <ul>
-                <li class="my-2"><h4 class="font-bold text-sm">Variations</h4></li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">T-Shirt </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Jacket </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Couple Shirt </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Family Shirt </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Shorts </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Long Sleeve </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">V-Neck T-Shirts </li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Kid's Wear </li>
-            </ul>
-            <ul>
-                <li class="my-2"><h4 class="font-bold text-sm">Sizes</h4></li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Small</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Medium</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Large</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Extra Large</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">2XL</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">3XL</li>
-            </ul>
-            <ul>
-                <li class="my-2"><h4 class="font-bold text-sm">Gender</h4></li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Male</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Female</li>
-                <li class="my-2 hover:underline cursor-pointer hover:bg-gray-50">Unisex</li>
-            
-            </ul>
-        
+    <div class="h-auto  w-full flex flex-row justify-center md:justify-start  mt-0.5  px-0 md:px-24 z-0"> 
+        <div class="text-xs py-10 px-4  w-64 mb-0   md:block h-auto">
+           <form action="/filterProducts" method="get" id="filterForm">
+                <ul>
+                    <li class="font-bold text-xs mb-2">
+                        Filter
+                    </li>
+                    <hr class="mb-2">
+                </ul>
+                <ul class="ps-3 p-1 mb-2">
+                    <input type="radio" id="all" name="all" value="" class="w-3 h-3">
+                    <label for="all">All</label>
+                </ul>
+                <ul class="flex flex-col mb-2">
+                    <li class="font-bold text-xs mb-2 ">
+                        Variation
+                    </li>
+                    <hr class="mb-2">
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="variations" value="2" class="w-3 h-3 cursor-pointer me-1 ">
+                        <label for="T-Shirt" style="font-size: 11px">Solo </label>
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="variations" value="3" class="w-3 h-3 cursor-pointer me-1 ">
+                        <label for="familyshirt" style="font-size: 11px">Family </label>
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="variations" value="1" class="w-3 h-3 cursor-pointer me-1 ">
+                        <label for="familyshirt" style="font-size: 11px">Couple </label>
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="variations" value="4" class="w-3 h-3 cursor-pointer me-1 ">
+                        <label for="familyshirt" style="font-size: 11px">Kid's Wear</label>
+                    </div>
+                </ul>
+                <ul class="flex flex-col mb-2">
+                    <li class="font-bold text-xs mb-2">
+                        Sizes
+                    </li>
+                    <hr class="mb-2">
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="1" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">Small</label>              
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="2" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">Small</label>              
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="3" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Medium">Medium</label>          
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="4" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">Large</label>              
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="5" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">XL</label>              
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="6" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">2XL</label>              
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="sizes" value="7" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">3XL</label>              
+                    </div>
+                </ul>
+                <ul class="flex flex-col mb-2">
+                    <li class="font-bold text-xs mb-2">
+                        Gender
+                    </li>
+                    <hr class="mb-2">
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="gender" value="1" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Small">Male</label>              
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="gender" value="2" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Medium">Female</label>          
+                    </div>
+                    <div class="flex flex-row ps-3 p-1 items-center">
+                        <input type="radio" name="gender" value="3" class="w-3 h-3 cursor-pointer me-1">
+                        <label for="Medium">Unisex</label>          
+                    </div>
+                </ul>
+                <div class="w-auto flex justify-center items-center">
+                    <button type="submit" class="px-2 w-full py-1 bg-red-600 text-white text-sm text-center rounded">Filter</button>
+                </div>
+           </form>
         </div>
-        <div class="flex flex-wrap h-auto  justify-center self-start ms-3 mb-5 md:ms-20 ">
-            @foreach($data as $table)
+        <div class="flex flex-wrap h-auto  justify-center self-start ms-3 mb-5 md:ms-20" id="filterProduct">
+            @foreach($filteredData as $table)
             <div class="flex flex-col items-center justify-center w-48 h-auto px-3 py-5 border-black shadow-lg rounded ">      
                     <img src="{{ asset('images/' . $table->image_path) }}" alt="" class="rounded">
                     <div class="mt-2 text-xs ">
@@ -64,4 +125,5 @@
     </div>
 
 <x-footer />
+<script src="products.js"></script>
 <x-scripts />

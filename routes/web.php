@@ -29,6 +29,7 @@ Route::post('/store', [LoginSignupController::class, 'store']);
 Route::get('/home', [UserController::class, 'home']);
 Route::get('/about-us', [UserController::class, 'about_us']);
 
+Route::get('/filterProducts', [productsController::class, 'filterProducts']);
 Route::get('/Product', [productsController::class, 'displayOnHandsProducts']);
 
 
