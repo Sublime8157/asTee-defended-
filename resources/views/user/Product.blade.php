@@ -3,7 +3,8 @@
 
 
     <div class="h-auto  w-full flex flex-row justify-center md:justify-start  mt-0.5  px-0 md:px-24 z-0"> 
-        <div class="text-xs py-10 px-4  w-64 mb-0   md:block h-auto">
+        {{-- Filtering section  --}}
+        <div class="text-xs py-10 px-4  w-64 mb-0  hidden md:block h-auto">
            <form action="/filterProducts" method="get" id="filterForm">
                 <ul>
                     <li class="font-bold text-xs mb-2">
@@ -11,10 +12,12 @@
                     </li>
                     <hr class="mb-2">
                 </ul>
+                {{-- Filter All --}}
                 <ul class="ps-3 p-1 mb-2">
                     <input type="radio" id="all" name="all" value="" class="w-3 h-3">
                     <label for="all">All</label>
                 </ul>
+                {{-- Filter by Variations --}}
                 <ul class="flex flex-col mb-2">
                     <li class="font-bold text-xs mb-2 ">
                         Variation
@@ -37,6 +40,7 @@
                         <label for="familyshirt" style="font-size: 11px">Kid's Wear</label>
                     </div>
                 </ul>
+                {{-- Filter by sizes --}}
                 <ul class="flex flex-col mb-2">
                     <li class="font-bold text-xs mb-2">
                         Sizes
@@ -71,6 +75,7 @@
                         <label for="Small">3XL</label>              
                     </div>
                 </ul>
+                {{-- Filter by Gender --}}
                 <ul class="flex flex-col mb-2">
                     <li class="font-bold text-xs mb-2">
                         Gender
@@ -94,7 +99,9 @@
                 </div>
            </form>
         </div>
+        {{-- List of available products  --}}
         <div class="flex flex-wrap h-auto  justify-center self-start ms-3 mb-5 md:ms-20" id="filterProduct">
+            {{-- Get all the data in products table and assign it to filterData variable --}}
             @foreach($filteredData as $table)
             <div class="flex flex-col items-center justify-center w-48 h-auto px-3 py-5 border-black shadow-lg rounded ">      
                     <img src="{{ asset('images/' . $table->image_path) }}" alt="" class="rounded">
