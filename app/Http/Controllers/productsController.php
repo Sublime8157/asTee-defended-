@@ -31,8 +31,10 @@ class productsController extends Controller
    
         
 
-         // return response()->json(['filteredData' => $filteredData]);
-         return view('user.Product', ['filteredData' => $filteredData]);
+       
+         return view('user.product', ['filteredData' => $filteredData]);
+
+       
    }
 
    public function displayOnHandsProducts(){

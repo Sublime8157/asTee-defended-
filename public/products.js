@@ -12,9 +12,7 @@
 //             processData: false,
 //             contentType: false,
 //             success: function(response) {
-//                 // Assuming the response is JSON data
-//                 // Update the DOM with the received data
-//                 updateDOM(response.filteredData);
+//                updateDOM(response)
 //             },
 //             error: function(xhr, status, error) {
 //                 console.error(xhr.responseText);
@@ -23,9 +21,7 @@
 //     });
 // });
 
-// function updateDOM(data) {
-//     // Update the DOM with the received data
-//     // For example, if you have an element with ID 'filteredData', you can update its content like this:
-//     $('#filterProduct').html(data);
+// function updateDOM(content) {
+//    $('#filterData').html(content);
 // }
 
