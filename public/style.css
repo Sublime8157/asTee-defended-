@@ -33,8 +33,12 @@
 ul li:hover {
     background-color: rgb(239 246 255 / var(--tw-bg-opacity));
 }
-
-
+.adminLi:hover {
+    background: none;
+}
+.iconPadding {
+    padding: 0 5px 0 0;
+}
 .border-t-l {
  border-top-left-radius: 0.75rem;   
  border-bottom-right-radius: 0.75rem;
@@ -78,7 +82,9 @@ ul li:hover {
 .sideBarIcon:hover {
     transform: translateX(-4px);
 }
-
+.sideNav:hover {
+    background-color: #00000059;
+}
 @keyframes spin {
     0% { 
       transform: rotate(0deg); 

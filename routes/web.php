@@ -38,3 +38,5 @@ Route::get('/DIY',  [UserController::class, 'DIY']);
 Route::post('/updateProfile', [UserController::class, 'updateProfile']);
 Route::get('/userProfile', [UserController::class, 'userProfile']);
 
+Route::get('/loginAdmin', [adminIndexController::class, 'login']);
+Route::get('/index', [adminIndexController::class, 'index']);
