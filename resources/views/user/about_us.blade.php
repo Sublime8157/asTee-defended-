@@ -1,3 +1,6 @@
+
+@extends('components.header')
+@section('docu', 'About Us')
 <x-header />
 <x-navbar />
 <div class="">
@@ -64,7 +67,6 @@
                     </div>
                 </button>
             </div>
-          
         </div>
     </div>
     

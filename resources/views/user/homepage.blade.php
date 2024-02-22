@@ -1,3 +1,6 @@
+
+@extends('components.header')
+@section('docu', 'Home')
 <x-header />
     {{-- Red part on top  that is only visible in dekstop view--}}
     <div class="hidden md:flex justify-between  h-auto" style="background-color: #f87b1f;">

@@ -82,6 +82,9 @@ ul li:hover {
 .sideBarIcon:hover {
     transform: translateX(-4px);
 }
+.sideNavBG {
+    background-color: #00000059;
+}
 .sideNav:hover {
     background-color: #00000059;
 }

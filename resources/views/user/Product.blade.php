@@ -1,3 +1,6 @@
+
+@extends('components.header')
+@section('docu', 'Products')
 <x-header />
 <x-navbar />
 

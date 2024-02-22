@@ -1,3 +1,6 @@
+
+@extends('components.header')
+@section('docu', 'Login')
 <x-header />
 <body class="bg-blue-100">
   <x-navbar />

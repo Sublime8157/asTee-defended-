@@ -1,6 +1,8 @@
+
+@extends('components.header')
+@section('docu', 'DIY')
 <x-header />
 <x-navbar />
-   
 <div class="h-auto ">
     <div class="flex justify-center   md:justify-around flex-col md:flex-row-reverse  py-8 md:py-16 h-auto" style="background-color: #dddddd"">
         <div class="w-100  flex justify-center flex-col-reverse  items-center md:flex-row">
