@@ -36,7 +36,6 @@ class productsController extends Controller
 
        
    }
-
    public function displayOnHandsProducts(){
          $filteredData = Products::all();  
          

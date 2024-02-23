@@ -1,9 +1,9 @@
 
-<body>
+<body style="background-color: #f9f6f6;">
     <div class="flex justify-between items-start">
         {{-- Side Bar --}}
         {{-- The tabs you see are just placeholder, we will update these placeholders after finalizing all the tabs that will be needing in the company --}}
-            <div class=" left-0 h-screen p-1 bg-gray-800 shadow-2xl " style="width: 200px;">
+            <div class=" left-0 h-screen p-1 bg-gray-800 " style="width: 200px;" id="nav">
                 {{-- DASHBOARD TAB --}}
                 <ul class="flex justify-center items-start flex-col">
                     <li class="adminLi self-center">
@@ -154,10 +154,10 @@
                     </li>
                 </ul> 
         </div>
-        <div class="w-screen flex justify-evenly flex-col">     
-            <div class="bg-gray-50 h-12 shadow-xl mt-2  rounded  flex justify-between items-center">
+        <div class="w-screen flex flex-col h-screen" style="overflow-y: auto">     
+            <div class="bg-gray-50 h-12 shadow-md mt-2  rounded  flex justify-between items-center">
                 <div class="flex flex-row  items-center text-lg ps-5">
-                    <ion-icon name="menu-outline" class="text-black text-xl pe-5 cursor-pointer"></ion-icon>
+                    <ion-icon name="menu" onclick="Menu(this)" class="text-black text-xl pe-5 cursor-pointer"></ion-icon>
                     {{-- Since this file is a components there are times that we have to change some content on other pages so @yield is a blade components that change content for the other pages the 'page' is a string that we will be using to call in order to change the content in other pages  --}}
                     <h3 class="text-sm font-bold tracking-wide">@yield('page')</h3>
                 </div>
@@ -168,4 +168,5 @@
                     <img src="{{ asset('images/adminIcon.jpg') }}" alt="admin Icon" width="40px" class="cursor-pointer rounded-full">      
                 </div> 
             </div>
+      {{-- The closing of the parent div was continued on the other pages that uses this component --}}
       

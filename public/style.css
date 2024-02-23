@@ -88,6 +88,23 @@ ul li:hover {
 .sideNav:hover {
     background-color: #00000059;
 }
+.adminTable {
+    font-size: 12px; 
+    font-weight: bold;
+    text-align: start;
+   
+}
+ input[type="text"]:focus, select:focus {
+    outline: none;
+    outline-offset: 0;
+    --tw-ring-color: rgb(181, 179, 179);
+    border-color: rgb(181, 179, 179);
+}
+input[type="text"], select {
+    border-color: #c1c3c5;
+
+}
+
 @keyframes spin {
     0% { 
       transform: rotate(0deg); 
