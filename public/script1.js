@@ -1,5 +1,5 @@
 var signup = $('#signup');
-var signup_display = $('#signup-container');
+var showSignupForm =  document.getElementById('signup_container');
 var esc = $('#escape');
 var navbar_main = $('#navbar-main');
 
@@ -14,13 +14,16 @@ window.addEventListener("scroll", function(){
 // Reveale the signup form
 
 function revealForm(){
-    signup_display.toggle();
+    showSignupForm.showModal();
 }
-
-
 // Close  the signup Form
 esc.on('click', function(){
-    signup_display.toggle();
+    showSignupForm.setAttribute('closing', "");
+    showSignupForm.addEventListener('animationend', () => {
+        showSignupForm.removeAttribute('closing');
+        showSignupForm.close();
+    }, {once: true})
+    
 });
 
 // Responsive navigation bar

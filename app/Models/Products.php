@@ -16,6 +16,9 @@ class Products extends Model
         'gender',
         'size',
         'price',
+        'quantity',
+        'productStatus',
+        
     ];
 
     // variation function created to distiguished the relation between the product table 
@@ -34,6 +37,22 @@ class Products extends Model
     // the variationType function posses the switch case that treats the integer from product table (variation column) converted to its real value that based on variation table
     // in other words  the variation column in product table was only a number and those numbers has its value based on the ID of variation column "I really hope you get it" XD
 
+    public function producStats() {
+        switch ($this->productStatus) {
+            case 0:
+                return 'On Hand';
+            case 1:
+                return 'To Pay';
+            case 2:
+                return 'To Ship';
+            case 3:
+                return 'To Recieve';
+            case 4:
+                return 'Feedback';
+            default:
+                return 'Error Occcur';
+        }
+    }
     public function variationType()
     {  
         switch ($this->variation) {

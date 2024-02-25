@@ -2,13 +2,13 @@
 @extends('components.header')
 @section('docu', 'Login')
 <x-header />
-<body class="bg-blue-100">
+<body class="bg-blue-100 ">
   <x-navbar />
   {{-- This is Login Section --}}
   @if(session('isLoggedin'))
   <p>You are logged in </p>
   @else
-    <div class=" flex justify-evenly flex-col  md:flex-row items-center h-screen w-full ">
+    <div class=" flex justify-evenly flex-col  md:flex-row items-center h-screen w-full">
           <div class="">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" width="400px" height="400px">
           </div>
@@ -41,7 +41,7 @@
     {{-- The Login section ends here --}}
 
     {{-- This is the registration section --}}
-    <div class=" hidden absolute inset-0 mt-20" id="signup-container">
+    <dialog class="  absolute   inset-0 mt-20 modal" id="signup_container">
       {{-- Show error form for registration form --}}    
         <div class="container w-96  bg-blue-50 h-auto m-auto rounded shadow-lg p-5 pb-10">
 
@@ -72,27 +72,27 @@
             
             {{-- Reveal this when storing is success --}} 
             <div class="absolute  hidden top-32 w-auto z-50 bg-white shadow-lg" id="successMessage" style="left: 31rem" >
-              <div class="bottom-0  rounded w-90" >
-                <div class="absolute  overflow-visible right-36" style="top: -30px;">
-                  <ion-icon name="checkmark-circle-outline" class="text-6xl text-white bg-green-400 rounded-full font-extralight"></ion-icon>
+                <div class="bottom-0  rounded w-90" >
+                  <div class="absolute  overflow-visible right-36" style="top: -30px;">
+                    <ion-icon name="checkmark-circle-outline" class="text-6xl text-white bg-green-400 rounded-full font-extralight"></ion-icon>
+                  </div>
+                  <div class="text-center font-extralight italic text-sm px-5 pt-10 pb-4">
+                      <p>
+                      <span class="text-lg"> Congratulations!</span> <br> <br>
+                        You are successfully registered, <br> happy customizing and shopping in A's Tee 
+                      </p>
+                  </div>
+                  <div class="flex justify-evenly pb-5">
+                      <a href="/"><button class="px-2 py-2 bg-green-400 text-sm font-extralight rounded text-white hover:bg-green-200" onclick="revealForm()">
+                        Proceed to Login
+                      </button>
+                      </a>
+                  </div>
                 </div>
-                <div class="text-center font-extralight italic text-sm px-5 pt-10 pb-4">
-                    <p>
-                     <span class="text-lg"> Congratulations!</span> <br> <br>
-                       You are successfully registered, <br> happy customizing and shopping in A's Tee 
-                    </p>
-                </div>
-                <div class="flex justify-evenly pb-5">
-                    <a href="/"><button class="px-2 py-2 bg-green-400 text-sm font-extralight rounded text-white hover:bg-green-200" onclick="revealForm()">
-                      Proceed to Login
-                     </button>
-                    </a>
-                </div>
-            </div>
             </div>
               
         </div>
-  </div>
+      </dialog>
   @endif
   <script src="{{ asset('script1.js') }}">
    
