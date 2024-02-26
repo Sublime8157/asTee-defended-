@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
 return new class extends Migration
 {
     /**
@@ -11,9 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('variation', function (Blueprint $table) {
-            $table->id();
+        Schema::create('variations', function (Blueprint $table) {
+            $table->unsignedBigInteger('variation_id')->nullable();
             $table->string('variation');
+            
+            $table->timestamps();
+
+            
         });
     }
 

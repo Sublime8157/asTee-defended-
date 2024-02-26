@@ -9,9 +9,9 @@ class Sizes extends Model
 {
     use HasFactory;
 
-    protected $table = 'size';
+    protected $table = 'sizes';
     protected $fillable = [
-        'id',
+        'sizes_id',
         'size',
     ];
 }

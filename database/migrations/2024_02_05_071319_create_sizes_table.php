@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('size', function (Blueprint $table) {
-            $table->id();
+        Schema::create('sizes', function (Blueprint $table) {
+            $table->unsignedBigInteger('size_id')->nullable();
             $table->string('size');
+            $table->timestamps();
+            
         });
     }
 

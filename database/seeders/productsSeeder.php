@@ -16,11 +16,14 @@ class productsSeeder extends Seeder
     {
         Products::create([
         'image_path'=>'p3.jpg',
-        'variation'=> 3,
+        'variation_id'=> 3,
         'description'=> 'Sample 3',
-        'gender' => '3',
+        'gender' => 3,
         'size' => 3,
         'price'=> 40,
+        'quantity'=> 1,
+        'status' => 1,
+        'productStatus'=>2,
         ]);
     }
 }

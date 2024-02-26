@@ -14,4 +14,7 @@ class adminIndexController extends Controller
         return view('admin.dashboard');
     }
     
+    public function feedbacks() {
+        return view('admin.feedbacks');
+    }
 }

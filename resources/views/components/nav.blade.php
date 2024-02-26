@@ -13,18 +13,17 @@
                         DASHBOARD
                     </li>
                     {{-- The request() is a function provided by laravel specfically for HTTP request and in this case the request() check if the HTTP is dashbaord then 'sideNavBG will append and if not nothing happen' --}}
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('dashboard') ? 'sideNavBG' : ' ' }}">
-                        <a href="/dashboard" class="">
-                            <div class="text-xs text-gray-400 flex items-center flex-row ">
-                                <ion-icon name="analytics-outline" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                    <div class="text-gray-400 text-xs">
-                                        Dashboard
-                                    </div>
-                            </div>
-                                
-                        </a>
-                        <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
+                    <a href="/dashboard" class="w-full">
+                        <li class="flex items-start justify-between flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('dashboard') ? 'sideNavBG' : ' ' }}">                     
+                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                    <ion-icon name="analytics-outline" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                        <div class="text-gray-400 text-xs">
+                                            Dashboard
+                                        </div>
+                                </div>
+                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>
+                    </a>
                     
                 </ul>
                 {{-- E-COMMERCE TAB --}}
@@ -32,111 +31,102 @@
                     <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800">
                         ACCOUNTS
                     </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/active') ? 'sideNavBG' : ' ' }}">
-                       <a href="/accounts/active">
-                        <div class="text-xs text-gray-400 flex items-center flex-row ">
-                            <ion-icon name="people-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
-                                <div class="text-gray-400 text-xs">
-                                   Active User
+                    <a href="/accounts/active" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/active') ? 'sideNavBG' : ' ' }}">
+                        
+                            <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                <ion-icon name="people-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
+                                    <div class="text-gray-400 text-xs">
+                                    Active User
+                                    </div>
+                            </div>
+                        
+                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>
+                    </a>
+                    <a href="/accounts/pending" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/pending') ? 'sideNavBG' : ' ' }}">
+                            
+                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                    <ion-icon name="hourglass-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
+                                        <div class="text-gray-400 text-xs">
+                                            Pending User
+                                        </div>
                                 </div>
-                        </div>
-                       </a>
-                        <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/pending') ? 'sideNavBG' : ' ' }}">
-                        <a href="/accounts/pending">
-                            <div class="text-xs text-gray-400 flex items-center flex-row ">
-                                <ion-icon name="hourglass-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
-                                    <div class="text-gray-400 text-xs">
-                                        Pending User
-                                    </div>
-                            </div>
-                        </a>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/denied') ? 'sideNavBG' : ' ' }}">
-                       <a href="/accounts/denied">
-                            <div class="text-xs text-gray-400 flex items-center flex-row ">
-                                <ion-icon name="ban-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
-                                    <div class="text-gray-400 text-xs">
-                                        Denied User
-                                    </div>
-                            </div>
-                        </a>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
+                        
+                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>
+                    </a>
+                    <a href="/accounts/denied" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/denied') ? 'sideNavBG' : ' ' }}">                    
+                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                    <ion-icon name="ban-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
+                                        <div class="text-gray-400 text-xs">
+                                            Denied User
+                                        </div>
+                                </div>                          
+                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>
+                    </a>
                 </ul>
                 {{-- APPS --}}
                 <ul class="flex justify-center items-start flex-col">
                     <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800">
                         PRODUCTS
                     </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/onHand') ? 'sideNavBG' : ' ' }}">
-                        <a href="/products/onHand">
-                            <div class="text-xs text-gray-400 flex items-center flex-row ">
-                                <ion-icon name="bag-check-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                    <div class="text-gray-400 text-xs">
-                                        On-Hand 
-                                    </div>
-                            </div>
-                        </a>
+                    <a href="/products/onHand" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/onHand') ? 'sideNavBG' : ' ' }}">                        
+                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                    <ion-icon name="bag-check-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                        <div class="text-gray-400 text-xs">
+                                            On-Hand 
+                                        </div>
+                                </div>
+                            
+                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>
+                    </a>
+                    <a href="/products/proccessing" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/proccessing') ? 'sideNavBG' : ' ' }}">                        
+                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                    <ion-icon name="sync-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                        <div class="text-gray-400 text-xs">
+                                            Processing 
+                                        </div>
+                                </div>
+                            
+                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>
+                    </a>
+                    <a href="/products/finished" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/finished') ? 'sideNavBG' : ' ' }}">                       
+                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                    <ion-icon name="checkmark-done-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                        <div class="text-gray-400 text-xs">
+                                            Return / Cancel 
+                                        </div>
+                                </div>
+                            
                             <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/proccessing') ? 'sideNavBG' : ' ' }}">
-                        <a href="/products/proccessing">
-                            <div class="text-xs text-gray-400 flex items-center flex-row ">
-                                <ion-icon name="sync-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                    <div class="text-gray-400 text-xs">
-                                        Processing 
-                                    </div>
-                            </div>
-                        </a>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/finished') ? 'sideNavBG' : ' ' }}">
-                       <a href="/products/finished">
-                            <div class="text-xs text-gray-400 flex items-center flex-row ">
-                                <ion-icon name="checkmark-done-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                    <div class="text-gray-400 text-xs">
-                                        Finished Products
-                                    </div>
-                            </div>
-                        </a>
-                        <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
+                        </li>
+                    </a>
                 </ul>
                 {{-- UI COMPONENTS --}}
                 <ul class="flex justify-center items-start flex-col">
                     <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800">
-                        SALES
+                        FEEDBACKS
                     </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav">
-                        <div class="text-xs text-gray-400 flex items-center flex-row ">
-                            <ion-icon name="build" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                <div class="text-gray-400 text-xs">
-                                    UI
-                                </div>
-                        </div>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav">
-                        <div class="text-xs text-gray-400 flex items-center flex-row ">
-                            <ion-icon name="logo-web-component" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                <div class="text-gray-400 text-xs">
-                                    Components
-                                </div>
-                        </div>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav">
-                        <div class="text-xs text-gray-400 flex items-center flex-row ">
-                            <ion-icon name="book" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                <div class="text-gray-400 text-xs">
-                                    Widgets
-                                </div>
-                        </div>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
+                    <a href="/feedbacks" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav">
+                            <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                <ion-icon name="chatbubbles-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                    <div class="text-gray-400 text-xs">
+                                        Feedback
+                                    </div>
+                            </div>
+                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>     
+                    </a>             
                 </ul>      
                 {{-- FORMS --}}
                 <ul class="flex justify-center items-start flex-col">

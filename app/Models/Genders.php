@@ -9,9 +9,9 @@ class Genders extends Model
 {
     use HasFactory;
 
-    protected $table = 'gender';
+    protected $table = 'genders';
     protected $fillable = [
-        'id',
+        'gender_id',
         'gender',
     ];
 }

@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Variations extends Model
+class Status extends Model
 {
-    use HasFactory;
-
-    protected $table = 'variations';
+    protected $table = 'status';
     protected $fillable = [
-        'variations_id',
-        'type',
+        'status_id',
+        'status'
     ];
-
-
 }
