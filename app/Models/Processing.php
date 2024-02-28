@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Types;
 
-class OnHand extends Model
+class Processing extends Model
 {
     use Types;
 
-    protected $table = 'product_on_hand';
+    protected $table = 'product_on_process';
     protected $fillable  = [
         'image_path',
         'variation_id',
@@ -18,6 +18,7 @@ class OnHand extends Model
         'gender',
         'size',
         'price',
+        'productStatus',
         'quantity',
     ];
 

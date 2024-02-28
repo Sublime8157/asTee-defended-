@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_on_process', function (Blueprint $table) {
             $table->id();
             $table->string('image_path')->nullable();
-            $table->integer('variation');
+            $table->integer('variation_id');
             $table->string('description')->nullable();
             $table->integer('gender');
             $table->integer('size');
