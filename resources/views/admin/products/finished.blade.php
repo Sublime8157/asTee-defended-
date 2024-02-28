@@ -19,10 +19,7 @@
                 </div>
             </div>
             <div>
-               <div class="flex items-center bg-blue-600 px-4 py-2 cursor-pointer hover:bg-blue-500" onclick="revealForm()" >
-                    <ion-icon name="add-circle-outline" class="pe-1 text-white text-lg"></ion-icon>
-                    <button class="text-xs text-white" >New Product</button>
-               </div>
+              
             </div>
         </div>
     </div>
@@ -32,11 +29,12 @@
                 <th class="adminTable">ID</th>
                 <th class="adminTable w-20">Image</th>
                 <th class="adminTable">Variation</th>
-                <th class="adminTable">Description</th>
+                <th class="adminTable">Description</th>   
                 <th class="adminTable">Gender</th>
                 <th class="adminTable">Size</th>
                 <th class="adminTable">Price</th>
-                <th class="adminTable w-24">Quantity</th>                                                                       
+                <th class="adminTable w-24">Quantity</th>        
+                <th class="adminTable w-20">Reason</th>                                                               
                 <th class="adminTable w-24">Action</th>
            </tr>
            <tr>
@@ -98,33 +96,44 @@
              {{-- Choose Variation Type --}}
                 <div class="me-2">
                     <label for="" class="text-xs">Variation*</label> <br>
-                     <select name="" id="" class="h-10 w-40 rounded text-sm cursor-pointer">
-                        <option value=""">Couple</option>
+                     <select name="variation" id="" class="h-10 w-40 rounded text-sm cursor-pointer">
+                        <option value="1">Couple</option>
+                        <option value="2">Solo Shirt</option>
+                        <option value="3">Family Shirt</option>
+                        <option value="4">Kids Wear</option>
                     </select>
                 </div>
                 {{-- Choose t-shirt gender type --}}
                 <div class="me-2">
                     <label for="" class="text-xs">Gender*</label> <br>
-                     <select name="" id="" class="h-10 w-40 rounded text-sm cursor-pointer">
-                        <option value=""">Male</option>
+                     <select name="gender" id="" class="h-10 w-40 rounded text-sm cursor-pointer">
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                        <option value="3">Unisex</option>
                     </select>
                 </div>
                 {{-- Choose size --}}
                 <div class="me-2">
                     <label for="" class="text-xs">Size*</label> <br>
-                     <select name="" id="" class="h-10 w-40 rounded text-sm cursor-pointer">
-                        <option value=""">Small</option>
+                     <select name="size" id="" class="h-10 w-40 rounded text-sm cursor-pointer">
+                        <option value="1">XS</option>
+                        <option value="2">Small</option>
+                        <option value="3">Medium</option>
+                        <option value="4">Large</option>
+                        <option value="5">XL</option>
+                        <option value="6">2XL</option>
+                        <option value="7">3XL</option>
                     </select>
                 </div> 
                 {{-- Input thep price --}}
                 <div class="me-2">
                     <label for="" class="text-xs">Price*</label> <br>
-                     <input type="text" class="h-10 w-40 rounded text-sm ">
+                     <input type="text" name="price" class="h-10 w-40 rounded text-sm ">
                 </div>
                 {{-- input the quantity --}}
                 <div class="me-2">
                     <label for="" class="text-xs">Quantity*</label> <br>
-                     <input type="text" class="h-10 w-40 rounded text-sm ">
+                     <input type="text" name="quantity" class="h-10 w-40 rounded text-sm ">
                 </div>
                 {{-- And the description of the product this includes the reason why it's on hand  --}}
                 <div class="me-2">

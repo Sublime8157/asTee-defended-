@@ -11,10 +11,11 @@ class Products extends Model
     protected $table = 'products';
     protected $fillable = [
         'image_path',
-        'variation',
+        'variation_id',
         'description',
         'gender',
         'size',
+        'status',
         'price',
         'quantity',
         'productStatus',
@@ -55,7 +56,7 @@ class Products extends Model
     }
     public function variationType()
     {  
-        switch ($this->variation) {
+        switch ($this->variation_id) {
             case 1:
                 return 'Couple Shirt';
             case 2:

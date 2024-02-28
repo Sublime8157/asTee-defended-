@@ -12,7 +12,6 @@ class productsController extends Controller
 
    public function filterProducts(Request $request){
          // Create a variable that holds the products model with variation, gender and size table 
-
          $data = Products::query();
 
          if($request->filled(['variations'])) {

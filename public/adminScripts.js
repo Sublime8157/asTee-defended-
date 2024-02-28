@@ -34,3 +34,34 @@ addProdCloseBtn.on('click', () => {
 })
 
 
+function showMessage(){
+    var successMessage = $('#successMessage');
+    successMessage.toggle();   
+}
+
+
+$(document).ready(function(){
+    $('#submitForm').submit(function(e){
+       e.preventDefault();
+        var regFormData = new FormData(this);
+        $.ajax({
+            url: '/addProducts',
+            method: 'POST',
+            data: regFormData,
+            contentType: false,
+            processData: false,
+            success: function() {
+               location.reload();
+            },
+            error: function(error) {
+                if(error.responseJSON) {
+                    var regError = error.responseJSON.message;
+                    $('#errorMessage').text(regError);
+                }
+                else {
+                    console.log('Error Occured', error.statusText);
+                }
+            }
+        })
+    })
+})

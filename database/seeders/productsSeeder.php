@@ -15,7 +15,7 @@ class productsSeeder extends Seeder
     public function run(): void
     {
         Products::create([
-        'image_path'=>'p3.jpg',
+        'image_path'=>' ',
         'variation_id'=> 3,
         'description'=> 'Sample 3',
         'gender' => 3,

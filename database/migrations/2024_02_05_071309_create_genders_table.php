@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('genders', function (Blueprint $table) {
-            $table->unsignedBigInteger('gender_id')->nullable();
+            $table->id();
             $table->string('gender');
             $table->timestamps();
             
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gender');
+        Schema::dropIfExists('genders');
     }
 };

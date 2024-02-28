@@ -52,6 +52,9 @@ Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
 // Routes for admin products panel tab 
 Route::get('/products/onHand', [adminProductsController:: class, 'onHand']);
+Route::post('/addProducts', [adminProductsController::class, 'storeOnhand']);
+
+
 Route::get('/products/proccessing', [adminProductsController::class, 'proccessing']);
 Route::get('/products/finished', [adminProductsController::class, 'finished']);
 

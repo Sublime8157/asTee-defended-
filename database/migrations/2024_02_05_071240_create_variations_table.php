@@ -13,11 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('variations', function (Blueprint $table) {
-            $table->unsignedBigInteger('variation_id')->nullable();
+            $table->id();
             $table->string('variation');
             
             $table->timestamps();
 
+            
             
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('variation');
+        Schema::dropIfExists('variations');
     }
 };

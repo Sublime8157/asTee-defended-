@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sizes', function (Blueprint $table) {
-            $table->unsignedBigInteger('size_id')->nullable();
+            $table->id();
             $table->string('size');
             $table->timestamps();
             
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('size');
+        Schema::dropIfExists('sizes');
     }
 };
