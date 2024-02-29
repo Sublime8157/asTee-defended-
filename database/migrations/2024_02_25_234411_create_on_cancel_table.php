@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('userId');
             $table->string('image_path')->nullable();
-            $table->integer('variation');
+            $table->integer('variation_id');
             $table->string('description')->nullable();
             $table->string('reason')->nullable();
             $table->integer('gender');

@@ -71,7 +71,7 @@
             </form>
             
             {{-- Reveal this when storing is success --}} 
-            <div class="absolute  hidden top-32 w-auto z-50 bg-white shadow-lg" id="successMessage" style="left: 31rem" >
+            <div class="absolute  hidden top-32 w-auto z-50 bg-white shadow-lg" id="successMessage" style="left: 1rem" >
                 <div class="bottom-0  rounded w-90" >
                   <div class="absolute  overflow-visible right-36" style="top: -30px;">
                     <ion-icon name="checkmark-circle-outline" class="text-6xl text-white bg-green-400 rounded-full font-extralight"></ion-icon>

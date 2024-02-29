@@ -79,9 +79,6 @@ $(document).ready(function(){
         })
     })
 })
-
-// Ajax for adding procuts in processing table 
-
 // ajax function for adding a product in onhand table 
 $(document).ready(function(){
     $('#submitFormProcess').submit(function(e){
@@ -112,5 +109,49 @@ $(document).ready(function(){
     })
 })
 
+// function for inserting data into cancel or return products table 
+$(document).ready(function(){
+    // listen to the submitformcancelreturn id if it was submited 
+    $('#submitFormCancelReturn').submit(function(e){
+        // prevent the page from reloading 
+       e.preventDefault();
+        // store the form data in regformdata
+        var regFormData = new FormData(this);
+        $.ajax({
+            // go the the storecancelreturn url where the storing happen 
+            url: '/storeCancelReturn',
+            method: 'POST',
+            data: regFormData,
+            contentType: false,
+            processData: false,
+            success: function() {
+                // clear the fields when successfull
+                successMessage();
+                $('#desc').val('');
+                $('#quantity').val('');
+                $('#price').val('');
+            },
+            error: function(error) {
+                if(error.responseJSON) {
+                    // get the id errormessage and display in that id what is the error 
+                    var regError = error.responseJSON.message;
+                    $('#errorMessage').text(regError);
+                }
+                else {
+                    console.log('Error Occured', error.statusText);
+                }
+            }
+        })
+    })
+})
 
+// function for showing the image, set a productId as a parameter so we  can get the value from the button 
+function revealImage(productId) {
+    // assign the productId(parameter) with imageDialog string 
+    const dialogId = "imageDialog" + productId;
+    // find the id in dom similar to the dialogId 
+    const dialog =  document.getElementById(dialogId);
+    // reveal the modal or the image 
+    dialog.showModal();
 
+}

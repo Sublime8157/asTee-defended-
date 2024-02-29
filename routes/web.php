@@ -58,7 +58,8 @@ Route::post('/addProducts', [adminProductsController::class, 'storeOnhand']);
 Route::get('/products/proccessing', [adminProductsController::class, 'proccessing']);
 Route::post('/storeProcessing ', [adminProductsController::class, 'storeProcessing']);
 
-Route::get('/products/finished', [adminProductsController::class, 'finished']);
+Route::get('/products/cancelReturn', [adminProductsController::class, 'cancel_return']);
+Route::post('/storeCancelReturn', [adminProductsController::class, 'storeCancelReturn']);
 
 // Route for accounts admin panel tab 
 Route::get('/accounts/active', [adminAccountsController::class, 'active']);

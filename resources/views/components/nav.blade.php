@@ -98,8 +98,8 @@
                                 <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
                         </li>
                     </a>
-                    <a href="/products/finished" class="w-full">
-                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/finished') ? 'sideNavBG' : ' ' }}">                       
+                    <a href="/products/cancelReturn" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/cancelReturn') ? 'sideNavBG' : ' ' }}">                       
                                 <div class="text-xs text-gray-400 flex items-center flex-row ">
                                     <ion-icon name="checkmark-done-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
                                         <div class="text-gray-400 text-xs">

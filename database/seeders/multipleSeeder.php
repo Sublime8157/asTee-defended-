@@ -24,102 +24,85 @@ class multipleSeeder extends Seeder
         $this->variations();
         $this->status();
     }
-
+    // populate the productStatus table with these value 
     private function productStatus() {
         productStatus::insert([
-           
             'status' => 'To Pay'
         ]);
-        productStatus::insert([
-            
+        productStatus::insert([            
             'status' => 'To Ship'
         ]);
-        productStatus::insert([
-           
+        productStatus::insert([           
             'status' => 'To Recieve'
         ]);
-        productStatus::insert([
-            
+        productStatus::insert([            
             'status' => 'To Feedback'
         ]);
-
      }
+
+    //  Populate the genders table with these value 
      private function genders()
     {
-        Genders::insert([
-           
+        Genders::insert([           
             'gender' => 'Male',
         ]);
-        Genders::insert([
-           
+        Genders::insert([           
             'gender' => 'FeMale',
         ]);
-        Genders::insert([
-            
+        Genders::insert([            
             'gender' => 'Unisex',
         ]);
     }
 
+    // populate the sized table 
     private function sizes()
     {
-        Sizes::insert([
-            
+        Sizes::insert([            
             'size' => 'XS',
         ]);
-        Sizes::insert([
-            
+        Sizes::insert([            
             'size' => 'Small',
         ]);
-        Sizes::insert([
-          
+        Sizes::insert([          
             'size' => 'Medium',
         ]);
-        Sizes::insert([
-           
+        Sizes::insert([           
             'size' => 'Large',
         ]);
-        Sizes::insert([
-            
+        Sizes::insert([            
             'size' => 'XL',
         ]);
-        Sizes::insert([
-           
+        Sizes::insert([           
             'size' => 'XXL',
         ]);
     }
-
+    // poulate the status table 
     private function status()
     {
-        Status::insert([
-           
+        Status::insert([           
             'status' => 'On Hand'
         ]);
-        Status::insert([
-           
+        Status::insert([           
             'status' => 'On Process'
         ]);
-        Status::insert([
-            
+        Status::insert([            
             'status' => 'On Cancel_Return'
         ]);
     }
 
+    // populate the variations table 
     private function variations()
     {
-        Variations::insert([
-            
+        Variations::insert([            
             'variation' => 'Couple Shirt',
         ]);
-        Variations::insert([
-            
+        Variations::insert([            
             'variation' => 'Solo Shirt',
         ]);
-        Variations::insert([
-            
+        Variations::insert([            
             'variation' => 'Family Shirt',
         ]);
-        Variations::insert([
-           
+        Variations::insert([           
             'variation' => 'Kids Wear',
         ]);
     }
