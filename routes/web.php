@@ -51,18 +51,27 @@ Route::get('/dashboard', [adminIndexController::class, 'index']);
 Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
 // Routes for admin products panel tab 
-Route::get('/products/onHand', [adminProductsController:: class, 'onHand']);
-Route::post('/addProducts', [adminProductsController::class, 'storeOnhand']);
+// for onhnad products tab 
+Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand']);
+Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
+// for filter products for admin panel 
+Route::get('/filterOnHandProducts', [adminProductsController::class, 'filterOnHandProducts']);
+
+// For processing tab
+Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
+Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
+// filter products in processign tab 
+Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
+
+// for cancel or return tab 
+Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']);
+Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
+// filter products in cancel or return
+Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCancelReturn']);
 
 
-Route::get('/products/proccessing', [adminProductsController::class, 'proccessing']);
-Route::post('/storeProcessing ', [adminProductsController::class, 'storeProcessing']);
-
-Route::get('/products/cancelReturn', [adminProductsController::class, 'cancel_return']);
-Route::post('/storeCancelReturn', [adminProductsController::class, 'storeCancelReturn']);
 
 // Route for accounts admin panel tab 
 Route::get('/accounts/active', [adminAccountsController::class, 'active']);
 Route::get('/accounts/denied', [adminAccountsController::class, 'denied']);
 Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
-

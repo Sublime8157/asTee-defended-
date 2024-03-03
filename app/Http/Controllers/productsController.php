@@ -15,7 +15,7 @@ class productsController extends Controller
          $data = Products::query();
 
          if($request->filled(['variations'])) {
-            $data->where('variation', $request->input('variations'));
+            $data->where('variation_id', $request->input('variations'));
          }
 
          if($request->filled(['sizes'])) {

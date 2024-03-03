@@ -44,31 +44,68 @@
                 <td colspan="10"><hr class="w-full mt-1 mb-3"></td>
            </tr>
            <tr>
-               <td class="w-12"><input type="text" placeholder="ID" class="w-10 h-8 text-xs "></td>
-               <td class="w-12"></td>
-               <td class="w-40 ">
-                    <select name="" id="" class="w-32 h-8 text-xs  cursor-pointer">
-                        <option value="1" class="text-xs">Couple</option>
+            <form id="filterProcessingForm"  method="get">
+                <td class="w-12">
+                    {{-- filter by id  --}}
+                        <input type="text" name="id" placeholder="ID" class="w-10 h-8 text-xs ">
+                    </td>
+                <td class="w-12"></td>
+                <td class="w-40 ">
+                    {{-- by variation --}}
+                        <select name="variation_id" id="" class="w-32 h-8 text-xs  cursor-pointer">    
+                                <option value=" "></option>                        
+                                <option value="1">Couple Shirt</option>
+                                <option value="2">Solo Shirt</option>
+                                <option value="3">Family Shirt</option>
+                                <option value="4">Kids Wear</option>                              
+                        </select>
+                    </td>
+                <td class="w-32"></td>
+                <td class="w-20">
+                    {{-- by gender --}}
+                        <select name="gender" id="" class="w-16 h-8 text-xs  cursor-pointer">
+                            <option value=" "></option>  
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Unisex</option>
+                        </select>
+                    </td>
+                <td class="w-40">
+                    {{-- by size --}}
+                        <select name="size" class="w-32  h-8 text-xs cursor-pointer" id="">
+                            <option value=" "></option>  
+                            <option value="1">XS</option>
+                            <option value="2">Small</option>
+                            <option value="3">Medium</option>
+                            <option value="4">Large</option>
+                            <option value="5">XL</option>
+                            <option value="6">2XL</option>
+                            <option value="7">3XL</option>
+                        </select>
+                    </td>
+                    {{-- by price --}}
+                <td class="w-40"><input type="text" name="price" placeholder="Price" class="w-32 h-8 text-xs"></td>   
+                <td></td>             
+                <td class="pe-2">
+                    <select name="productStatus" class="w-32  h-8 text-xs cursor-pointer" id="">
+                        <option value=" "></option>  
+                        <option value="1">To Pay</option>
+                        <option value="2">To Ship</option>
+                        <option value="3">To Recieve</option>
+                        <option value="4">Feedback</option>
                     </select>
                 </td>
-               <td class="w-32"></td>
-               <td class="w-20">
-                    <select name="" id="" class="w-16 h-8 text-xs  cursor-pointer">
-                        <option value="1">Male</option>
-                    </select>
+                <td colspan="3" class=" w-24">
+                    <button type="submit" class="text-xs rounded w-14 px-2 py-1 tracking-wider bg-yellow-500 hover:opacity-50 text-white cursor-pointer">Filter</button>
                 </td>
-               <td class="w-40">
-                    <select name="" class="w-32  h-8 text-xs cursor-pointer" id="">
-                        <option value="1">Small</option>
-                    </select>
-                </td>
-               <td class="w-40"><input type="text" placeholder="Price" class="w-32 h-8 text-xs"></td>
+            </form>
            </tr>
+           <tbody id="productTableBody">
            {{-- the variable onHandProducts is from controller and assigned it to a product variable to query in product table  --}}
            {{-- Take note that the words after $product is a table name in product table from database --}}
            {{-- We then loop to the database  and each data in product table these code below will execute  --}}
            {{-- The  variationType() is a function from model that  convert the number into value--}}
-           @foreach($storeProcess as $product) 
+           @foreach($filterOnProcess as $product) 
            <tr class=" text-xs">
                 <td class="ps-2">{{$product->id}} </td>
                 {{-- Get the image path  --}}
@@ -94,6 +131,7 @@
                 <td colspan="10"> <hr class="w-full my-2"></td>
            </tr>
            @endforeach
+        </tbody>
         </table>
     </div>
 </div>
@@ -163,8 +201,9 @@
             <div class="flex items-center flex-col">
                 <div class="relative border-2 border-dashed rounded-md me-5 self-center mb-5">
                     <ion-icon name="cloud-upload-outline" class="z-0 absolute absolute-center text-9xl text-gray-400 opacity-20"></ion-icon>
-                    <input type="file" name="image_path" class="py-20 cursor-pointer opacity-0">
-            </div>
+                    <input type="file" name="image_path" id="image" class="py-20 cursor-pointer opacity-0">
+                    <img src="#" alt="Image Preview" style="display: none; height: 200px;" class="absolute absolute-center bg-white" id="image-preview" width="400px">
+                </div>
             <div>
                 <button type="button" class="py-1 text-sm bg-blue-700 rounded-sm text-white font-light px-2 hover:opacity-50" id="updateTable">Update Table</button>
                 <button type="submit" id="submitForm" class="py-1 text-sm bg-orange-600 rounded text-white font-light px-4 hover:opacity-50">Save & Add More</button>
