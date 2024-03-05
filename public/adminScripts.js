@@ -229,3 +229,68 @@ $(document).ready(function(){
         });
     });
 });
+
+// Search user with id, name or email  
+$(document).ready(function(){
+    $('#searchUser').on('keyup', function(){
+       var formData ={
+        searchAll: $(this).val()
+
+       };
+       $.ajax({
+        url: '/searchUser',
+        type: 'GET',
+        data: formData,
+        success: function(response) {
+            $('#userLists').html(response);
+        }
+       });
+    });
+});
+
+// sort by function 
+$(document).ready(function(){
+    $('.sortBy').on('change', function(){
+        var sortBy = $('#sortBy').val();
+        var orderBy = $('#orderBy').val();
+        var formData = {
+            sortBy: sortBy,
+            orderBy: orderBy
+        };
+        $.ajax({
+            url: '/sortUsers',
+            type: 'GET',
+            data: formData,
+            success: function(response) {
+                $('#userLists').html(response);
+            }
+        });
+    });
+});
+
+function showMenus(btnNum) {
+    var showMenuBtn = "actionMenu" + btnNum;
+    $("#" + showMenuBtn).toggle();
+}
+
+
+function showUpdateForm(formId) {
+    const updateForm = "updateUser" + formId; 
+    var showUpdateForm = document.getElementById(updateForm);
+
+    showUpdateForm.showModal();
+}
+
+// the userId parameter retrieve from the parameters in onclick which the user id 
+function removeUser(UserId) {
+    // alert confirmation
+    if(confirm('Are you sure you want to delete this user?')) {
+        // prevent the page reload 
+        event.preventDefault();
+        // get the id attribute from removeForm concat with whatever the userId holds and listen to it when submit 
+        // when the id attribute was submitted a form it will run the action of that form 
+        document.getElementById('removeForm' + UserId).submit();
+    }
+
+
+}

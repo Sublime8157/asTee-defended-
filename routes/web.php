@@ -73,5 +73,12 @@ Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCa
 
 // Route for accounts admin panel tab 
 Route::get('/accounts/active', [accountsController::class, 'displayUsers']);
+Route::get('/searchUser', [accountsController::class, 'searchUsers']);
+Route::get('/sortUsers', [accountsController::class, 'sortUsers']);
+Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
+
+
+
+
 Route::get('/accounts/denied', [adminAccountsController::class, 'denied']);
 Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
