@@ -14,19 +14,24 @@ class accountsController extends Controller
         $userData = User::query();
 
         // check if the input field for search id is not empty if it is not empty run the search 
-        if($searchById) {
-            $userData = $userData->where('fname', 'LIKE', "%{$searchById}%")
-                                 ->orWhere('email', 'LIKE', "%{$searchById}%")
-                                 ->orWhere('id', $searchById);
+        if ($searchById) {
+            $userData = $userData->where(function($query) use ($searchById) {
+                $query->where('fname', 'LIKE', "%{$searchById}%")
+                      ->orWhere('email', 'LIKE', "%{$searchById}%")
+                      ->orWhere('id', $searchById);
+            })->where('userStatus', '=', '1');
         }
+        
 
         // assign the builded data to userData variable 
+        $userData->where('userStatus', '=', '1');
         $userData = $userData->get();
+
 
         // display the result in idSearchResult a result in ajax 
         return view('admin.accounts.searchActives.idSearchResult', compact('userData'));
     }
-
+    
     // sorting function
     public function sortUsers(Request $request) {
         // get the sortBy input 
@@ -39,6 +44,7 @@ class accountsController extends Controller
         // order the users data based on the value of sort users with orderby
         $userData->orderBy($sortUsers, $orderBy);
         // get the result 
+        $userData->where('userStatus', '=', '1');
         $userData = $userData->get();
 
         
@@ -46,14 +52,27 @@ class accountsController extends Controller
     }
 
     
-
+    // display users that is only active 
     public function displayUsers() {
-        $userData = User::all();
-        
+        $userData = User::query();
+        $userData->where('userStatus', '=', '1');
+
+        $userData = $userData->get();
         return view('admin.accounts.active', compact('userData'));
     }
 
+    // block a user 
+    public function block($id) {
+        $user = User::findOrFail($id);
+        $user->update([
+            'userStatus' => 2,
+        ]);
+
+        return redirect()->back()->with('blocked', 'User successfully blocked');
+    }
+
     // the $id was from the action pass from the html to routes and ends here 
+    // remove a suer 
     public function destroy($id)
         {
             $user = User::findOrFail($id);

@@ -9,6 +9,8 @@ use App\Models\productStatus;
 use App\Models\Sizes;
 use App\Models\Status;
 use App\Models\Variations;
+use App\Models\UserStatus;
+
 
 class multipleSeeder extends Seeder
 {
@@ -23,6 +25,7 @@ class multipleSeeder extends Seeder
         $this->sizes();
         $this->variations();
         $this->status();
+        $this->userStatus();
     }
     // populate the productStatus table with these value 
     private function productStatus() {
@@ -104,6 +107,16 @@ class multipleSeeder extends Seeder
         ]);
         Variations::insert([           
             'variation' => 'Kids Wear',
+        ]);
+    }
+
+    private function userStatus() {
+        UserStatus::insert([
+            'status' => 'active',
+            
+        ]);
+        UserStatus::insert([
+            'status' => 'blocked',
         ]);
     }
 

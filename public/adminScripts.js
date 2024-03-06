@@ -248,7 +248,7 @@ $(document).ready(function(){
     });
 });
 
-// sort by function 
+// sort users  
 $(document).ready(function(){
     $('.sortBy').on('change', function(){
         var sortBy = $('#sortBy').val();
@@ -268,18 +268,13 @@ $(document).ready(function(){
     });
 });
 
+// show the menu for action
 function showMenus(btnNum) {
     var showMenuBtn = "actionMenu" + btnNum;
     $("#" + showMenuBtn).toggle();
 }
 
 
-function showUpdateForm(formId) {
-    const updateForm = "updateUser" + formId; 
-    var showUpdateForm = document.getElementById(updateForm);
-
-    showUpdateForm.showModal();
-}
 
 // the userId parameter retrieve from the parameters in onclick which the user id 
 function removeUser(UserId) {
@@ -291,6 +286,79 @@ function removeUser(UserId) {
         // when the id attribute was submitted a form it will run the action of that form 
         document.getElementById('removeForm' + UserId).submit();
     }
+}
+
+// block a user 
+function blockUser(UserId) {
+    // alert confirmation
+    if(confirm('Are you sure you want to block this user?')) {
+        // prevent the page reload 
+        event.preventDefault();
+        // get the id attribute from removeForm concat with whatever the userId holds and listen to it when submit 
+        // when the id attribute was submitted a form it will run the action of that form 
+          document.getElementById('blockUser' + UserId).submit();
+        
+    }
+}
+
+// unblock a user
+function unblockUser(UserId) {
+    // alert confirmation
+    if(confirm('Are you sure you want to block this user?')) {
+        // prevent the page reload 
+        event.preventDefault();
+        // get the id attribute from removeForm concat with whatever the userId holds and listen to it when submit 
+        // when the id attribute was submitted a form it will run the action of that form 
+          document.getElementById('unblockUser' + UserId).submit();
+        
+    }
+}
 
 
+
+// sort for blocked users 
+$(document).ready(function(){
+    $('.sortBlockUserBy').on('change', function(){
+        var sortBlockUserBy = $('#sortBlockUserBy').val();
+        var orderBlockUserBy = $('#orderBlockUserBy').val();
+        var formData = {
+            sortBlockUserBy: sortBlockUserBy,
+            orderBlockUserBy: orderBlockUserBy
+        };
+        $.ajax({
+            url: '/sortBlockUsers',
+            type: 'GET',
+            data: formData,
+            success: function(response) {
+                $('#userLists').html(response);
+            }
+        });
+    });
+});
+
+
+
+// search blocked users 
+$(document).ready(function(){
+    $('#searchBlockedUser').on('keyup', function(){
+       var formData ={
+        searchAllBlockedUsers: $(this).val()
+
+       };
+       $.ajax({
+        url: '/searchBlockedUsers',
+        type: 'GET',
+        data: formData,
+        success: function(response) {
+            $('#userLists').html(response);
+        }
+       });
+    });
+});
+
+function removeProduct(prodId) {
+    if(confirm('Are you sure you want to remove this product?')); {
+        document.getElementById('removeProduct' + prodId).submit();
+    }
+    
 }

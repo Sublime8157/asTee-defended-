@@ -78,7 +78,7 @@
           @else
                 @foreach($filteredData as $table)
                         <div class="flex flex-col items-center justify-center w-48 h-auto px-3 py-5 border-black shadow-lg rounded" id="filterData">      
-                            <img src="{{ asset('images/' . $table->image_path) }}" alt="" class="rounded">
+                            <img src="{{ asset('storage/images/' . $table->image_path) }}" alt="" class="rounded">
                             <div class="mt-2 text-xs ">
                                 <div class="text-center"><span class="font-bold">Short Description:</span> <br> {{ $table->description }}</div>
                             </div>

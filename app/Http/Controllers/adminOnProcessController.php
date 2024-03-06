@@ -99,4 +99,13 @@ class adminOnProcessController extends Controller
         $filterOnProcess = Processing::all();
         return view('admin.products.proccessing', compact('filterOnProcess'));
     }
+
+    public function removeProduct($id) {
+        $product = Processing::findOrFail($id); 
+        $product->delete();
+  
+        
+  
+        return redirect()->back()->with('removedSucess', 'Product Successfuly Removed');
+     }
 }

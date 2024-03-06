@@ -1,9 +1,17 @@
 @extends('components.header')
 @section('docu', 'Accounts')
-@section('page','Active Accounts')
+@section('page','BLOCKED ACCOUNTS')
 <x-header />
 <x-nav />
-@if(session()->has('success'))
+    @if(session()->has('unblocked'))
+        <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
+            <ion-icon name="checkmark-circle-outline" class=" text-yellow-400 text-lg pe-1"></ion-icon>
+            <span class="text-yellow-400 ">
+                {{ @session()->get('unblocked') }}
+            </span>
+        </div>
+    @endif
+    @if(session()->has('success'))
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
         <span class="text-red-800 ">
@@ -11,15 +19,7 @@
         </span>
     </div>
 @endif
-@if(session()->has('blocked'))
-    <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
-        <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
-        <span class="text-red-800 ">
-            {{ @session()->get('blocked') }}
-        </span>
-    </div>
-@endif
-        <div class="my-5 mx-10 bg-white shadow-lg p-5 h-auto  ">
+        <div class="my-5 mx-10 bg-white shadow-lg p-5 h-auto ">
             {{-- Search bars --}}
             <form action="" class="flex justify-between items-center flex-row" >
                 <div class="flex flex-row items-center">
@@ -27,13 +27,13 @@
                     <div class="relative me-5">
                       <label for="sortBY" class="text-xs ">Sort by:</label>
                       {{-- sort the data by options  --}}
-                      <select name="sortBy" id="sortBy" class="sortBy shadow text-xs border-gray-100 cursor-pointer">
+                      <select name="sortBy" id="sortBlockUserBy" class="sortBlockUserBy shadow text-xs border-gray-100 cursor-pointer">
                             <option value="fname">Name</option>
                             <option value="email">Email</option>
                             <option value="id">ID</option>
                       </select>
                       {{-- sort the data if ascending or descending  --}}
-                      <select name="orderBy" id="orderBy" class="sortBy shadow text-xs border-gray-100 cursor-pointer">
+                      <select name="orderBy" id="orderBlockUserBy" class="sortBlockUserBy shadow text-xs border-gray-100 cursor-pointer">
                             <option value="asc">Ascend</option>
                             <option value="desc">Descend</option>
                       </select>
@@ -42,7 +42,7 @@
                 </div>
                <div class="relative">
                 {{-- search by id, name or email   --}}
-                    <input type="search" name="searchAll" class="ps-6 shadow border border-gray-100 text-xs " placeholder="Search" id="searchUser">
+                    <input type="search" name="searchAllBlockedUsers" class="ps-6 shadow border border-gray-100 text-xs " placeholder="Search" id="searchBlockedUser">
                     <ion-icon name="search-outline" class="absolute left-0 px-2 py-2"></ion-icon>
                 </div>
             </form>
@@ -85,21 +85,21 @@
                                     @method('DELETE')
                                 </form>
 
-                                <form  id="blockUser{{ $user->id }}" action="{{ route('users.block', $user->id) }}" method="POST" style="display: none;">
+                                <form  id="unblockUser{{ $user->id }}" action="{{ route('users.unblock', $user->id) }}" method="POST" style="display: none;">
                                     @csrf
                                     @method('PATCH')
                                     
                                 </form>
                                 {{-- elippses button that shows edit and remove option --}}
-                                <button type="button" onclick="showMenus({{ $user->id }})" >
-                                    <div class="relative z-20">
+                                <button type="button" onclick="showMenus({{ $user->id }})">
+                                    <div class="relative">
                                         <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
-                                        <div class="absolute bg-white hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $user->id }}">
+                                        <div class="bg-white z-20 absolute hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $user->id }}">
                                             
-                                            <a onclick="blockUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Block</a>
+                                            <a onclick="unblockUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Unblock</a>
                                           {{-- set the user id to removeUser parameter to pass it to adminScripts--}}
 
-                                            <a onclick="removeUser({{ $user->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
+                                            <a onclick="removeUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Remove</a>
                                             
                                         </div>
                                     </div>

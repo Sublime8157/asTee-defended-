@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products;
+use App\Models\OnHand;
 use App\Models\Variations;
 
 class productsController extends Controller
@@ -36,8 +36,10 @@ class productsController extends Controller
        
    }
    public function displayOnHandsProducts(){
-         $filteredData = Products::all();  
+         $filteredData = OnHand::all();  
          
         return view('user.Product', compact('filteredData'));
    }
+
+   
 }

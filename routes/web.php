@@ -54,12 +54,15 @@ Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 // for onhnad products tab 
 Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand']);
 Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
+// remove product
+Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');
 // for filter products for admin panel 
-Route::get('/filterOnHandProducts', [adminProductsController::class, 'filterOnHandProducts']);
+Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHandProducts']);
 
 // For processing tab
 Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
 Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
+Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 // filter products in processign tab 
 Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
 
@@ -68,17 +71,27 @@ Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cance
 Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
 // filter products in cancel or return
 Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCancelReturn']);
+Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, 'removeProduct'])->name('cancelReturn.remove');
 
 
 
 // Route for accounts admin panel tab 
 Route::get('/accounts/active', [accountsController::class, 'displayUsers']);
+// search a suer 
 Route::get('/searchUser', [accountsController::class, 'searchUsers']);
+// sort user by name, email or id and if descend or ascend 
 Route::get('/sortUsers', [accountsController::class, 'sortUsers']);
+// block a user 
+Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('users.block');
+
+// remove a user 
 Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
 
 
 
+Route::get('/accounts/blocked', [blockedAccountsController::class, 'display']);
+Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
+Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
+Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);
 
-Route::get('/accounts/denied', [adminAccountsController::class, 'denied']);
 Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);

@@ -9,7 +9,7 @@ use App\Traits\Types;
 
 class Products extends Model
 {
-    use Types;
+    use Types, HasFactory;
 
     protected $table = 'products';
     protected $fillable = [
@@ -21,6 +21,7 @@ class Products extends Model
         'status',
         'price',
         'quantity',
+        'status',
         'productStatus',
         
     ];

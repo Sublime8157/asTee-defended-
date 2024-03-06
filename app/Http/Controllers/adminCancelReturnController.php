@@ -102,9 +102,16 @@ class adminCancelReturnController extends Controller
         $filterReturnCancel = CancelReturn::all();
         return view('admin.products.cancelReturn', compact('filterReturnCancel'));
     }
-
-
     // controller for filter products 
 
+
+    public function removeProduct($id) {
+        $product = CancelReturn::findOrFail($id);
+        $product->delete();
+
+
+        return redirect()->back()->with('removeSucess', 'You successfully remove the product');
+    
+    }
     
 }

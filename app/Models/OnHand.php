@@ -8,7 +8,7 @@ use App\Traits\Types;
 
 class OnHand extends Model
 {
-    use Types;
+    use Types, HasFactory;
 
     protected $table = 'product_on_hand';
     protected $fillable  = [
@@ -21,7 +21,7 @@ class OnHand extends Model
         'quantity',
     ];
 
-    use HasFactory;
+    
     
 }
 

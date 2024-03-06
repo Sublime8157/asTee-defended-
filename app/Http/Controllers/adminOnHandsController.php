@@ -100,4 +100,15 @@ class adminOnHandsController extends Controller
         return view('admin.products.onHand', compact('filterOnHand'));
     }
 
+
+
+    public function removeProduct($id) {
+        $product = OnHand::findOrFail($id); 
+        $product->delete();
+  
+        
+  
+        return redirect()->back()->with('removedSucess', 'Product Successfuly Removed');
+     }
+
 }

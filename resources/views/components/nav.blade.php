@@ -57,12 +57,12 @@
                                 <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
                         </li>
                     </a>
-                    <a href="/accounts/denied" class="w-full">
-                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/denied') ? 'sideNavBG' : ' ' }}">                    
+                    <a href="/accounts/blocked" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/blocked') ? 'sideNavBG' : ' ' }}">                    
                                 <div class="text-xs text-gray-400 flex items-center flex-row ">
                                     <ion-icon name="ban-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
                                         <div class="text-gray-400 text-xs">
-                                            Denied User
+                                            Blocked User
                                         </div>
                                 </div>                          
                                 <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
@@ -145,7 +145,7 @@
                 </ul> 
         </div>
         <div class="w-screen flex flex-col h-screen" style="overflow-y: auto">     
-            <div class="bg-gray-50 h-12 shadow-md mt-2  rounded  flex justify-between items-center">
+            <div class="bg-gray-50 min-h-12 shadow-md mt-2  rounded  flex justify-between items-center">
                 <div class="flex flex-row  items-center text-lg ps-5">
                     <ion-icon name="menu" onclick="Menu(this)" class="text-black text-xl pe-5 cursor-pointer"></ion-icon>
                     {{-- Since this file is a components there are times that we have to change some content on other pages so @yield is a blade components that change content for the other pages the 'page' is a string that we will be using to call in order to change the content in other pages  --}}

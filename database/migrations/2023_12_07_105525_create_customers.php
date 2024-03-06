@@ -16,13 +16,18 @@ return new class extends Migration
             $table->string('fname');
             $table->string('mname');
             $table->string('lname');
-            $table->string('age');
+            $table->integer('age');
             $table->string('email')->unique();
             $table->string('username')->unique();
+            $table->unsignedBigInteger('userStatus');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+
+            $table->foreign('userStatus')->references('id')->on('user_status');
+
         });
     }
 

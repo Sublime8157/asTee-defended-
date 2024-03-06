@@ -21,8 +21,7 @@
             @method('DELETE')
         </form>
 
-        
-        <form  id="blockUser{{ $user->id }}" action="{{ route('users.block', $user->id) }}" method="POST" >
+        <form  id="unblockUser{{ $user->id }}" action="{{ route('users.unblock', $user->id) }}" method="POST" style="display: none;">
             @csrf
             @method('PATCH')
             
@@ -33,8 +32,9 @@
                 <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
                 <div class="absolute hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $user->id }}">
                     
-                    <a onclick="blockUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Block</a>
+                    <a onclick="unblockUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Unblock</a>
                   {{-- set the user id to removeUser parameter to pass it to adminScripts--}}
+
                     <a onclick="removeUser({{ $user->id }})" class="hover:bg-gray-400 px-2 text-xs">Remove</a>
                     
                 </div>
