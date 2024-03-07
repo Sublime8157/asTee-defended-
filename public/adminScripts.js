@@ -356,9 +356,23 @@ $(document).ready(function(){
     });
 });
 
+// get the remove product form 
 function removeProduct(prodId) {
     if(confirm('Are you sure you want to remove this product?')); {
         document.getElementById('removeProduct' + prodId).submit();
     }
-    
+}
+
+
+// edit the product 
+function editProduct(prodId) {
+    var editProdDialog = document.getElementById("editProductDialog" + prodId);
+    console.log(editProdDialog);
+    editProdDialog.showModal();
+}
+
+// move a product 
+function moveProduct(prodId) {
+    var moveProductDialog = document.getElementById("moveProductDialog" + prodId);
+    moveProductDialog.showModal();
 }

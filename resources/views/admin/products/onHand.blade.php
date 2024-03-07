@@ -3,6 +3,9 @@
 @section('page','ON-HAND PRODUCTS')
 <x-header />
 <x-nav />
+@if(session()->has('updatingSuccess'))
+    {{@session()->get('updatingSuccess')}}
+@endif
         <div class="bg-white my-5 mx-4">
             <div class="">
                 <div class="flex justify-between items-center flex-row p-3">
@@ -116,19 +119,43 @@
                                 <td class="ps-2">{{$product->price}}</td>
                                 <td class="ps-2">{{$product->quantity}}</td>       
                                 <td>
+                                    {{-- remove product form --}}
                                     <form action="{{ route('product.remove', $product->id) }}" id="removeProduct{{ $product->id }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                     </form>
-
+                                    {{-- edit product dialog with form   --}}                                   
+                                    <dialog id="editProductDialog{{$product->id}}" class="w-8/12 p-5 rounded">
+                                        <x-editForm route="edit.Product" :id="$product->id" 
+                                            variation="{{$product->variation_id}}" 
+                                            gender="{{$product->gender}}"
+                                            size="{{$product->size}}"
+                                            price="{{$product->price}}"
+                                            quantity="{{$product->quantity}}"
+                                            description="{{$product->description}}"
+                                            img="{{$product->image_path}}"> </x-editForm>
+                                    </dialog>
+                                    {{-- move product dialog with form  --}}
+                                    <dialog id="moveProductDialog{{$product->id}}">
+                                        <form action="" class="flex items-center flex-col justify-center">
+                                            <select name="" id="" class="text-xs cursor-pointer">
+                                                <option value="">Cancel Return</option>
+                                                <option value="">Processing</option>
+                                            </select>
+                                            <button type="submit" class="text-lg text-white bg-green-600 rounded-none px-2 py-1 w-full">Move</button>
+                                        </form>
+                                    </dialog>
+                                    {{-- button for showing the menu for edit and remove --}}
                                     <button type="button" onclick="showMenus({{ $product->id }})" >
                                         <div class="relative z-20">
                                             <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
+                                            {{-- menus --}}
                                             <div class="absolute bg-white hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $product->id }}">
-                                                
-                                                {{-- <a onclick="unblockUser({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs">Block</a> --}}
-                                              {{-- set the product id to removeUser parameter to pass it to adminScripts--}}
-    
+                                                {{-- edit the product info  --}}
+                                                <a onclick="editProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Edit</a>
+                                                {{-- move a product  --}}
+                                                <a onclick="moveProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">MoveTo</a>
+                                                {{-- remove a product   --}}
                                                 <a onclick="removeProduct({{ $product->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
                                                 
                                             </div>
@@ -137,9 +164,9 @@
                                 </td>
                             </tr>
                             <tr>
+                                {{-- Horizontal line  --}}
                                  <td colspan="10"><hr class="w-full my-2"></td>
-                            </tr>
-                         
+                            </tr>                  
                             @endforeach
                         </tbody>
                     </table>

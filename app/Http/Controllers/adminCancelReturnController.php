@@ -113,5 +113,38 @@ class adminCancelReturnController extends Controller
         return redirect()->back()->with('removeSucess', 'You successfully remove the product');
     
     }
+
+    // edit a product 
+
+    
+
+    public function editCancelReturn(Request $request, $id){
+
+        $request->validate([
+            "variation_id" => "required",
+            "gender" => "required",
+            "size" => "required",
+            "description" => "required|nullable",
+            "price" => "required|numeric",
+            "quantity" => "required|numeric",
+           
+        ]);
+
+        $product = CancelReturn::findOrFail($id);
+
+        $product->update([
+            "variation_id" => $request->variation_id,
+            "gender" =>  $request->gender,
+            "size" =>  $request->size,
+            "description" => $request->description,
+            "price" => $request->price,
+            "quantity" => $request->quantity,
+            
+        ]);
+
+        
+        
+        return redirect()->back()->with('updatingSuccess', 'Updating Successfull');
+     }
     
 }

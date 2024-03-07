@@ -122,14 +122,36 @@
                             @csrf
                             @method('DELETE');
                         </form>
+                        <dialog id="editProductDialog{{$product->id}}" class="w-8/12 p-5 rounded">
+                            <x-editForm route="edit.cancelReturn" :id="$product->id" 
+                                variation="{{$product->variation_id}}" 
+                                gender="{{$product->gender}}"
+                                size="{{$product->size}}"
+                                price="{{$product->price}}"
+                                quantity="{{$product->quantity}}"
+                                description="{{$product->description}}"
+                                img="{{$product->image_path}}"> </x-editForm>
+                        </dialog>
+                        {{-- move product dialog with form  --}}
+                        <dialog id="moveProductDialog{{$product->id}}">
+                            <form action="" class="flex items-center flex-col justify-center">
+                                <select name="" id="" class="text-xs cursor-pointer">
+                                    <option value="">Cancel Return</option>
+                                    <option value="">Processing</option>
+                                </select>
+                                <button type="submit" class="text-lg text-white bg-green-600 rounded-none px-2 py-1 w-full">Move</button>
+                            </form>
+                        </dialog>
                         <button type="button" onclick="showMenus({{ $product->id }})" >
                             <div class="relative z-20">
                                 <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
                                 <div class="absolute bg-white hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $product->id }}">
                                     
-                                    {{-- <a onclick="unblockUser({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs">Block</a> --}}
-                                  {{-- set the product id to removeUser parameter to pass it to adminScripts--}}
-    
+                                   {{-- edit the product info  --}}
+                                   <a onclick="editProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Edit</a>
+                                   {{-- move a product  --}}
+                                   <a onclick="moveProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">MoveTo</a>
+                                    {{-- remove a product --}}
                                     <a onclick="removeProduct({{ $product->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
                                     
                                 </div>
