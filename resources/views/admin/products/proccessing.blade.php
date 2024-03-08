@@ -3,28 +3,10 @@
 @section('page','ON-PROCCESS PRODUCTS')
 <x-header />
 <x-nav />
+<x-notification />
 <div class="bg-white my-5 mx-4">
     <div class="">
-        <div class="flex justify-between items-center flex-row p-3">
-            <div class="flex flex-row">
-                <div class="me-3">
-                    <select name="" id="" class="h-8 text-xs cursor-pointer">
-                        <option value="1" class="text-xs">Filter by Group</option>
-                    </select>
-                </div>
-                <div>
-                    <select name="" id="" class="h-8 text-xs cursor-pointer">
-                        <option value="1" class="text-xs">Filter by Group</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-               <div class="flex items-center bg-blue-600 px-4 py-2 cursor-pointer hover:bg-blue-500" onclick="revealForm()" >
-                    <ion-icon name="add-circle-outline" class="pe-1 text-white text-lg"></ion-icon>
-                    <button class="text-xs text-white" >New Product</button>
-               </div>
-            </div>
-        </div>
+        <x-sortingProducts sortProduct="sortProcessingProduct" orderProduct="sortProcessingProduct"></x-sortingProducts>
     </div>
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
@@ -130,6 +112,7 @@
                         @csrf
                         @method('DELETE')
                     </form>
+                    {{-- dialog for editing a product --}}
                     <dialog id="editProductDialog{{$product->id}}" class="w-8/12 p-5 rounded">
                         <x-editForm route="productProcess.edit" :id="$product->id" 
                             variation="{{$product->variation_id}}" 
@@ -140,14 +123,30 @@
                             description="{{$product->description}}"
                             img="{{$product->image_path}}"> </x-editForm>
                     </dialog>
-                    <dialog id="moveProductDialog{{$product->id}}">
-                        <form action="" class="flex items-center flex-col justify-center">
-                            <select name="" id="" class="text-xs cursor-pointer">
-                                <option value="">Cancel Return</option>
-                                <option value="">Processing</option>
-                            </select>
-                            <button type="submit" class="text-lg text-white bg-green-600 rounded-none px-2 py-1 w-full">Move</button>
-                        </form>
+                    {{-- dialog for moving a product --}}
+                    <dialog id="moveProductDialog{{$product->id}}">       
+                        <x-moveProduct  route="move.processProduct" :id="$product->id" 
+                            selectId="moveProductOption{{$product->id}}"
+                            onchangeFunction="moveProductOption({{$product->id}})"
+                            option1="On Hand"
+                            option2="Return Cancel"
+                            inputTypes="prodIdInput{{$product->id}}"
+                            :cancel="true"> 
+                        </x-moveProduct>
+                    </dialog>
+                    {{-- dialog for editing a product status  --}}
+                    <dialog id="prodStatus{{$product->id}}" class="p-5">
+                          <form action="{{route('update.status', $product->id)}}" method="POST" class="text-center">
+                                @csrf
+                                @method('PATCH')
+                                <select name="productStatus" id="" class="text-xs text-center w-full mb-2">
+                                    <option value="1">To Pay</option>
+                                    <option value="2">To Ship</option>
+                                    <option value="3">To Recieve</option>
+                                    <option value="4">Feedback</option>
+                                </select>
+                                <button type="submit" class="text-sm text-white  rounded px-2 py-1 w-full" style="background-color: #ff8906">Update</button>
+                          </form>
                     </dialog>
                     <button type="button" onclick="showMenus({{ $product->id }})" >
                         <div class="relative z-20">
@@ -159,10 +158,10 @@
                                 {{-- move a product  --}}
                               <a onclick="moveProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">MoveTo</a>
                               {{-- update product status --}}
-                              
+                              <a onclick="editStatus({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Status</a>
                               {{-- remove a product --}}
                               <a onclick="removeProduct({{ $product->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
-                                
+                             
                             </div>
                         </div>
                     </button>

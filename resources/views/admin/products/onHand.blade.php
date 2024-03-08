@@ -3,32 +3,9 @@
 @section('page','ON-HAND PRODUCTS')
 <x-header />
 <x-nav />
-@if(session()->has('updatingSuccess'))
-    {{@session()->get('updatingSuccess')}}
-@endif
+<x-notification />
         <div class="bg-white my-5 mx-4">
-            <div class="">
-                <div class="flex justify-between items-center flex-row p-3">
-                    <div class="flex flex-row">
-                        <div class="me-3">
-                            <select name="" id="" class="h-8 text-xs cursor-pointer">
-                                <option value="1" class="text-xs">Filter by Group</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select name="" id="" class="h-8 text-xs cursor-pointer">
-                                <option value="1" class="text-xs">Filter by Group</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                       <div class="flex items-center bg-blue-600 px-4 py-2 cursor-pointer hover:bg-blue-500" onclick="revealForm()" >
-                            <ion-icon name="add-circle-outline" class="pe-1 text-white text-lg"></ion-icon>
-                            <button class="text-xs text-white" >New Product</button>
-                       </div>
-                    </div>
-                </div>
-            </div>
+            <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd"></x-sortingProducts>
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
@@ -42,7 +19,6 @@
                             <th class="adminTable w-24">Quantity</th>                                                                       
                             <th class="adminTable w-24 text-center">Action</th>
                     </tr>
-                   
                         <tr>
                                 <td colspan="10"><hr class="w-full mt-1 mb-3"></td>
                         </tr>
@@ -136,14 +112,16 @@
                                             img="{{$product->image_path}}"> </x-editForm>
                                     </dialog>
                                     {{-- move product dialog with form  --}}
-                                    <dialog id="moveProductDialog{{$product->id}}">
-                                        <form action="" class="flex items-center flex-col justify-center">
-                                            <select name="" id="" class="text-xs cursor-pointer">
-                                                <option value="">Cancel Return</option>
-                                                <option value="">Processing</option>
-                                            </select>
-                                            <button type="submit" class="text-lg text-white bg-green-600 rounded-none px-2 py-1 w-full">Move</button>
-                                        </form>
+                                    <dialog id="moveProductDialog{{$product->id}}" class="rounded">
+                                        <x-moveProduct  route="move.Product" :id="$product->id" 
+                                            selectId="moveProductOption{{$product->id}}"
+                                            onchangeFunction="moveProductOption({{$product->id}})"
+                                            inputTypes="prodIdInput{{$product->id}}"
+                                            option1="Processing"
+                                            option2="Cancel Return"
+                                            :cancel="true"
+                                            > 
+                                        </x-moveProduct>
                                     </dialog>
                                     {{-- button for showing the menu for edit and remove --}}
                                     <button type="button" onclick="showMenus({{ $product->id }})" >

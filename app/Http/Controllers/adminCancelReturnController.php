@@ -11,17 +11,16 @@ use App\Models\Use;
 use App\Models\CancelReturn;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
+use App\Models\OnHand;
+use App\Models\Processing;
 
 class adminCancelReturnController extends Controller
 {
-    
-
-
     // cancel/return products here 
     public function storeCancelReturn(Request $request) {
+    // Validate te user input 
         $validated = $request->validate([
             // To lessen the errors we should practice naming the inputs fields similar to the model 
-            // Validate te user input 
             "status" => "required",
             "gender" => "required",
             "userId" => "required|numeric",
@@ -65,12 +64,11 @@ class adminCancelReturnController extends Controller
             'quantity' => $validated['quantity'],
            
         ]);
-        
-        return redirect()->to('/products/cancelReturn');       
-
-
+        // reditect back to cancel return
+        return redirect()->to('/products/cancelReturn');      
     }
 
+    // filter all the product
     public function filterCancelReturn(Request $request) {
         $productReturnCancel = CancelReturn::query();
         
@@ -98,28 +96,24 @@ class adminCancelReturnController extends Controller
 
 
     }
+
+    // show all of the product in cancel return 
     public function cancel_return(){
         $filterReturnCancel = CancelReturn::all();
         return view('admin.products.cancelReturn', compact('filterReturnCancel'));
     }
-    // controller for filter products 
-
-
+    
+    // remove a product 
     public function removeProduct($id) {
         $product = CancelReturn::findOrFail($id);
         $product->delete();
-
-
+        // redirect back with removeSuccess
         return redirect()->back()->with('removeSucess', 'You successfully remove the product');
-    
     }
 
     // edit a product 
-
-    
-
     public function editCancelReturn(Request $request, $id){
-
+        // validate the user input
         $request->validate([
             "variation_id" => "required",
             "gender" => "required",
@@ -129,9 +123,9 @@ class adminCancelReturnController extends Controller
             "quantity" => "required|numeric",
            
         ]);
-
+        // find the product
         $product = CancelReturn::findOrFail($id);
-
+        // update the product
         $product->update([
             "variation_id" => $request->variation_id,
             "gender" =>  $request->gender,
@@ -141,10 +135,71 @@ class adminCancelReturnController extends Controller
             "quantity" => $request->quantity,
             
         ]);
-
-        
-        
+        // redirect back with a message that is accessible using the updatingSuccess
         return redirect()->back()->with('updatingSuccess', 'Updating Successfull');
      }
+
+    //  move a product
+     public function moveProduct(Request $request, $id) {
+        // find the product id 
+        $product = CancelReturn::findOrFail($id);
+        // get the move option value 
+        $moveTo = $request->input('moveProduct');
+        // check the move to input 
+        switch($moveTo) {
+            // if option 1 is selected 
+            case 1: 
+                  // move to processing table 
+                OnHand::create([
+                    'image_path' => $product->image_path,
+                    'status' => $product->status,
+                    'gender' => $product->gender,
+                    'variation_id' => $product->variation_id,
+                    'size' => $product->size,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'quantity' => $product->quantity,
+                ]);
+                // delete from the onhand table 
+                $product->delete();
+                // redirect to the cancel return tab 
+                return redirect()->back()->with('moveSuccess', 'Product Successfully moved to On Hand table');
+            
+            // if option 2 is selected 
+            case 2:
+                // move to cancel return table
+                Processing::create([
+                    'image_path' => $product->image_path,
+                    'status' => $product->status,
+                    'gender' => $product->gender,
+                    'variation_id' => $product->variation_id,
+                    'size' => $product->size,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'quantity' => $product->quantity,
+                    'productStatus' => 1,
+                ]);
+                // delete from the processing table 
+                $product->delete();
+                // redirect to the cancel return tab 
+                return redirect()->back()->with('moveSuccess', 'Product Successfully moved to processing table');
+            // redirect back when no option selected
+            default: 
+                return redirect()->back();
+        }
+    }
+
+    public function sortProduct(Request $request) {
+        $sortProductBy = $request->input('sortProductBy');
+        $orderProductBy = $request->input('orderProductBy');
+
+        $productData = CancelReturn::query();
+        $productData->orderBy($sortProductBy, $orderProductBy);
+
+        $productData = $productData->get();
+
+        return view('admin.products.sort.sortProducts', compact('productData'));
+
+    }
     
 }

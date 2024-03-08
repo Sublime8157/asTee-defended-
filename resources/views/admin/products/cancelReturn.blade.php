@@ -3,28 +3,10 @@
 @section('page','RETURN / CANCEL ')
 <x-header />
 <x-nav />
+<x-notification />
 <div class="bg-white my-5 mx-4">
     <div class="">
-        <div class="flex justify-between items-center flex-row p-3">
-            <div class="flex flex-row">
-                <div class="me-3">
-                    <select name="" id="" class="h-8 text-xs cursor-pointer">
-                        <option value="1" class="text-xs">Filter by Group</option>
-                    </select>
-                </div>
-                <div>
-                    <select name="" id="" class="h-8 text-xs cursor-pointer">
-                        <option value="1" class="text-xs">Filter by Group</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-               <div class="flex items-center bg-blue-600 px-4 py-2 cursor-pointer hover:bg-blue-500" onclick="revealForm()" >
-                    <ion-icon name="add-circle-outline" class="pe-1 text-white text-lg"></ion-icon>
-                    <button class="text-xs text-white" >New Product</button>
-               </div>
-            </div>
-        </div>
+        <x-sortingProducts sortProduct="sortCancelReturnProduct" orderProduct="sortCancelReturnProduct"></x-sortingProducts>
     </div>
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
@@ -133,14 +115,15 @@
                                 img="{{$product->image_path}}"> </x-editForm>
                         </dialog>
                         {{-- move product dialog with form  --}}
-                        <dialog id="moveProductDialog{{$product->id}}">
-                            <form action="" class="flex items-center flex-col justify-center">
-                                <select name="" id="" class="text-xs cursor-pointer">
-                                    <option value="">Cancel Return</option>
-                                    <option value="">Processing</option>
-                                </select>
-                                <button type="submit" class="text-lg text-white bg-green-600 rounded-none px-2 py-1 w-full">Move</button>
-                            </form>
+                        <dialog id="moveProductDialog{{$product->id}}">       
+                            <x-moveProduct  route="move.cancelReturnProduct" :id="$product->id" 
+                                selectId="moveProductOption{{$product->id}}"
+                                onchangeFunction="moveProductOption({{$product->id}})"
+                                option1="On Hand"
+                                option2="Processing"
+                             
+                                :cancel="false"> 
+                            </x-moveProduct>
                         </dialog>
                         <button type="button" onclick="showMenus({{ $product->id }})" >
                             <div class="relative z-20">

@@ -358,9 +358,11 @@ $(document).ready(function(){
 
 // get the remove product form 
 function removeProduct(prodId) {
-    if(confirm('Are you sure you want to remove this product?')); {
+    var  confirmRemove = confirm('Are you sure you want to remove this product?');
+    if(confirmRemove) {
         document.getElementById('removeProduct' + prodId).submit();
     }
+    
 }
 
 
@@ -375,4 +377,83 @@ function editProduct(prodId) {
 function moveProduct(prodId) {
     var moveProductDialog = document.getElementById("moveProductDialog" + prodId);
     moveProductDialog.showModal();
+}
+
+
+
+function moveProductOption(prodId) {
+    var moveTo = document.getElementById('moveProductOption' + prodId);
+    var prodIdInput = document.getElementById('prodIdInput' + prodId);
+   if(moveTo.value == 2 ){
+    prodIdInput.style.display =  'block';
+   }
+   else {
+    prodIdInput.style.display =  'none';
+   }
+}
+
+// sort product in on hand table 
+$(document).ready(function(){
+    $('.sortProd').on('change', () => {
+        var sortProductBy = $('#sortProductBy').val();
+        var orderProductBy = $('#orderProductBy').val();
+        var formData = {
+            sortProductBy: sortProductBy,
+            orderProductBy: orderProductBy
+        };
+        $.ajax({
+            url: '/sortProduct',
+            type: 'GET',
+            data: formData,
+            success: function(response){
+                $('#productTableBody').html(response);
+            }
+        });
+    });
+});
+
+
+// sort product in processing table 
+$(document).ready(function(){
+    $('.sortProcessingProduct').on('change', () => {
+        var sortProductBy = $('#sortProductBy').val();
+        var orderProductBy = $('#orderProductBy').val();
+        var formData = {
+            sortProductBy: sortProductBy,
+            orderProductBy: orderProductBy
+        };
+        $.ajax({
+            url: '/sortProcessingProduct',
+            type: 'GET',
+            data: formData,
+            success: function(response){
+                $('#productTableBody').html(response);
+            }
+        });
+    });
+});
+
+// sort Products in canel or return table 
+$(document).ready(()=> {
+    $('.sortCancelReturnProduct').on('change', () => {
+        var sortProductBy = $('#sortProductBy').val();
+        var orderProductBy = $('#orderProductBy').val();
+        var formData = {
+            sortProductBy: sortProductBy,
+            orderProductBy: orderProductBy
+        };
+        $.ajax({
+            url: '/sortCancelReturnProduct',
+            type: 'GET',
+            data: formData,
+            success: function(response) {
+                $('#productTableBody').html(response);
+            }
+        });
+    });
+});
+
+function editStatus(prodId) {
+    var statusDialog = document.getElementById('prodStatus' + prodId);
+    statusDialog.showModal();
 }

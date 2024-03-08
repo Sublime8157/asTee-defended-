@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Processing;
+use App\Models\OnHand;
+use App\Models\CancelReturn;
 use App\Models\Variations;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -14,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 class adminOnProcessController extends Controller
 {
     // controller for inserting data into prodcut processing 
-    public function storeProcessing(Request $request) {
+    public function storeProcessing(Request $request)
+     {
+        // validate the user input 
         $validated = $request->validate([
             // To lessen the errors we should practice naming the inputs fields similar to the model 
-            // Validate te user input 
             "status" => "required",
             "gender" => "required",
             "variation_id" => "required",
@@ -57,12 +60,11 @@ class adminOnProcessController extends Controller
             'quantity' => $validated['quantity'],
            
         ]);
-        // 
+        // redirect to processing tab 
         return redirect()->to('/products/proccessing');        
     }
 
     // function for fitlering products 
-
     public function filterProcessing(Request $request) {
         $processingData = Processing::query();
         
@@ -99,20 +101,17 @@ class adminOnProcessController extends Controller
         $filterOnProcess = Processing::all();
         return view('admin.products.proccessing', compact('filterOnProcess'));
     }
-
+    // remove a product
     public function removeProduct($id) {
         $product = Processing::findOrFail($id); 
-        $product->delete();
-  
-        
-  
+        $product->delete(); 
+        // redirect back with removedSuccess string 
         return redirect()->back()->with('removedSucess', 'Product Successfuly Removed');
      }
 
-     
-
+    //  edit a product info
      public function editProcessingProduct(Request $request, $id){
-
+        // validate the before editing or updating 
         $request->validate([
             "variation_id" => "required",
             "gender" => "required",
@@ -120,11 +119,10 @@ class adminOnProcessController extends Controller
             "description" => "required|nullable",
             "price" => "required|numeric",
             "quantity" => "required|numeric",
-           
         ]);
-
+        // find the product id in processing table 
         $product = Processing::findOrFail($id);
-
+        // update the product 
         $product->update([
             "variation_id" => $request->variation_id,
             "gender" =>  $request->gender,
@@ -132,11 +130,88 @@ class adminOnProcessController extends Controller
             "description" => $request->description,
             "price" => $request->price,
             "quantity" => $request->quantity,
-            
         ]);
-
-        
-        
+        // redirect back with updatingSuccess, access in session
         return redirect()->back()->with('updatingSuccess', 'Updating Successfull');
      }
+
+    //  move a product to another product
+     public function moveProduct(Request $request, $id) {
+        // find the product id 
+        $product = processing::findOrFail($id);
+        // get the move option value 
+        $moveTo = $request->input('moveProduct');
+        // check the move to inpout value  
+        switch($moveTo) {
+            // if option 1 is selected...
+            case 1: 
+                  // move to processing table 
+                OnHand::create([
+                    'image_path' => $product->image_path,
+                    'status' => $product->status,
+                    'gender' => $product->gender,
+                    'variation_id' => $product->variation_id,
+                    'size' => $product->size,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'quantity' => $product->quantity,                   
+                ]);
+                // delete from the onhand table 
+                $product->delete();
+                // redirect to the cancel return tab 
+                return redirect()->back()->with('moveSuccess', 'Product Successfully moved to On Hand table');
+
+            // if option 2 is selected 
+            case 2:
+                // validate the id must be numeric 
+                $validated = $request->validate([
+                    'userId' => 'required|numeric',
+                ]);
+                // move to cancel return table
+                  CancelReturn::create([
+                    'userId' => $validated['userId'],
+                    'image_path' => $product->image_path,
+                    'variation_id' => $product->variation_id,
+                      'description' => $product->description,
+                    'reason' => $request['reason'],
+                     'gender' => $product->gender,  
+                     'size' => $product->size,
+                     'price' => $product->price,
+                    'quantity' => $product->quantity,
+                   
+                ]);
+                // delete from the onhand table 
+                $product->delete();
+                // redirect to the cancel return tab 
+                return redirect()->back()->with('moveSuccess', 'Successfully moved to return or cancel table');
+            // redirect back when no option is  selected 
+            default: 
+                return redirect()->back();
+        }
+    }
+    // sort the products 
+    public function sortProduct(Request $request) {
+        $sortProducts = $request->input('sortProductBy');
+        $orderBy = $request->input('orderProductBy');
+
+        $productData = Processing::query();
+
+        $productData->orderBy($sortProducts, $orderBy);
+
+        $productData = $productData->get();
+
+        return view('admin.products.sort.sortProducts', compact('productData'));
+    }
+
+    public function updateStatus(Request $request, $id){
+        $product = Processing::findOrFail($id);
+
+        $product->update([
+            'productStatus' => $request->productStatus
+        ]);
+
+        return redirect()->back();
+
+
+    }
 }
