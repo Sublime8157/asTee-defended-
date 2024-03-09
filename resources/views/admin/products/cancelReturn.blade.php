@@ -70,7 +70,7 @@
                 <td></td>             
                 <td></td>
                 <td colspan="3" class=" w-24">
-                    <button type="submit" class="text-xs rounded w-14 px-2 py-1 tracking-wider bg-yellow-500 hover:opacity-50 text-white cursor-pointer">Filter</button>
+                    <button type="submit" class="bg-yellow-500 flex items-center justify-center gap-1 text-xs rounded w-auto py-1 px-2 tracking-wider  hover:opacity-50 text-white cursor-pointer"><ion-icon name="funnel" class="text-white text-md"></ion-icon>FILTER</button></td>
                 </td>
             </form>
            </tr>

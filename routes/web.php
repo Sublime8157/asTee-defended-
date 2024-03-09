@@ -47,7 +47,7 @@ Route::get('/userProfile', [UserController::class, 'userProfile']);
 
 // All these routes are responsible for admin panel
 Route::get('/loginAdmin', [adminIndexController::class, 'login']);
-Route::get('/dashboard', [adminIndexController::class, 'index']);
+Route::get('/dashboard', [dashboardController::class, 'dashboard']);
 Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
 // Routes for admin products panel tab 

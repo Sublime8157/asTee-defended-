@@ -67,8 +67,7 @@
                                     <td class="w-40"><input type="text" name="price" placeholder="Price" class="w-32 h-8 text-xs"></td>                
                                     <td></td>
                                     <td colspan="3" class=" w-24">
-                                        <button type="submit" class="text-xs rounded w-14 px-2 py-1  text-white cursor-pointer" style="background-color: #ff8906">Filter</button>
-                                    </td>
+                                        <button type="submit" class="bg-yellow-500 flex items-center justify-center gap-1 text-xs rounded w-auto py-1 px-2 tracking-wider  hover:opacity-50 text-white cursor-pointer"><ion-icon name="funnel" class="text-white text-md"></ion-icon>FILTER</button></td>
                                 </form>
                         </tr>
                         <tbody id="productTableBody">

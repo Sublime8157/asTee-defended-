@@ -457,3 +457,6 @@ function editStatus(prodId) {
     var statusDialog = document.getElementById('prodStatus' + prodId);
     statusDialog.showModal();
 }
+
+var dashboardModal = document.getElementById('dashboarModal');
+dashboardModal.showModal();
