@@ -98,7 +98,7 @@
                     <td class="ps-2">{{$product->sizeShirt()}}</td>
                     <td class="ps-2">{{$product->price}}</td>
                     <td class="ps-2">{{$product->quantity}}</td>
-                    <td class="ps-2">{{$product->reason}}</td>
+                    <td class="ps-2">{{$product->reason()}}</td>
                     <td>
                         <form action="{{ route('cancelReturn.remove', $product->id) }}" method="POST" id="removeProduct{{ $product->id }}">
                             @csrf

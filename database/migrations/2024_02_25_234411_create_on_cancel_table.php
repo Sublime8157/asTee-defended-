@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('image_path')->nullable();
             $table->integer('variation_id');
             $table->string('description')->nullable();
-            $table->string('reason')->nullable();
+            $table->integer('reason')->nullable();
             $table->integer('gender');
             $table->integer('size');
             $table->integer('price');

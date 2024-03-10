@@ -1,3 +1,6 @@
+
+
+
 var sideNav = $('#nav');
 var icon = true;
 var addProdCloseBtn = $('#closeBtn');
@@ -458,5 +461,3 @@ function editStatus(prodId) {
     statusDialog.showModal();
 }
 
-var dashboardModal = document.getElementById('dashboarModal');
-dashboardModal.showModal();

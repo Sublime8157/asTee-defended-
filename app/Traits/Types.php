@@ -38,6 +38,7 @@ trait Types {
 
     // Same logic on variation and variationType funcition
 
+    
    
     public function sizeShirt(){
         switch($this->size) {
@@ -72,6 +73,25 @@ trait Types {
         default:
             return 'Unknown';
        }
+    }
+
+    public function reason(){
+            switch($this->reason) {
+            case 1:
+                return 'Wrong Product';
+            case 2:
+                return 'Different Colors';
+            case 3:
+                return 'Wrong design';
+            case 4:
+                return 'Reason 1 ';
+            case 5:
+                return 'Reason 2';
+            case 6:
+                return 'Reason 3';
+            case 7:
+                return 'Reason 4';
+        }
     }
 }
 

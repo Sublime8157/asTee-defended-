@@ -50,6 +50,7 @@ Route::get('/loginAdmin', [adminIndexController::class, 'login']);
 Route::get('/dashboard', [dashboardController::class, 'dashboard']);
 Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
+
 // Routes for admin products panel tab 
 // for onhnad products tab 
 Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand']);
