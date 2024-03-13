@@ -5,41 +5,56 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OnHand;
 use App\Models\Variations;
+use Illuminate\Support\Str;
+
 
 class productsController extends Controller
 {
  
 
    public function filterProducts(Request $request){
-         // Create a variable that holds the products model with variation, gender and size table 
-         $data = Products::query();
-
-         if($request->filled(['variations'])) {
-            $data->where('variation_id', $request->input('variations'));
-         }
-
-         if($request->filled(['sizes'])) {
-            $data->where('size', $request->input('sizes'));
-         }
-
-         if($request->filled(['gender'])) {
-            $data->where('gender', $request->input('gender'));
-         }
-   
-         $filteredData = $data->get();
-   
-        
-
-       
-         return view('user.product', ['filteredData' => $filteredData]);
-
-       
-   }
+      // Create a variable that holds the products model with variation, gender, and size table 
+      $data = OnHand::query();
+      
+      if($request->filled('variation_id')) {
+          $data->where('variation_id', $request->input('variation_id'));
+      }
+  
+      if($request->filled('size')) {
+          $data->where('size', $request->input('size'));
+      }
+  
+      if($request->filled('gender')) {
+          $data->where('gender', $request->input('gender'));
+      }
+      
+      $filteredData = $data->get();
+  
+      // Truncate description for each product
+      foreach ($filteredData as $product) {
+          $product->displayDescription = Str::words($product->description, 10);
+      }
+  
+      return view('user.productResult', ['filteredData' => $filteredData]);
+  }
+  
    public function displayOnHandsProducts(){
-         $filteredData = OnHand::all();  
+         $data = OnHand::all();  
+        
+         foreach($data as $product) {
+            $product->displayDescription = Str::words($product->description, 10);
+         }
          
-        return view('user.Product', compact('filteredData'));
+        return view('user.Product', compact('data'));
    }
 
+   public function details(Request $request, $id) {
+      $product = OnHand::findorFail($id);
+
+      $productDetails = OnHand::where('id', '=', $id);
+      
+      $productDet = $productDetails->get();
+      return view('user.productDetails', compact('productDet'));
+   }
    
 }

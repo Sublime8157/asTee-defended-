@@ -39,17 +39,7 @@ class adminCancelReturnController extends Controller
         $validated['image_path'] =  $imageName;
 
         // insert the data in products table 
-        Products::create([
-            'status' => $validated['status'],
-            'gender' => $validated['gender'],
-            'variation_id' => $validated['variation_id'],
-            'size' => $validated['size'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
-            'productStatus' => $validated['productStatus'],
-            'image_path' => $validated['image_path'],
-        ]);
+        
 
         // insert the data in on_process_product table 
         $storeCancelReturn = CancelReturn::create([

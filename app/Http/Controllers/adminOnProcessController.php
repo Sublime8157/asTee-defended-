@@ -36,18 +36,7 @@ class adminOnProcessController extends Controller
         $request->file('image_path')->storeAs('public/images', $imageName);
         $validated['image_path'] =  $imageName;
 
-        // insert the data in products table 
-        Products::create([
-            'status' => $validated['status'],
-            'gender' => $validated['gender'],
-            'variation_id' => $validated['variation_id'],
-            'size' => $validated['size'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
-            'productStatus' => $validated['productStatus'],
-            'image_path' => $validated['image_path'],
-        ]);
+        
         // insert the data in on_process_product table 
         $storeProcess = Processing::create([
             'image_path' => $validated['image_path'],
@@ -169,7 +158,7 @@ class adminOnProcessController extends Controller
                 ]);
                 // move to cancel return table
                   CancelReturn::create([
-                    'userId' => $validated['userId'],
+                    'userId' => 1,
                     'image_path' => $product->image_path,
                     'variation_id' => $product->variation_id,
                       'description' => $product->description,

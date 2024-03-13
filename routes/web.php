@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
+Route::post('/loggingIn', [adminIndexController::class, 'adminLogin']);
+Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
 // Route for logging out 
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
 // Default rouse that shows the login form 
@@ -46,14 +48,14 @@ Route::post('/updateProfile', [UserController::class, 'updateProfile']);
 Route::get('/userProfile', [UserController::class, 'userProfile']);
 
 // All these routes are responsible for admin panel
-Route::get('/loginAdmin', [adminIndexController::class, 'login']);
-Route::get('/dashboard', [dashboardController::class, 'dashboard']);
+Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
+Route::get('/dashboard', [dashboardController::class, 'dashboard'])->middleware('admin');
 Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
 
 // Routes for admin products panel tab 
 // for onhnad products tab 
-Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand']);
+Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');
 Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
 // remove product
 Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');
@@ -66,7 +68,7 @@ Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])
 Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
 
 // For processing tab
-Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
+Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing'])->middleware('admin');
 Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
 Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
@@ -81,7 +83,7 @@ Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStat
 Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
 
 // for cancel or return tab 
-Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']);
+Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return'])->middleware('admin');
 Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
 Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
 Route::post('/moveCancelReturn/{id}', [adminCancelReturnController::class, 'moveProduct'])->name('move.cancelReturnProduct');
@@ -94,7 +96,7 @@ Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sor
 
 
 // Route for accounts admin panel tab 
-Route::get('/accounts/active', [accountsController::class, 'displayUsers']);
+Route::get('/accounts/active', [accountsController::class, 'displayUsers'])->middleware('admin');
 // search a suer 
 Route::get('/searchUser', [accountsController::class, 'searchUsers']);
 // sort user by name, email or id and if descend or ascend 
@@ -106,10 +108,14 @@ Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('use
 Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
 
 
-
-Route::get('/accounts/blocked', [blockedAccountsController::class, 'display']);
+Route::get('/accounts/blocked', [blockedAccountsController::class, 'display'])->middleware('admin');
 Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
 Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
 Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);
 
 Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
+
+
+// product details 
+
+Route::get('/productDetails/{id}', [productsController::class, 'details']);

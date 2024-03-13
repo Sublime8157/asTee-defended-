@@ -39,18 +39,8 @@ class adminOnHandsController extends Controller
         $request->file('image_path')->storeAs('public/images', $imageName);
         $validated['image_path'] =  $imageName;
 
-        // insert the data in products table 
-        Products::create([
-            'status' => $validated['status'],
-            'gender' => $validated['gender'],
-            'variation_id' => $validated['variation_id'],
-            'size' => $validated['size'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
-            'productStatus' => $validated['productStatus'],
-            'image_path' => $validated['image_path'],
-        ]);
+       
+      
         // insert the data in on_hand_product table 
         $storeOnHand = OnHand::create([
             'image_path' => $validated['image_path'],

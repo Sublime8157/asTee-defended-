@@ -12,7 +12,15 @@
             <label for="userId">Product Id:</label>  <br>
             <input type="text" name="userId" class=" w-auto text-xs text-center h-6"><br>
             <label for="reason">Reason</label> <br>
-            <textarea name="reason" id="" cols="30" rows="5" class="text-xs text-center"></textarea> 
+            <select name="reason" id="" class="text-xs text-center w-full">
+                <option value="1">Wrong Product</option>
+                <option value="2">Different Color</option>
+                <option value="3">Wrong Design</option>
+                <option value="4">Reason 1 </option>
+                <option value="5">Reason 2 </option>
+                <option value="6">Reason 3 </option>
+                <option value="7">Reason 4 </option>
+            </select>
         </div><br>
     @endif
     <button type="submit" class="text-sm text-white  rounded px-2 py-1 w-full" style="background-color: #ff8906">Move</button>

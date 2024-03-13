@@ -14,14 +14,19 @@ return new class extends Migration
         Schema::create('product_on_process', function (Blueprint $table) {
             $table->id();
             $table->string('image_path')->nullable();
-            $table->integer('variation_id');
+            $table->unsignedBigInteger('variation_id');
             $table->string('description')->nullable();
-            $table->integer('gender');
-            $table->integer('size');
+            $table->unsignedBigInteger('gender');
+            $table->unsignedBigInteger('size');
             $table->integer('price');
             $table->integer('quantity');
-            $table->integer('productStatus');
+            $table->unsignedBigInteger('productStatus');
             $table->timestamps();
+
+            $table->foreign('variation_id')->references('id')->on('variations');
+            $table->foreign('gender')->references('id')->on('genders');
+            $table->foreign('size')->references('id')->on('sizes');         
+            $table->foreign('productStatus')->references('id')->on('product_status');
         });
     }
 

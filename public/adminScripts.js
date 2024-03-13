@@ -49,7 +49,7 @@ function successMessage() {
     }, 2000);
 }
 
-$('#updateTable').on('click', () => {
+$('#updateBtn').on('click', () => {
     location.reload();
 })
 
@@ -461,3 +461,10 @@ function editStatus(prodId) {
     statusDialog.showModal();
 }
 
+$('#adminSettingsBtn').on('click', ()=> {
+    $('#adminSettingsProfile').toggle();
+});
+
+function adminLogoutBtn() {
+    $('#adminLogOut').submit();
+}

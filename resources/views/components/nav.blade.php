@@ -2,12 +2,12 @@
 <body style="background-color: #f9f6f6;">
     <div class="flex justify-between items-start">
         {{-- Side Bar --}}
-        {{-- The tabs you see are just placeholder, we will update these placeholders after finalizing all the tabs that will be needing in the company --}}
             <div class=" left-0 h-screen p-1 bg-gray-800 " style="width: 200px;" id="nav">
                 {{-- DASHBOARD TAB --}}
                 <ul class="flex justify-center items-start flex-col">
-                    <li class="adminLi self-center">
-                        <img src="{{ asset('images/adminIcon.jpg') }}" alt="Admin Icon" width="75px" class="m-5 self-center  rounded-full">
+                    <li class="adminLi self-center relative">
+                        <img src="{{ asset('images/adminIcon.jpg') }}" id="adminSettings" alt="Admin Icon" width="75px" class="m-5 self-center  rounded-full">
+                      
                     </li>
                     <li class="text-xs text-gray-200 ps-2 hover:bg-gray-800">
                         DASHBOARD
@@ -32,8 +32,7 @@
                         ACCOUNTS
                     </li>
                     <a href="/accounts/active" class="w-full">
-                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/active') ? 'sideNavBG' : ' ' }}">
-                        
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('accounts/active') ? 'sideNavBG' : ' ' }}">                        
                             <div class="text-xs text-gray-400 flex items-center flex-row ">
                                 <ion-icon name="people-sharp" class="text-gray-400  text-sm self-center  iconPadding"></ion-icon>
                                     <div class="text-gray-400 text-xs">
@@ -155,8 +154,32 @@
                     <ion-icon name="mail-outline" class="text-yellow-700 text-xl pe-5 cursor-pointer"></ion-icon>
                     <ion-icon name="notifications-outline" class="text-yellow-700 text-xl pe-5 cursor-pointer"></ion-icon>
                     <span class="text-xs font-bold">ADMINISTRATOR</span>
-                    <img src="{{ asset('images/adminIcon.jpg') }}" alt="admin Icon" width="40px" class="cursor-pointer rounded-full">      
+                    <div class="relative">
+                        <img src="{{ asset('images/adminIcon.jpg') }}" id="adminSettingsBtn" alt="admin Icon" width="40px" class="cursor-pointer rounded-full ">       
+                     
+                        <div class="hidden" id="adminSettingsProfile">
+                            <div class="absolute  flex flex-col  rounded items-center right-5 shadow-xl z-40 text-sm  bg-white  w-40">
+                                {{-- profile settings  --}}
+                                <a href="" class="hover:bg-gray-400 rounded py-1 w-full ">
+                                    <div class="flex flex-row items-center justify-center w-full gap-2">
+                                            <ion-icon name="settings-outline" class="text-sm"></ion-icon>
+                                            Profile
+                                    </div>
+                                </a>
+                                {{-- logout settings  --}}
+                                <a onclick="adminLogoutBtn()" class="cursor-pointer py-1 rounded hover:bg-gray-400 w-full" id="">
+                                    <div class="flex flex-row  items-center justify-center w-full gap-2">
+                                        <ion-icon name="exit-outline" class="text-lg"></ion-icon> 
+                                        Logout
+                                    </div>
+                                </a>
+                                <form action="/adminLogout" method="POST" id="adminLogOut" class="hidden">
+                                    @csrf
+                                   <button type="submit"></button>
+                                </form>  
+                            </div>
+                        </div>
+                    </div>
                 </div> 
             </div>
       {{-- The closing of the parent div was continued on the other pages that uses this component --}}
-      

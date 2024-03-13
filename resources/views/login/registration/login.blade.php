@@ -5,9 +5,7 @@
 <body class="bg-blue-100 ">
   <x-navbar />
   {{-- This is Login Section --}}
-  @if(session('isLoggedin'))
-  <p>You are logged in </p>
-  @else
+  @if(session('isLoggedin') != true)
     <div class=" flex justify-evenly flex-col  md:flex-row items-center h-screen w-full">
           <div class="">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" width="400px" height="400px">

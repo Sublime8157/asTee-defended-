@@ -32,10 +32,10 @@ class UserFactory extends Factory
             'age' => fake()->numberBetween($min = 18, $max = 60),
             'username' => fake()->unique()->userName(),
             'userStatus' => fake()->numberBetween($min = 1, $max= 2),
-
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'created_at'=> fake()->dateTime($max = 'now')
           
         ];
     }
