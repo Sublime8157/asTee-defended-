@@ -4,7 +4,6 @@
 <x-header />
 <x-navbar />
 
-
     <div class="flex justify-evenly md:flex-row flex-col items-start "> 
         {{-- Filtering section  --}}
         <a onclick="" class="p-5 md:hidden  top-0 flex items-center">
@@ -96,10 +95,22 @@
                             <div class=" showIcons h-auto  ">
                                 <div class=" absolute left-0 bottom-0">
                                     {{-- cart icon  --}}
-                                    <a href="">
+                                    @if(session('isLoggedin'))
+                                    <a onclick="addToCart({{$table->id}})" class="cursor-pointer">
                                         <ion-icon name="cart" class="ps-2 text-green-600 text-xl">
                                         </ion-icon>
                                     </a>
+                                    @else
+                                    <a href="/" class="cursor-pointer">
+                                        <ion-icon name="cart" class="ps-2 text-green-600 text-xl">
+                                        </ion-icon>
+                                    </a>
+                                    @endif
+                                    
+                                    <form class="hidden" action="/cart/{{$table->id}}/{{$user['id']}}" method="POST" id="addToCartForm{{$table->id}}">
+                                        @csrf
+                                        <button type="submit">Submit</button>
+                                    </form> 
                                     {{-- share link icon  --}}
                                     <a href="">
                                         <ion-icon name="share-social" class="text-green-600 text-xl"></ion-icon>
@@ -131,7 +142,6 @@
                             </div>
                     </div>
                 @endforeach
-                
             @endif
         </div>
     </div>

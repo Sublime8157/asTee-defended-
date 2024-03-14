@@ -1,4 +1,4 @@
-
+// filter products 
 $(document).ready(function(){
     $('#filterForm').submit(function(e){
         e.preventDefault();
@@ -21,6 +21,7 @@ $(document).ready(function(){
     });
 });
 
+// show filter  icon 
 function displayFilter(icon) {  
     
     if(icon.name == 'caret-forward-outline') {
@@ -33,10 +34,36 @@ function displayFilter(icon) {
     }
 }
 
+// clear radio buttons 
 function clearRadio(){
     var radioButtons = document.querySelectorAll('input[type="radio"]')
     
    radioButtons.forEach(function(radioButtons){
     radioButtons.checked = false;
    })
+}
+
+// quantity 
+var addBtn = $('#addButton');
+var minusBtn = $('#minusButton');
+var quantityValue = $('#quantityValue');
+var value;
+// add button 
+addBtn.on('click', () => {
+    value = parseInt(quantityValue.val());
+    value++;
+    quantityValue.val(value);
+});
+// minus button 
+minusBtn.on('click', () => {
+    var value = parseInt(quantityValue.val());
+   if(value > 0 ) {
+        value--;
+        quantityValue.val(value);
+   }
+});
+
+
+function addToCart(prodId) {
+    $('#addToCartForm' + prodId).submit();
 }

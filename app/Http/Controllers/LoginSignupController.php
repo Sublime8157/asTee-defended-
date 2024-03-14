@@ -59,10 +59,13 @@ class LoginSignupController extends Controller
       ]);
 
       if(auth()->attempt($validated)) {
+       
          $user = auth()->user();
          
          $request->session()->put('isLoggedin', true);
          $request->session()->put('username', $user->username);
+         $request->session()->put('id', $user->id);
+         
          $request->session()->regenerate();
        
          return redirect('/home');

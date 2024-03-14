@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
-@if(session('isLoggedin') != true)
+
     <body>
         {{-- Container  --}}
                 <div class="flex items-center justify-center w-screen h-screen">
@@ -56,9 +56,13 @@
                         </div>
                     </form>
                 </div>
+                <form action="/hash-passwords">
+                    @csrf
+                    <button type="submit">Hash</button>
+                </form>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         
     </body>  
-@endif
+
 </html>

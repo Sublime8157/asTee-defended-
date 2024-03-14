@@ -1,4 +1,4 @@
-    <div class=" bg-blue-50 rounded w-full shadow-lg z-40 " id="navbar">
+    <div class=" bg-blue-50 rounded w-full shadow-lg z-40" id="navbar">
         <nav class="flex flex-row p-5 justify-between ps-8 z-40 py-2 font-semibold text-red-400 items-center">   
             {{-- Company logo      --}}
                 <div class="me-40">

@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
-class adminLogin extends Model
+// make sure to use authenticatableTrait so the model can register to the auth() has a default authentication for logging in 
+class adminLogin extends Model implements Authenticatable
 {
+    use HasFactory, AuthenticatableTrait;
 
     protected $table = 'admin_login';
     protected $fillable =  [
@@ -19,7 +23,5 @@ class adminLogin extends Model
         'username',
         'email_verified_at',
         'password'
-
     ];
-    use HasFactory;
 }

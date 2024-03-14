@@ -24,7 +24,7 @@ Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
 // Route for logging out 
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
 // Default rouse that shows the login form 
-Route::get('/', [LoginSignupController::class, 'LoginSignup']);
+Route::get('/', [LoginSignupController::class, 'LoginSignup'])->name('userLogin');
 
 // Route for logging in proccess
 Route::post('/login/process', [LoginSignupController::class, 'process']);
@@ -119,3 +119,7 @@ Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
 // product details 
 
 Route::get('/productDetails/{id}', [productsController::class, 'details']);
+
+// user cart 
+Route::post('/cart/{prodId}/{userId}', [UserController::class, 'cart']);
+

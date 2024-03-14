@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\OnHand;
 
 class UserController extends Controller
 {
@@ -35,7 +36,7 @@ class UserController extends Controller
             return view('user.userProfile', ['user' => $user]);
        }
        else {
-            return rediirect()->to('\home');
+            return redirect()->to('\home');
        }
     }
     
@@ -47,8 +48,8 @@ class UserController extends Controller
         'mname' => 'nullable|string',
         'lname' => 'nullable|string',
         'age' => 'nullable|integer',
-        'email' => ['nullable', 'email', Rule::unique('customer', 'email')],
-        'username' => ['nullable', Rule::unique('customer', 'username')],
+        'email' => ['nullable', 'email', Rule::unique('customers', 'email')],
+        'username' => ['nullable', Rule::unique('customers', 'username')],
     ]);
 
     // Find the user assigned to the variable 'user'
@@ -66,6 +67,16 @@ class UserController extends Controller
 
     return redirect()->to('userProfile');
 }
+// get the product id and user id to display in cart url 
+    public function cart($prodId, $userId) {
+        // find the prodcut id 
+        $product = OnHand::findOrFail($prodId);
+        // find the user id 
+        $user = User::findOrFail($userId);
+        return view('user.userCart', ['product' => $product, 'user' => $user]);
+    }
+
+   
 
     }
  

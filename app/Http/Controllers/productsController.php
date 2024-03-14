@@ -37,17 +37,22 @@ class productsController extends Controller
   
       return view('user.productResult', ['filteredData' => $filteredData]);
   }
-  
+//   display on hands product
    public function displayOnHandsProducts(){
+    // get the  session username and id   
+        $user = [
+            'username' =>  session('username'),
+            'id' => session('id'),
+        ];
          $data = OnHand::all();  
         
          foreach($data as $product) {
             $product->displayDescription = Str::words($product->description, 10);
          }
          
-        return view('user.Product', compact('data'));
+        return view('user.Product', compact('data','user'));
    }
-
+   
    public function details(Request $request, $id) {
       $product = OnHand::findorFail($id);
 
@@ -56,5 +61,7 @@ class productsController extends Controller
       $productDet = $productDetails->get();
       return view('user.productDetails', compact('productDet'));
    }
+
+   
    
 }
