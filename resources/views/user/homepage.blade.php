@@ -2,45 +2,7 @@
 @extends('components.header')
 @section('docu', 'Home')
 <x-header />
-    {{-- Red part on top  that is only visible in dekstop view--}}
-    <div class="hidden md:flex justify-between  h-auto" style="background-color: #f87b1f;">
-            <div class="ms-10"> 
-                <span class="font-extralight text-white text-xs">
-                    Custom T-shirts & Promotional Products, Fast & Free Shipping, and All-Inclusive Pricing
-                </span>
-            </div>
-            <div  class="md:flex flex-row justify-between items-center me-5  hidden">
-                <div class="me-5">
-                    <span class="">
-                        <ion-icon name="call" class="text-white text-xs font-extralight"></ion-icon>
-                       <span class="text-white text-xs font-extralight">000-000-00</span>
-                    </span>
-
-                </div>
-                <div class="me-5">
-                    <span class="">
-                        <ion-icon name="people" class="text-white text-xs font-extralight"></ion-icon>
-                       <span class="text-white text-xs font-extralight">Talk to a real person</span>
-                    </span>
-                </div>
-            </div>
-    </div>
-    {{-- Red part on top that is only visible in mobile view --}}
-    <div class="flex md:hidden justify-between mx-auto w-screen h-auto" style="background-color: #f87b1f;">
-        <div class="ms-10"> 
-            <span class="font-extralight text-white text-xs">
-                Custom T-shirts & More
-            </span>
-        </div>
-        <div  class="md:flex flex-row justify-between items-center me-5">
-            <div class="me-5">
-                <span class="">
-                    <ion-icon name="people" class="text-white text-xs font-extralight"></ion-icon>
-                   <span class="text-white text-xs font-extralight">Help</span>
-                </span>
-            </div>
-        </div>
-    </div>
+   
     {{-- Navigation bar --}}
     <x-navbar />
     {{-- Carousel  --}}

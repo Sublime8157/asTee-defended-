@@ -3,6 +3,11 @@
 @section('docu', 'Products')
 <x-header />
 <x-navbar />
+@if(session()->has('success'))
+   <div class="text-center text-xs w-full py-1  text-white bg-blue-500">
+    {{ @session()->get('success') }}
+   </div>
+@endif
 
     <div class="flex justify-evenly md:flex-row flex-col items-start "> 
         {{-- Filtering section  --}}
@@ -106,9 +111,12 @@
                                         </ion-icon>
                                     </a>
                                     @endif
-                                    
-                                    <form class="hidden" action="/cart/{{$table->id}}/{{$user['id']}}" method="POST" id="addToCartForm{{$table->id}}">
+                                    {{-- add to cart form --}}
+                                    <form class="hidden" action="/storeCart" method="POST" id="addToCartForm{{$table->id}}">
                                         @csrf
+                                        <input type="text" name="prodId" value="{{$table->id}}">
+                                        <input type="text" name="userId" value="{{$user['id']}}">
+
                                         <button type="submit">Submit</button>
                                     </form> 
                                     {{-- share link icon  --}}

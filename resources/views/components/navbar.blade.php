@@ -1,9 +1,48 @@
+    {{-- Red part on top  that is only visible in dekstop view--}}
+    <div class="hidden md:flex justify-between  h-auto" style="background-color: #f87b1f;">
+        <div class="ms-10"> 
+            <span class="font-extralight text-white text-xs">
+                Custom T-shirts & Promotional Products, Fast & Free Shipping, and All-Inclusive Pricing
+            </span>
+        </div>
+        <div  class="md:flex flex-row justify-between items-center me-5  hidden">
+            <div class="me-5">
+                <span class="">
+                    <ion-icon name="call" class="text-white text-xs font-extralight"></ion-icon>
+                <span class="text-white text-xs font-extralight">000-000-00</span>
+                </span>
+
+            </div>
+            <div class="me-5">
+                <span class="">
+                    <ion-icon name="people" class="text-white text-xs font-extralight"></ion-icon>
+                <span class="text-white text-xs font-extralight">Talk to a real person</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    {{-- Red part on top that is only visible in mobile view --}}
+    <div class="flex md:hidden justify-between mx-auto w-screen h-auto" style="background-color: #f87b1f;">
+    <div class="ms-10"> 
+        <span class="font-extralight text-white text-xs">
+            Custom T-shirts & More
+        </span>
+    </div>
+    <div  class="md:flex flex-row justify-between items-center me-5">
+        <div class="me-5">
+            <span class="">
+                <ion-icon name="people" class="text-white text-xs font-extralight"></ion-icon>
+            <span class="text-white text-xs font-extralight">Help</span>
+            </span>
+        </div>
+    </div>
+    </div>     
     <div class=" bg-blue-50 rounded w-full shadow-lg z-40" id="navbar">
         <nav class="flex flex-row p-5 justify-between ps-8 z-40 py-2 font-semibold text-red-400 items-center">   
             {{-- Company logo      --}}
                 <div class="me-40">
                     <ul class="flex flex-row  justify-between items-center">
-                        <li> <img src="{{ asset('images/logo.png') }}" alt="Logo" width="50px" height="50px" class="me-1 md:ms-10 ms-0"><li>      
+                        <li> <img src="{{ asset('images/logo.png') }}" alt="Logo" width="50px" height="50px" class="md:block hidden me-1 md:ms-10 ms-0"><li>      
                         <li class="italic  md:hidden block"><span class="text-blue-300 font-semibold">A</span>'s <span class="text-blue-300 font-semibold">T</span>ee</li>
                     </ul>
                 </div>  
@@ -28,25 +67,65 @@
                         <span><hr></span>
                     </div>
                       {{-- Account icon  --}}
-                   <div>
-                        <ul class="md:flex  w-full">
-                            <li class="px-1 flex flex-row md:mb-0 mb-5 ">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="18" width="16" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path opacity="1" fill="#1E3050" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
+                      <div class="md:hidden flex-row items-center block">
+                        <ion-icon name="person"></ion-icon>
+                        @if(session('isLoggedin'))
+                        <a href="/userProfile"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+
+                        @else 
+                        <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
+                            <span class="hover:underline text-sm mx-1">Login</span>
+                        </a>
+                        @endif
+                   </div>
+                 </div>
+                 <div>
+                    <ul class="md:flex  w-full">
+                        <li class="px-1 flex flex-col md:flex-row-reverse md:mb-0 mb-5 items-center gap-4">
+                            <div class="relative md:block hidden ">
+                                @if(session('isLoggedin'))
+                                    <a href="/cart/{{ session('id') }}">
+                                        <ion-icon name="cart" class="text-2xl"></ion-icon> 
+                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                    </a>
+                                    @else
+                                    <a href="/{{ session('id') }}">
+                                        <ion-icon name="cart" class="text-2xl"></ion-icon> 
+                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                    </a>
+                                @endif
+                            </div>
+                           <div class="md:flex flex-row items-center hidden">
+                                <ion-icon name="person"></ion-icon>
                                 @if(session('isLoggedin'))
                                 <a href="/userProfile"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+
                                 @else 
                                 <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                                     <span class="hover:underline text-sm mx-1">Login</span>
                                 </a>
                                 @endif
-                            </li>            
-                        </ul>
-                    
-                    </div>
-                 </div>
+                           </div>
+                        </li>            
+                    </ul>
+                </div>
                    {{-- Menu icon  --}}
-                        <div class="md:absolute relative md:hidden block text-2xl ">           
+                        <div class="md:absolute flex flex-row-reverse relative md:hidden gap-4 text-2xl ">           
                             <ion-icon name="menu" onclick="Menu(this)"></ion-icon>
+                            <div class="relative md:hidden block ">
+                                @if(session('isLoggedin'))
+                                    <a href="/cart/{{ session('id') }}">
+                                        <ion-icon name="cart" class="text-2xl"></ion-icon> 
+                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                    </a>
+                                    @else
+                                    <a href="/{{ session('id') }}">
+                                        <ion-icon name="cart" class="text-2xl"></ion-icon> 
+                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                    </a>
+                                @endif
+                            </div>      
                         </div>
+        
         </nav>
     </div> 

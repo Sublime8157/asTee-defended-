@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OnHand;
+use App\Models\Cart;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -67,17 +69,43 @@ class UserController extends Controller
 
     return redirect()->to('userProfile');
 }
-// get the product id and user id to display in cart url 
-    public function cart($prodId, $userId) {
-        // find the prodcut id 
-        $product = OnHand::findOrFail($prodId);
-        // find the user id 
-        $user = User::findOrFail($userId);
-        return view('user.userCart', ['product' => $product, 'user' => $user]);
+
+// store added product 
+    public function store(Request $request) {
+        $validate = $request->validate([
+            "userId" => 'required|exists:customers,id',
+            "prodId" => 'required|exists:product_on_hand,id',
+        ]);
+        $cart = Cart::create([
+            'userId' =>$validate['userId'],
+            'productId' =>$validate['prodId']
+        ]);
+        return redirect()->back()->with(['success' => 'Added to cart']);
     }
+// display the user added to cart
+    public function cart($userId) {
+        // find the user id from cart assign to userCart
+        $userCart = Cart::where('userId', '=', $userId)->get();
+        $products = [];
+        // assign to cartItem all the userCart result
+        foreach($userCart as $cartItem) {
+            // find the productId column of Cart from OnHand
+        
+            $product = OnHand::find($cartItem->productId);
+            
+            if($product){
+               
+                // store to products array 
+                $products[] = $product;
+                
+            }
+           
+        }
 
    
-
+       
+        return view('user.userCart', compact('userCart','products'));
     }
- 
+}
+    
 

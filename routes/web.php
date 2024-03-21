@@ -121,5 +121,8 @@ Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
 Route::get('/productDetails/{id}', [productsController::class, 'details']);
 
 // user cart 
-Route::post('/cart/{prodId}/{userId}', [UserController::class, 'cart']);
-
+Route::post('/storeCart', [UserController::class, 'store'])
+                                                    ->middleware('cart')
+                                                    ->name('cart');
+                                                    
+Route::get('/cart/{userId}', [UserController::class, 'cart']);
