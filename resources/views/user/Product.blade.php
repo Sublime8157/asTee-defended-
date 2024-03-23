@@ -98,13 +98,15 @@
                                 {{-- product image  --}}
                                 <img src="{{ asset('storage/images/' . $table->image_path) }}" alt="" >
                             <div class=" showIcons h-auto  ">
-                                <div class=" absolute left-0 bottom-0">
+                                <div class="flex flex-row absolute left-0 bottom-0">
                                     {{-- cart icon  --}}
                                     @if(session('isLoggedin'))
-                                    <a onclick="addToCart({{$table->id}})" class="cursor-pointer">
-                                        <ion-icon name="cart" class="ps-2 text-green-600 text-xl">
-                                        </ion-icon>
-                                    </a>
+                                    <form class="addToCartForm"  method="POST" id="addToCartForm{{$table->id}}">
+                                        @csrf
+                                        <input type="hidden" name="prodId" value="{{$table->id}}">
+                                        <input type="hidden" name="userId" value="{{$user['id']}}">
+                                        <button type="submit" class="addToCartBtn"><ion-icon name="cart" class="ps-2 text-green-600 text-xl"></button>
+                                    </form> 
                                     @else
                                     <a href="/" class="cursor-pointer">
                                         <ion-icon name="cart" class="ps-2 text-green-600 text-xl">
@@ -112,13 +114,7 @@
                                     </a>
                                     @endif
                                     {{-- add to cart form --}}
-                                    <form class="hidden" action="/storeCart" method="POST" id="addToCartForm{{$table->id}}">
-                                        @csrf
-                                        <input type="text" name="prodId" value="{{$table->id}}">
-                                        <input type="text" name="userId" value="{{$user['id']}}">
-
-                                        <button type="submit">Submit</button>
-                                    </form> 
+                                    
                                     {{-- share link icon  --}}
                                     <a href="">
                                         <ion-icon name="share-social" class="text-green-600 text-xl"></ion-icon>
@@ -155,5 +151,5 @@
     </div>
 
 <x-footer />
-<script src="products.js"></script>
+<script src="/js/products.js"></script>
 <x-scripts />

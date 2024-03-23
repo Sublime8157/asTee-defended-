@@ -2,7 +2,7 @@
 @extends('components.header')
 @section('docu', 'Home')
 <x-header />
-   
+
     {{-- Navigation bar --}}
     <x-navbar />
     {{-- Carousel  --}}

@@ -72,16 +72,29 @@ class UserController extends Controller
 
 // store added product 
     public function store(Request $request) {
+        // validate the user and product id 
         $validate = $request->validate([
             "userId" => 'required|exists:customers,id',
             "prodId" => 'required|exists:product_on_hand,id',
         ]);
-        $cart = Cart::create([
-            'userId' =>$validate['userId'],
-            'productId' =>$validate['prodId']
-        ]);
+        // check if it was already in the cart 
+        $cartItem = Cart::where('userId', '=', $validate['userId'])->
+                            where('productId', '=', $validate['prodId'])->count();
+        // if it not yet in the cart add
+        if($cartItem <= 0 ) {
+            $cart = Cart::create([
+                'userId' =>$validate['userId'],
+                'productId' =>$validate['prodId']
+            ]);
+        }
+        // return back
+        else {
+            return redirect()->back()->with(['success' => 'Item was already in the cart']);
+        }
         return redirect()->back()->with(['success' => 'Added to cart']);
     }
+
+
 // display the user added to cart
     public function cart($userId) {
         // find the user id from cart assign to userCart
@@ -89,23 +102,23 @@ class UserController extends Controller
         $products = [];
         // assign to cartItem all the userCart result
         foreach($userCart as $cartItem) {
-            // find the productId column of Cart from OnHand
-        
-            $product = OnHand::find($cartItem->productId);
-            
-            if($product){
-               
+            // find the productId column of Cart from OnHand  
+            $product = OnHand::find($cartItem->productId);       
+            if($product){             
                 // store to products array 
-                $products[] = $product;
-                
+                $products[] = $product;   
             }
-           
         }
-
-   
-       
-        return view('user.userCart', compact('userCart','products'));
+     return view('user.userCart', compact('userCart','products'));
     }
+
+  public function remove($productId) {
+    $product = Cart::where('productId', '=', $productId);
+    $product->delete();
+
+    return redirect()->back()->with(['success' => 'Item Removed']);
+
+  }
 }
     
 

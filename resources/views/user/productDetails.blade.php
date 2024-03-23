@@ -1,8 +1,6 @@
 <x-header />
 <x-navbar />
 <body class="bg-gray-100">
-    
-
     <div class="bg-gray-100 flex justify-center  items-start   h-auto w-full " >
         {{-- get the product --}}
         @foreach($productDet as $data)
@@ -48,14 +46,25 @@
                 </div> 
                 {{-- add to cart and buy now button  --}}
                 <div class="flex flex-row items-center gap-4">
-                    <button class="bg-blue-50 hover:opacity-90 border px-5 md:px-10 text-xs md:text-sm py-2 md:py-4 text-md  flex items-center gap-2 border-blue-400 rounded"><ion-icon name="cart-outline" class="text-sm md:text-md"></ion-icon>Add to Cart</button>
+                    {{-- if session isLoggedin is present  --}}
+                    @if(session('isLoggedin'))
+                    <form class="addToCartForm"  method="POST" id="addToCartForm{{$data->id}}">
+                        @csrf
+                        <input type="hidden" name="prodId" value="{{$data->id}}">
+                        <input type="hidden" name="userId" value="{{$user['id']}}">
+                        <button class="bg-blue-50 hover:opacity-90 border px-5 md:px-10 text-xs md:text-sm py-2 md:py-4 text-md  flex items-center gap-2 border-blue-400 rounded"><ion-icon name="cart-outline" class="text-sm md:text-md"></ion-icon>Add to Cart</button>
+                    </form> 
+                    {{-- if not  --}}
+                    @else
+                       <a href="/">
+                        <button class="bg-blue-50 hover:opacity-90 border px-5 md:px-10 text-xs md:text-sm py-2 md:py-4 text-md  flex   items-center gap-2 border-blue-400 rounded"><ion-icon name="cart-outline" class="text-sm md:text-md"></ion-icon>Add to Cart</button></a>
+                    @endforelse
                     <button class="text-xs md:text-sm px-7 md:px-14 py-2 md:py-4 hover:opacity-80 bg-blue-700 text-white  rounded">Buy Now</button>
                 </div>
             </div>
-            
        </div>
         @endforeach
     </div>
 </body>
-   <script src="{{ asset('products.js') }}"></script>
+   <script src="{{ asset('/js/products.js') }}"></script>
 <x-scripts />

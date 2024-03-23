@@ -142,4 +142,4 @@
 </script>
 
 <x-adminFooter />
-<script src="{{ asset('chart.js') }}"></script>
+<script src="{{ asset('/js/chart.js') }}"></script>

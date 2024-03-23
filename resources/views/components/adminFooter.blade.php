@@ -1,5 +1,5 @@
 
-<script src="{{ asset('adminScripts.js') }}"></script>
+<script src="{{ asset('/js/adminScripts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 

@@ -10,7 +10,7 @@ use App\Http\Controllers\Hash;
 use App\Http\Controllers\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
-
+use App\Models\Cart;
 
 class LoginSignupController extends Controller
 {
@@ -57,17 +57,17 @@ class LoginSignupController extends Controller
          "username" => 'required',
          "password" => 'required','current_password'
       ]);
-
+     
       if(auth()->attempt($validated)) {
-       
-         $user = auth()->user();
          
+         $user = auth()->user();        
          $request->session()->put('isLoggedin', true);
          $request->session()->put('username', $user->username);
          $request->session()->put('id', $user->id);
-         
+        
+
          $request->session()->regenerate();
-       
+         
          return redirect('/home');
         
       }

@@ -41,9 +41,7 @@ function showMessage(){
 $(document).ready(function(){
     $('#regForm').submit(function(e){
         e.preventDefault();
-
         var regFormData = new FormData(this);
-
         $.ajax({
             url: '/store',
             method: 'POST',
@@ -62,9 +60,10 @@ $(document).ready(function(){
                     console.log('Error Occured', error.statusText);
                 }
             }
-        })
-    })
-})
+        });
+    });
+});
+
 
 
 
@@ -100,5 +99,6 @@ var revPass = $('.revealPassword').on('click', function(){
         revealPass.attr('name', 'eye-off-outline');
     }
 })
+
 
 

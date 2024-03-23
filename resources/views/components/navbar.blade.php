@@ -83,15 +83,17 @@
                     <ul class="md:flex  w-full">
                         <li class="px-1 flex flex-col md:flex-row-reverse md:mb-0 mb-5 items-center gap-4">
                             <div class="relative md:block hidden ">
+                                {{-- for desktop view  --}}
                                 @if(session('isLoggedin'))
+                                  
                                     <a href="/cart/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
-                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                        <span class="cart absolute left-5 bottom-5 text-xs  w-4 h-4 text-center rounded-full bg-white " id="cart"></span>
                                     </a>
                                     @else
                                     <a href="/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
-                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                        <span class="absolute left-5 bottom-5  w-4 h-4 text-center text-xs  rounded-full bg-white ">0</span>
                                     </a>
                                 @endif
                             </div>
@@ -110,18 +112,20 @@
                     </ul>
                 </div>
                    {{-- Menu icon  --}}
+                   {{-- for mobile view only  --}}
                         <div class="md:absolute flex flex-row-reverse relative md:hidden gap-4 text-2xl ">           
                             <ion-icon name="menu" onclick="Menu(this)"></ion-icon>
                             <div class="relative md:hidden block ">
                                 @if(session('isLoggedin'))
                                     <a href="/cart/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
-                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                        <span class=" absolute left-5  w-4 h-4 text-center bottom-5 text-xs  rounded-full bg-white ">0</span>
+
                                     </a>
                                     @else
                                     <a href="/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
-                                        <span class="absolute left-5 bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                        <span class="absolute left-5  w-4 h-4 text-center bottom-5 text-xs  rounded-full bg-white ">0</span>
                                     </a>
                                 @endif
                             </div>      
@@ -129,3 +133,4 @@
         
         </nav>
     </div> 
+    

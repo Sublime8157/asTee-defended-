@@ -54,12 +54,15 @@ class productsController extends Controller
    }
    
    public function details(Request $request, $id) {
+        $user = [
+            'id' => session('id'),
+        ];
       $product = OnHand::findorFail($id);
 
       $productDetails = OnHand::where('id', '=', $id);
       
       $productDet = $productDetails->get();
-      return view('user.productDetails', compact('productDet'));
+      return view('user.productDetails', compact('productDet', 'user'));
    }
 
    

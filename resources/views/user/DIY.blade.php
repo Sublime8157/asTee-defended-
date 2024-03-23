@@ -301,5 +301,5 @@
 {{-- Javascript --}}
   
     <x-footer />
-    @include('partial\_Tools');
+    <script src="{{asset('/js/diy.js')}}"></script>
     <x-scripts />

@@ -63,7 +63,21 @@ minusBtn.on('click', () => {
    }
 });
 
+// add to cart ajax 
+$(document).ready(function(){
+    $('.addToCartForm').submit(function(e){
+        e.preventDefault();
+        var formData = new FormData(this)
+        $.ajax({
+            url: '/storeCart',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function() {
+                console.log("Success");
+            }
+        })
+    })
+})
 
-function addToCart(prodId) {
-    $('#addToCartForm' + prodId).submit();
-}
