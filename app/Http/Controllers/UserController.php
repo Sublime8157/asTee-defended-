@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\OnHand;
 use App\Models\Cart;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -111,14 +112,26 @@ class UserController extends Controller
         }
      return view('user.userCart', compact('userCart','products'));
     }
+    // remove a list of items  
+    public function removeAll(Request $request) {
+        $items = explode(',', $request->toRemove); // convert the strings into array recieved from toRemove input field
+        $items = array_map('trim', $items); // Remove whitespace from each element
+        $items = array_map('intval', $items); // Convert each element to an integer
+       
+        $listOfItems = Cart::whereIn('productId', $items); // use whereIn to remove a set of an array 
+        $deleted = $listOfItems->delete();
+        // Log the number of deleted items to verify the deletion
+    
+        return redirect()->back();
+    }
+    // remove single item 
+    public function remove($id) {
+        $removeItem = Cart::where('productId', $id);
+        $removeItem->delete();
 
-  public function remove($productId) {
-    $product = Cart::where('productId', '=', $productId);
-    $product->delete();
-
-    return redirect()->back()->with(['success' => 'Item Removed']);
-
-  }
+        return redirect()->back();
+    }
+    
 }
     
 

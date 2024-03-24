@@ -127,3 +127,4 @@ Route::post('/storeCart', [UserController::class, 'store'])
                                                     
 Route::get('/cart/{userId}', [UserController::class, 'cart']);
 Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
+Route::delete('/removeAll',[UserController::class, 'removeAll'])->name('remove.All');
