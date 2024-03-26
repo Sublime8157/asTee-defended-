@@ -27,6 +27,7 @@
                             <tr class="item border-1 border-orange-300  flex items-center  py-4 px-8">     
                                 {{-- Product Description --}}
                                 <td class="w-80 flex flex-row items-center">
+                                    {{-- checkbox --}}
                                     <div class="me-2">
                                         <input type="checkbox" name="" onclick="updateCart({{$userCart->id}})" value="{{$userCart->id}}" class="h-3 w-3 cursor-pointer list" id="cart{{$userCart->id}}">
                                     </div>
@@ -40,22 +41,22 @@
                                 </td>  
                                 {{-- unit price  --}}
                                 <td class="text-center  w-40 text-sm ">
-                                    <span class="">₱{{$userCart->price}}.00
+                                    <span class="" >₱{{$userCart->price}}.00
                                         <input type="hidden" name="price" value="{{$userCart->price}}" id="unitPrice{{$userCart->id}}">
                                     </span>
                                 </td>
                                 {{-- quantity  --}}
                                 <td class="text-center flex justify-center w-40 text-sm  ">
-                                    <div class="flex items-center  justify-center border p-0  w-24">
-                                        <button class="border-r pe-2" onclick="minusButton({{$userCart->id}})">-</button>
-                                        <input type="ext" name="quantity" id="quantityValue{{$userCart->id}}" value="1" class=" w-10 text-center border-none h-4 text-xs">
-                                        <button class="border-l ps-2" onclick="addButton({{$userCart->id}})">+</button>
+                                    <div class="flex items-center  justify-center border p-0  w-24" id="quantityDiv{{$userCart->id}}">
+                                        <button class="border-r pe-2" id="minusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>
+                                        <input type="ext" name="quantity" id="quantityValue{{$userCart->id}}" value="1" class=" w-10 text-center border-none h-4 text-xs" disabled>
+                                        <button class="border-l ps-2"  id="addButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
                                     </div>  
                                 </td>
                                 {{-- Total Price --}}
                                 <td class="text-center text-sm text-orange-600 w-40" >
                                     ₱<span id="textPrice{{$userCart->id}}">{{$userCart->price}}</span>
-                                    <input type="hidden" name="totalPrice" value="{{$userCart->id}}" id="totalPrice{{$userCart->id}}">
+                                    <input type="hidden" class="total" name="totalPrice" value="{{$userCart->price}}" id="totalPrice{{$userCart->id}}">
                                 </td>
                                 {{-- Action --}}
                                 <td class="text-center text-sm text-orange-800 w-40">
@@ -102,7 +103,8 @@
                                 <td class="text-sm flex items-center">Total (<span id="countItems" class="font-bold pe-1"></span> Item/s): 
                                 {{-- total amount of items selected in cart  --}}
                                 <h1 class="text-orange-600 text-3xl font-extralight me-2">
-                                    ₱<span id="totalAmount"></span>
+                                    ₱<span id="totalAmountTxt"></span>
+                                    <input type="hidden" value="" id="totalAmountVal"  disabled>
                                 </h1>
                                 {{-- checkout button --}}
                                 <button class="px-2 py-1 w-40 h-10 text-sm rounded-sm bg-blue-700  text-white hover:opacity-40">Checkout</button>
@@ -114,7 +116,6 @@
             </div>
         </div>
         <div class="8/12">
-    
         </div>
     </div>
 </body>

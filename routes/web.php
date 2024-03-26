@@ -55,7 +55,7 @@ Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
 // Routes for admin products panel tab 
 // for onhnad products tab 
-Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');
+Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand']);  // ->middleware('admin');
 Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
 // remove product
 Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');

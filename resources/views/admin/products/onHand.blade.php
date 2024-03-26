@@ -4,6 +4,9 @@
 <x-header />
 <x-nav />
 <x-notification />
+<div class="flex justify-center w-full border-none">
+    {{$filterOnHand->links()}}     
+</div>
         <div class="bg-white my-5 mx-4">
             <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd"></x-sortingProducts>
             <div class="mx-10 pb-10 flex justify-center">
@@ -143,12 +146,16 @@
                             <tr>
                                 {{-- Horizontal line  --}}
                                  <td colspan="10"><hr class="w-full my-2"></td>
-                            </tr>                  
+                            </tr>             
+                           
                             @endforeach
+                            
                         </tbody>
                     </table>
+                   
             </div>
         </div>
+       
         {{-- This is the add product form --}}
         <div>
             <dialog class=" modal bg-white shadow-lg rounded p-10  w-8/12" id="addProdForm"> 
