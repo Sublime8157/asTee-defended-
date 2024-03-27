@@ -157,19 +157,8 @@ function revealImage(productId) {
     // reveal the modal or the image 
     dialog.showModal();
 }
-
-
-// make sure the html file was loaded before processing to this function
-$(document).ready(function(){
-    //  set a "change" listener for the tag with the image id 
-    $('#image').change(function(){
-        // pass the user input to the function below using the this keyword
-        previewImage(this);
-    });
-});
-
-// get the input in a tag with image id assign to parameter 
-function previewImage(input) {
+   // get the input in a tag with image id assign to parameter 
+   function previewImage(input) {
     // check the parameter if there are file input happen  
     if(input.files && input.files[0]) {
         // create a new object for file reader 
@@ -177,13 +166,16 @@ function previewImage(input) {
         // when the file input done loading createa run this function 
         reader.onload = function (e) {
             // get the image-preview set its src attribute to whatever is insid the input file 
-            $('#image-preview').attr('src', e.target.result); 
+            $('#imagePreview').attr('src', e.target.result); 
             // change the image preview from display none to display block 
-            $('#image-preview').css('display', 'block');
+            $('#imagePreview').css('display','block');
         }
         // read the user input file 
         reader.readAsDataURL(input.files[0]);
     }
+}
+function clearField(){
+    $('#imagePreview').css('display','none');
 }
 // for filtering products in on hand tab 
 $(document).ready(function(){

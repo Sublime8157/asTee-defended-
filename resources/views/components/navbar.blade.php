@@ -88,7 +88,7 @@
                                   
                                     <a href="/cart/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
-                                        <span class="cart absolute left-5 bottom-5 text-xs  w-4 h-4 text-center rounded-full bg-white " id="cart"></span>
+                                        <span class="cart absolute left-5 bottom-5 text-xs  w-4 h-4 text-center rounded-full bg-white cart"></span>
                                     </a>
                                     @else
                                     <a href="/{{ session('id') }}">
@@ -101,7 +101,6 @@
                                 <ion-icon name="person"></ion-icon>
                                 @if(session('isLoggedin'))
                                 <a href="/userProfile"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
-
                                 @else 
                                 <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                                     <span class="hover:underline text-sm mx-1">Login</span>
@@ -119,7 +118,7 @@
                                 @if(session('isLoggedin'))
                                     <a href="/cart/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
-                                        <span class=" absolute left-5  w-4 h-4 text-center bottom-5 text-xs  rounded-full bg-white ">0</span>
+                                        <span class="cart absolute left-5  w-4 h-4 text-center bottom-5 text-xs  rounded-full bg-white ">0</span>
 
                                     </a>
                                     @else

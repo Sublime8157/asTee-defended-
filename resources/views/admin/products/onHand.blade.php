@@ -4,11 +4,12 @@
 <x-header />
 <x-nav />
 <x-notification />
-<div class="flex justify-center w-full border-none">
-    {{$filterOnHand->links()}}     
+<div class="p-3">
+    {{$filterOnHand->links('pagination::simple-tailwind')}}   
 </div>
-        <div class="bg-white my-5 mx-4">
+   <div class="bg-white my-2 mx-4">
             <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd"></x-sortingProducts>
+            
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
@@ -22,6 +23,7 @@
                             <th class="adminTable w-24">Quantity</th>                                                                       
                             <th class="adminTable w-24 text-center">Action</th>
                     </tr>
+                    
                         <tr>
                                 <td colspan="10"><hr class="w-full mt-1 mb-3"></td>
                         </tr>
@@ -151,10 +153,10 @@
                             @endforeach
                             
                         </tbody>
-                    </table>
-                   
+                    </table> 
             </div>
         </div>
+      
        
         {{-- This is the add product form --}}
         <div>
@@ -222,13 +224,14 @@
                     <div class="flex items-center flex-col">
                         <div class="relative border-2 border-dashed rounded-md me-5 self-center mb-5">
                                 <ion-icon name="cloud-upload-outline" class="z-0 absolute absolute-center text-9xl text-gray-400 opacity-20"></ion-icon>
-                                <input type="file" name="image_path" id="image" class="py-20 cursor-pointer opacity-0">
-                                <img src="#" alt="Image Preview" style="display: none; height: 200px;" class="absolute absolute-center bg-white" id="image-preview" width="400px">
+                                <input type="file"  name="image_path" onchange="previewImage(this)"  class="py-20 cursor-pointer opacity-0" >
+                                <img src="#" alt="Image Preview" style="display: none; height: 200px;" class="absolute absolute-center bg-white" id="imagePreview" width="400px">
                         </div>
-                        <div>
+                        <div class="flex flex-wrap gap-1">
                             <button type="button" class="py-1 text-sm bg-blue-700 rounded-sm text-white font-light px-2 hover:opacity-50" id="updateBtn">Update Table</button>
                             <button type="submit" id="submitForm" class="py-1 text-sm bg-orange-600 rounded text-white font-light px-4 hover:opacity-50">Save & Add More</button>
                             <button type="button" id="closeBtn" class="border-2 px-2 py-1 text-sm rounded hover:opacity-50">Cancel</button>
+                            <button type="reset" onclick="clearField()" class="text-sm underline absolute bottom-0 right-0 mr-16 pb-4">Clear</button>
                         </div>
                     </div>
                 </form>
@@ -236,5 +239,4 @@
         </div>
     </div>
 </div>
-
 <x-adminFooter />

@@ -171,3 +171,6 @@ function minusButton(id) {
 }
 
 
+$('#editBtn').on('click', () => {
+    $('#removeItem').toggle();
+})

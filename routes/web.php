@@ -49,7 +49,7 @@ Route::get('/userProfile', [UserController::class, 'userProfile']);
 
 // All these routes are responsible for admin panel
 Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
-Route::get('/dashboard', [dashboardController::class, 'dashboard'])->middleware('admin');
+Route::get('/dashboard', [dashboardController::class, 'dashboard']);
 Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
 
 
@@ -68,7 +68,7 @@ Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])
 Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
 
 // For processing tab
-Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing'])->middleware('admin');
+Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
 Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
 Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
@@ -83,7 +83,7 @@ Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStat
 Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
 
 // for cancel or return tab 
-Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return'])->middleware('admin');
+Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']); //->middleware('admin');
 Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
 Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
 Route::post('/moveCancelReturn/{id}', [adminCancelReturnController::class, 'moveProduct'])->name('move.cancelReturnProduct');
@@ -96,7 +96,7 @@ Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sor
 
 
 // Route for accounts admin panel tab 
-Route::get('/accounts/active', [accountsController::class, 'displayUsers'])->middleware('admin');
+Route::get('/accounts/active', [accountsController::class, 'displayUsers']); //->middleware('admin');
 // search a suer 
 Route::get('/searchUser', [accountsController::class, 'searchUsers']);
 // sort user by name, email or id and if descend or ascend 

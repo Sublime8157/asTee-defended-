@@ -195,7 +195,7 @@ class adminOnHandsController extends Controller
         $productData = OnHand::query();
         $productData->orderBy($sortProducts, $orderBy);
 
-        $productData = $productData->get();
+        $productData = $productData->paginate(10);
 
         return view('admin.products.sort.sortProducts', compact('productData'));
 
