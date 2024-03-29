@@ -10,13 +10,14 @@
    
 }
 
-.fixed {
+.fixedNavBar {
     opacity: 1;
     z-index: 100000;
     top: 0;
     width: 100%;
     animation: animate-nav 300ms;
     transition: 0.5s;
+    position: fixed;
 }
 #signup-container {
     transform: translateY(0);

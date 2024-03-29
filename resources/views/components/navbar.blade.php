@@ -69,7 +69,7 @@
                       {{-- Account icon  --}}
                       <div class="md:hidden flex-row items-center block">
                         <ion-icon name="person"></ion-icon>
-                        @if(session('isLoggedin'))
+                        @if(session('isLoggedin')) 
                         <a href="/userProfile"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
 
                         @else 

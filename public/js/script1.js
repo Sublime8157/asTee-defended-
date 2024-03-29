@@ -6,7 +6,7 @@ var navbar_main = $('#navbar-main');
 // Fix the navbar to the top when scrolling
 window.addEventListener("scroll", function(){
     var navbar = document.getElementById('navbar');
-    navbar.classList.toggle('fixed', window.scrollY > 100);
+    navbar.classList.toggle('fixedNavBar', window.scrollY > 100);
     navbar_main.addClass('top-29');
 
 });
