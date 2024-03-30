@@ -45,7 +45,10 @@ Route::get('/DIY',  [UserController::class, 'DIY']);
 
 // These routes was for updating the user Profile
 Route::post('/updateProfile', [UserController::class, 'updateProfile']);
-Route::get('/userProfile', [UserController::class, 'userProfile']);
+Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
+Route::get('/userProfile/myPurchase', [usercontroller::class, 'userPurchase']);
+Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
+
 
 // All these routes are responsible for admin panel
 Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');

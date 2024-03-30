@@ -22,10 +22,10 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->unsignedBigInteger('userStatus');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password'); 
             $table->rememberToken();
             $table->timestamps();
-
+            // address, birthdate not age 
             
             $table->foreign('userStatus')->references('id')->on('user_status');
 

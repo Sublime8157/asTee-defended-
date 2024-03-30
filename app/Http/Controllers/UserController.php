@@ -32,16 +32,22 @@ class UserController extends Controller
     //  If the user logged in show the users profile and retrieve its data as an array and assign to user variable, 
     // you can then get the data by calling the user variable and the table name ex: $user->colum name
     // redirect to the homepage when not  logged in 
-
     public function userProfile() {
        if(Auth::check()) {
             $user = Auth::user(); 
-            return view('user.userProfile', ['user' => $user]);
+            return view('user.userProfile.myaccount', ['user' => $user]);
        }
        else {
             return redirect()->to('\home');
        }
     }
+    public function userPurchase() {
+        return view('user.userProfile.myPurchase');
+     }
+     public function userPassword() {
+        return view('user.userProfile.myPassword');
+     }
+
     
     // Update the users information
     public function updateProfile(Request $request){
@@ -68,7 +74,7 @@ class UserController extends Controller
         'username' => $request->filled('username') ? $request->username : $user->username,
     ]);
 
-    return redirect()->to('userProfile');
+    return redirect()->back()->with(['success' => 'Updating Success!']);
 }
 
 // store added product 

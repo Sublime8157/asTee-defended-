@@ -66,12 +66,11 @@
                     <div class="md:hidden block left-20 mb-5 relative w-48">
                         <span><hr></span>
                     </div>
-                      {{-- Account icon  --}}
+                      {{-- Account icon  for mobile view --}}
                       <div class="md:hidden flex-row items-center block">
                         <ion-icon name="person"></ion-icon>
                         @if(session('isLoggedin')) 
-                        <a href="/userProfile"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
-
+                        <a href="/userProfile/myAccount"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
                         @else 
                         <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                             <span class="hover:underline text-sm mx-1">Login</span>
@@ -80,12 +79,12 @@
                    </div>
                  </div>
                  <div>
+                    {{-- cart and username for desktop --}}
                     <ul class="md:flex  w-full">
                         <li class="px-1 flex flex-col md:flex-row-reverse md:mb-0 mb-5 items-center gap-4">
                             <div class="relative md:block hidden ">
                                 {{-- for desktop view  --}}
                                 @if(session('isLoggedin'))
-                                  
                                     <a href="/cart/{{ session('id') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
                                         <span class="cart absolute left-5 bottom-5 text-xs  w-4 h-4 text-center rounded-full bg-white cart"></span>
@@ -99,9 +98,27 @@
                             </div>
                            <div class="md:flex flex-row items-center hidden">
                                 <ion-icon name="person"></ion-icon>
+                                {{-- display the username when logged in  --}}
                                 @if(session('isLoggedin'))
-                                <a href="/userProfile"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+                                <div class="relative">
+                                    <a onclick="userSettings()" class="cursor-pointer"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+                                    <div class="absolute top-7 right-0 items-start bg-gray-100  shadow  text-base justify-evenly hidden py-2 px-1 rounded font-extralight z-50   flex-col w-60" id="userSettings">
+                                        <a href="/userProfile/myAccount" class="py-2 px-4 hover:bg-gray-200 w-full flex items-center gap-2 my-2">
+                                            <ion-icon name="settings" class="text-lg"></ion-icon>
+                                            Manage Account
+                                            
+                                        </a>
+                                        <a href="/logout" class="flex items-center hover:bg-gray-200 gap-2 py-2 px-4
+                                        w-full">
+                                            <ion-icon name="exit" class="text-lg"></ion-icon>
+                                            Logout
+                                            
+                                        </a>
+                                    </div>
+                                </div>
+
                                 @else 
+                                {{-- redirect back to login when not logged in  --}}
                                 <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                                     <span class="hover:underline text-sm mx-1">Login</span>
                                 </a>

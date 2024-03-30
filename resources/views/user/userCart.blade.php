@@ -76,14 +76,14 @@
                                    </div>
                                    {{-- total price (MobileV) --}}
                                    <div class="lg:hidden flex">
-                                         ₱<span id="textPrice{{$userCart->id}}">{{$userCart->price}}</span>
+                                         ₱<span id="textPrice{{$userCart->id}}" class="txtPriceMobile">{{$userCart->price}}</span>
                                         <input type="hidden" class="total" name="totalPrice" value="{{$userCart->price}}" id="totalPrice{{$userCart->id}}">
                                     </div>
                                     {{--  quantity mobile View--}}
-                                    <div class="lg:hidden flex  items-center  justify-center border p-0  w-24 " id="quantityDiv{{$userCart->id}}">
-                                        <button class="border-r minusBtn pe-2" id="minusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>
-                                        <input type="ext" name="quantity" id="quantityValue{{$userCart->id}}" value="1" class=" w-10 text-center border-none h-4 text-xs" disabled>
-                                        <button class="border-l ps-2 addBtn"  id="addButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
+                                    <div class="lg:hidden flex  items-center  justify-center border p-0  w-24  quantityDivMobile" id="quantityDiv{{$userCart->id}}">
+                                        <button class="border-r minusBtn pe-2 minusButtonMobile" id="minusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>
+                                        <input type="ext" name="quantity" id="quantityValue{{$userCart->id}}" value="1" class="quantityValueMobile w-10 text-center border-none h-4 text-xs" disabled>
+                                        <button class="border-l ps-2 addBtn addButtonMobile"  id="addButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
                                     </div>  
                                 </div>
                               

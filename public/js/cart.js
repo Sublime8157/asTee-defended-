@@ -21,7 +21,11 @@ var minusBtnDesktop = $('.desktopMinusBtn');
 var addBtnDesktop = $('.desktopAddButton');
 var desktopTextPrice = $('.desktopTextPrice');
 
-
+var quantityDivMobile = $('.quantityDivMobile');
+var addBtnMobile = $('.addButtonMobile');
+var minusBtnMobile = $('.minusButtonMobile');
+var qtyValMobile = $('.quantityValueMobile');
+var txtPriceMobile = $('.txtPriceMobile');
 // Select or deselect all items in the cart
 checkAllItems.on('click', function(){
     var unitPrice = $('.unitPrice');
@@ -35,14 +39,18 @@ checkAllItems.on('click', function(){
             quantityDivDesktop.addClass('font-bold');
             minusBtnDesktop.prop('disabled', false);
             addBtnDesktop.prop('disabled', false);
+
+            quantityDivMobile.addClass('font-bold');
+            minusBtnMobile.prop('disabled', false);
+            addBtnMobile.prop('disabled', false);
+
         });
         desktopQuantityValue.each(function(){
             $(this).val(1); // Update the value of the input element
         });
-        
         total.each(function(){
             itemsTotalAmount.push(parseFloat($(this).val())); //convert to float before getting the value of inputs
-        })
+        });
     }
     else {
         checkAll.prop('checked', false);
@@ -58,6 +66,13 @@ checkAllItems.on('click', function(){
         unitPrice.each(function(index){
             var value = parseInt($(this).val());
             totalPrice.eq(index).text(value);
+        });
+        qtyValMobile.each(function(){
+            $(this).val(1); // Update the value of the input element
+        });
+        total.each(function(index){
+            var value = parseInt($(this).val());
+            txtPriceMobile.eq(index).text(value);
         });
     }
 

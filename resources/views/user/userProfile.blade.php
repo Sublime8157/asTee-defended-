@@ -35,7 +35,7 @@
                             
 
                 {{-- Updating user profile Form --}}
-                <form action="/updateProfile" class="px-2 md:px-5 py-5 md:py-5 flex flex-wrap items-end  justify-center" method="POST" id="updateForm">
+                <form action="/updateProfile" class="px-2 md:px-5 py-5 md:py-5 flex flex-wrap items-end  justify-center" method="POST" >
                     {{-- Protect the users input using csrf --}}
                     @csrf
                   <div class="m-5">
