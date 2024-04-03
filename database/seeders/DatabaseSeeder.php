@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -13,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\OnHand::factory(50)->create();
+        \App\Models\Processing::factory(5)->create();
         
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

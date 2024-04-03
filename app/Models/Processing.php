@@ -13,6 +13,7 @@ class Processing extends Model
     protected $table = 'product_on_process';
     protected $fillable  = [
         'image_path',
+        'userId',
         'variation_id',
         'description',
         'gender',

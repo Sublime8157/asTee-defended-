@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_on_process', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('userId');
             $table->string('image_path')->nullable();
             $table->unsignedBigInteger('variation_id');
             $table->string('description')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->foreign('gender')->references('id')->on('genders');
             $table->foreign('size')->references('id')->on('sizes');         
             $table->foreign('productStatus')->references('id')->on('product_status');
+            $table->foreign('userId')->references('id')->on('customers');
         });
     }
 

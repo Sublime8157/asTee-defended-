@@ -67,15 +67,21 @@
                         <span><hr></span>
                     </div>
                       {{-- Account icon  for mobile view --}}
-                      <div class="md:hidden flex-row items-center block">
-                        <ion-icon name="person"></ion-icon>
-                        @if(session('isLoggedin')) 
-                        <a href="/userProfile/myAccount"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
-                        @else 
-                        <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
-                            <span class="hover:underline text-sm mx-1">Login</span>
-                        </a>
-                        @endif
+                      <div class="md:hidden flex-col justify-between h-full items-start flex ">
+                        <div class="flex items-center">
+                            <ion-icon name="person"></ion-icon>
+                            @if(session('isLoggedin')) 
+                            <a href="/userProfile/myAccount"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+                            @else 
+                            <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
+                                <span class="hover:underline text-sm mx-1">Login</span>
+                            </a>
+                            @endif
+                        </div>
+                        <div class="absolute bottom-0 p-5 flex items-center gap-2 w-full">
+                            <ion-icon name="exit" class="text-lg"></ion-icon>
+                            <a href="/logout">Logout</a>
+                        </div>
                    </div>
                  </div>
                  <div>
@@ -104,14 +110,14 @@
                                     <a onclick="userSettings()" class="cursor-pointer"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
                                     <div class="absolute top-7 right-0 items-start bg-gray-100  shadow  text-base justify-evenly hidden py-2 px-1 rounded font-extralight z-50   flex-col w-60" id="userSettings">
                                         <a href="/userProfile/myAccount" class="py-2 px-4 hover:bg-gray-200 w-full flex items-center gap-2 my-2">
-                                            <ion-icon name="settings" class="text-lg"></ion-icon>
-                                            Manage Account
+                                            <ion-icon name="settings" class="text-base"></ion-icon>
+                                            <span class="text-sm">Manage Account</span>
                                             
                                         </a>
                                         <a href="/logout" class="flex items-center hover:bg-gray-200 gap-2 py-2 px-4
                                         w-full">
-                                            <ion-icon name="exit" class="text-lg"></ion-icon>
-                                            Logout
+                                            <ion-icon name="exit" class="text-base"></ion-icon>
+                                            <span class="text-sm">Logout</span>
                                             
                                         </a>
                                     </div>

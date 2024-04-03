@@ -10,10 +10,11 @@
     </div>
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
-           <tr class="">
-                <th class="adminTable">ID</th>
+           <tr class="text-center">
+                <th class="adminTable w-20 ">ID</th>
+                <th class="adminTable w-20 ">User Id</th>
                 <th class="adminTable w-20">Image</th>
-                <th class="adminTable">Variation</th>
+                <th class="adminTable ">Variation</th>
                 <th class="adminTable">Description</th>
                 <th class="adminTable">Gender</th>
                 <th class="adminTable">Size</th>
@@ -31,6 +32,7 @@
                     {{-- filter by id  --}}
                         <input type="text" name="id" placeholder="ID" class="w-10 h-8 text-xs ">
                     </td>
+                    <td></td>
                 <td class="w-12"></td>
                 <td class="w-40 ">
                     {{-- by variation --}}
@@ -89,8 +91,11 @@
            {{-- We then loop to the database  and each data in product table these code below will execute  --}}
            {{-- The  variationType() is a function from model that  convert the number into value--}}
            @foreach($filterOnProcess as $product) 
-           <tr class=" text-xs">
+           <tr class=" text-xs ">
+            {{-- product Id --}}
                 <td class="ps-2">{{$product->id}} </td>
+                {{-- User Id --}}
+                <td class="ps-2 w-20">{{$product->userId}} </td>
                 {{-- Get the image path  --}}
                 <td class="ps-2">
                     {{-- pass the product id on revealImage  function --}}

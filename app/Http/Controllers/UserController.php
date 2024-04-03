@@ -118,6 +118,7 @@ class UserController extends Controller
         }
      return view('user.userCart', compact('userCart','products'));
     }
+    
     // remove a list of items  
     public function removeAll(Request $request) {
         $items = explode(',', $request->toRemove); // convert the strings into array recieved from toRemove input field
@@ -137,6 +138,8 @@ class UserController extends Controller
 
         return redirect()->back();
     }
+
+
     
 }
     
