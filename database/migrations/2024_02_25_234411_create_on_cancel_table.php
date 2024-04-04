@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('variation_id');
             $table->string('description')->nullable();
             $table->integer('reason')->nullable();
+            $table->string('specify')->nullable();
             $table->unsignedBigInteger('gender');
             $table->unsignedBigInteger('size');
             $table->integer('price');

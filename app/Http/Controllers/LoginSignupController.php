@@ -30,6 +30,7 @@ class LoginSignupController extends Controller
          "mname" => 'required',
          "age" => 'required',
          "userStatus" => 'required',
+         "profile",
          "email" => ['required', 'email', Rule::unique('customers', 'email')],
          "username" => ['required', Rule::unique('customers', 'username')],
          "password" => ['required','confirmed', 

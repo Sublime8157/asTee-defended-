@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Processing;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 
@@ -54,6 +55,24 @@ class userProfileController extends Controller
     'toShipCount',
     'toRecieveCount',
     'feedBackCount'));
-
    }
+   //Update the user profile
+   public function updateProfile(Request $request) {
+    $validated = $request->validate([
+        "profile" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+    ]);
+
+    $filename = $validated['profile']->getClientOriginalName();
+    $validated['profile']->storeAs('public/images', $filename);
+
+    $id = session()->get('id');
+    $userId = User::findOrFail($id);
+
+    $userId->update([
+        'profile' => $filename
+    ]);
+
+    return redirect()->back()->with('success', 'Profile Updated');
+}
+
 }

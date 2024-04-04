@@ -1,7 +1,6 @@
 @foreach($productData as $product)
 <tr class="text-xs">
     <td>{{$product->id}}</td>
-    <td>{{$product->userId}}</td>
     <td class="ps-2">
         {{-- pass the productId on revealImage  function --}}
         <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="50px" class="cursor-pointer" 
@@ -17,18 +16,6 @@
     <td class="ps-2">{{$product->sizeShirt()}}</td>
     <td class="ps-2">{{$product->price}}</td>
     <td class="ps-2">{{$product->quantity}}</td>       
- 
-    @if ($product->productStatus)
-        <td class="ps-2">{{$product->producStats()}}</td>
-    @else
-        @if ($product->reason == 7)
-            <td class="ps-2">{{$product->specify}}</td>
-        @else
-            <td class="ps-2">{{$product->reason()}}</td>
-        @endif
-    @endif
-
-     
     <td>
         {{-- remove product form --}}
         <form action="{{ route('product.remove', $product->id) }}" id="removeProduct{{ $product->id }}" method="POST">

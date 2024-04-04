@@ -48,6 +48,7 @@ Route::post('/updateProfile', [UserController::class, 'updateProfile']);
 Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
 Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 'toPay']);
 Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'productStatus'])->name('product.status');
+Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
 Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
 
 
@@ -112,7 +113,7 @@ Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('use
 Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
 
 
-Route::get('/accounts/blocked', [blockedAccountsController::class, 'display'])->middleware('admin');
+Route::get('/accounts/blocked', [blockedAccountsController::class, 'display']);
 Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
 Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
 Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);

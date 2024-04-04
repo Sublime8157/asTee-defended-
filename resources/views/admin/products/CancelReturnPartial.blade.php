@@ -1,6 +1,7 @@
 @foreach($filterReturnCancel as $product) 
 <tr class=" text-xs">
         <td class="ps-2">{{$product->id}} </td>
+        <td class="w-10">{{$product->userId}}</td>
         {{-- Get the image path  --}}
         <td class="ps-2">
             {{-- pass the product id on revealImage  function --}}
@@ -17,7 +18,11 @@
         <td class="ps-2">{{$product->sizeShirt()}}</td>
         <td class="ps-2">{{$product->price}}</td>
         <td class="ps-2">{{$product->quantity}}</td>
-        <td class="ps-2">{{$product->reason}}</td>
+        @if ($product->reason == 7)
+            <td class="ps-2">{{$product->specify}}</td>
+        @else
+            <td class="ps-2">{{$product->reason()}}</td>
+        @endif
         <td>
             <form action="{{ route('cancelReturn.remove', $product->id) }}" method="POST" id="removeProduct{{ $product->id }}">
                 @csrf

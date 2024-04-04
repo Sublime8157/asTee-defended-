@@ -73,7 +73,7 @@ class blockedAccountsController extends Controller
         $userData = User::query();
         
         $userData->where('userStatus', '=', '2');
-        $userData = $userData->get();
+        $userData = $userData->paginate(10);
 
 
 

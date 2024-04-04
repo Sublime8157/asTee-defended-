@@ -1,6 +1,9 @@
 @foreach($filterOnProcess as $product) 
-<tr class=" text-xs">
+<tr class=" text-xs ">
+ {{-- product Id --}}
      <td class="ps-2">{{$product->id}} </td>
+     {{-- User Id --}}
+     <td class="ps-2 w-20">{{$product->userId}} </td>
      {{-- Get the image path  --}}
      <td class="ps-2">
          {{-- pass the product id on revealImage  function --}}

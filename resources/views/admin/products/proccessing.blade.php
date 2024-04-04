@@ -4,6 +4,9 @@
 <x-header />
 <x-nav />
 <x-notification />
+<div class="p-3">
+    {{ $filterOnProcess->links('pagination::simple-tailwind') }}
+</div>
 <div class="bg-white my-5 mx-4">
     <div class="">
         <x-sortingProducts sortProduct="sortProcessingProduct" orderProduct="sortProcessingProduct"></x-sortingProducts>
@@ -30,9 +33,10 @@
             <form id="filterProcessingForm"  method="get">
                 <td class="w-12">
                     {{-- filter by id  --}}
-                        <input type="text" name="id" placeholder="ID" class="w-10 h-8 text-xs ">
-                    </td>
-                    <td></td>
+                    <input type="text" name="id" placeholder="ID" class="w-16 h-8 text-xs ">
+                </td>
+                {{-- filter by User Id --}}
+                <td><input type="text" name="userId" placeholder="ID" class="w-16 h-8 text-xs "></td>
                 <td class="w-12"></td>
                 <td class="w-40 ">
                     {{-- by variation --}}
@@ -236,6 +240,10 @@
                 <div class="me-2">
                     <label for="quantity" class="text-xs">Quantity*</label> <br>
                      <input type="text" name="quantity" class="h-10 w-40 rounded text-sm" id="quantity">
+                </div>
+                <div class="me-2">
+                    <label for="" class="text-xs">User Id*</label> <br>
+                     <input type="text" name="userId" class="h-10 w-40 rounded text-sm" id="userId">
                 </div>
                 {{-- And the description of the product this includes the reason why it's on hand  --}}
                 <div class="me-2">

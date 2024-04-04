@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('profile')->nullable();
+            $table->string('image_path')->nullable();
             $table->string('fname');
             $table->string('mname');
             $table->string('lname');

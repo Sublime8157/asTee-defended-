@@ -40,9 +40,20 @@
                </div>
             </div>
             {{-- upload image  --}}
-            <div class="w-40 md:w-80 mb-10 lg:mb-0 lg:self-start flex items-center lg:border-l h-full flex-col justify-center">
-                <img src="{{asset('images/adminIcon.jpg')}}" alt="" width="100px">
-                <button class="border px-2 text-sm py-1">Change Image</button>
+            <div class="w-40 md:w-80 gap-2  mb-10 lg:mb-0 lg:self-start flex items-center lg:border-l h-full flex-col justify-center">
+                @if($errors->any())
+                <div class="text-center text-xs font-bold text-orange-700">
+                    {{$errors->first()}}
+                </div>
+                 @endif
+                <img src="{{ asset('storage/images/' . $user->profile )}} " alt="" width="100px" class="rounded-full ">
+                <p class="text-xs text-gray-500">File size: maximum 2 MB <br>
+                    File extension: .JPEG, .PNG</p>
+                    <form action="{{ route('update.profile') }}" class="flex flex-col gap-2 items-center" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="profile" class="ms-6 w-auto  text-xs text-gray-700 text-center h-auto" style="font-size: 0px;">
+                        <button type="submit" class="text-xs px-2 py-1 bg-blue-700 w-20 rounded-sm  text-white">Save</button>
+                    </form>
             </div>
         </div>
     </div>

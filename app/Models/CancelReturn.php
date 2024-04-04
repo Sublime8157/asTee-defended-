@@ -19,6 +19,7 @@ class CancelReturn extends Model
         'variation_id',
         'description',
         'reason',
+        'specify',
         'gender',
         'size',
         'price',

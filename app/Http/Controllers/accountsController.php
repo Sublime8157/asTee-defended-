@@ -57,7 +57,9 @@ class accountsController extends Controller
         $userData = User::query();
         $userData->where('userStatus', '=', '1');
 
-        $userData = $userData->get();
+        
+       
+        $userData = $userData->paginate(10);
         return view('admin.accounts.active', compact('userData'));
     }
 

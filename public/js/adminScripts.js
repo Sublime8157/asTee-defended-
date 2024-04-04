@@ -1,6 +1,3 @@
-
-
-
 var sideNav = $('#nav');
 var icon = true;
 var addProdCloseBtn = $('#closeBtn');
@@ -8,8 +5,6 @@ var desc = $('#desc');
 var quantity = $('#quantity');
 var price = $('#price');
 var saveMoreBtn = $('#saveMoreBtn');
-
-
 // This is just for showing and hiding the nav 
 function Menu(e) {
    if(icon) {
@@ -47,6 +42,7 @@ function successMessage() {
     setTimeout(function() {
         showMessage.css('display', 'none');
     }, 2000);
+  
 }
 
 $('#updateBtn').on('click', () => {
@@ -66,9 +62,8 @@ $(document).ready(function(){
             processData: false,
             success: function() {
                 successMessage();
-                $('#desc').val('');
-                $('#quantity').val('');
-                $('#price').val('');
+                $('#submitForm')[0].reset();
+                $('#imagePreview').css('display','none');
             },
             error: function(error) {
                 if(error.responseJSON) {
@@ -82,7 +77,7 @@ $(document).ready(function(){
         })
     })
 })
-// ajax function for adding a product in onhand table 
+// ajax function for adding a product in processing table 
 $(document).ready(function(){
     $('#submitFormProcess').submit(function(e){
        e.preventDefault();
@@ -95,9 +90,8 @@ $(document).ready(function(){
             processData: false,
             success: function() {
                 successMessage();
-                $('#desc').val('');
-                $('#quantity').val('');
-                $('#price').val('');
+                $('#submitFormProcess')[0].reset();
+                $('#imagePreview').css('display','none');
             },
             error: function(error) {
                 if(error.responseJSON) {
@@ -130,9 +124,9 @@ $(document).ready(function(){
             success: function() {
                 // clear the fields when successfull
                 successMessage();
-                $('#desc').val('');
-                $('#quantity').val('');
-                $('#price').val('');
+                $('#submitFormCancelReturn')[0].reset();
+                $('#imagePreview').css('display','none');
+                $('#specify').css('display','none');
             },
             error: function(error) {
                 if(error.responseJSON) {
@@ -460,3 +454,18 @@ $('#adminSettingsBtn').on('click', ()=> {
 function adminLogoutBtn() {
     $('#adminLogOut').submit();
 }
+
+$('#reason').on('change', () => {
+   
+})
+
+$('#reason').on('change', function() {
+    value = parseInt($(this).val());
+    if(value == 7) {
+        $('#specify').css('display', 'block');
+    }
+    else {
+        $('#specify').css('display', 'none');
+    }
+   
+})

@@ -19,6 +19,9 @@
         </span>
     </div>
 @endif
+<div class="p-3">
+    {{ $userData->links('pagination::simple-tailwind') }}
+</div>
         <div class="my-5 mx-10 bg-white shadow-lg p-5 h-auto ">
             {{-- Search bars --}}
             <form action="" class="flex justify-between items-center flex-row" >

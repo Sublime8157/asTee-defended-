@@ -22,7 +22,7 @@ class CancelReturnFactory extends Factory
             'description'=> fake()->text($maxNbChars = 200),
             'gender' => fake()->numberBetween($min = 1, $max = 3),
             'size' => fake()->numberBetween($min = 1, $max = 6),
-            'userId'=> fake()->numberBetween($min = 500, $max = 1000),
+            'userId'=> 51,
             'price' => $this->faker->randomNumber(2),
             'quantity' => $this->faker->randomNumber(2),
             'reason' => fake()->numberBetween($min = 1, $max = 7),

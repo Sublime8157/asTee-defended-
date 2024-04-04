@@ -161,14 +161,14 @@ class adminOnHandsController extends Controller
             case 2:
                 // validate the id must be numeric 
                 $validated = $request->validate([
-                    'userId' => 'required|numeric',
+                    'userId' => 'required|numeric|exists:customers,id',
                 ]);
                 // move to cancel return table
                   CancelReturn::create([
                     'userId' => $validated['userId'],
                     'image_path' => $product->image_path,
                     'variation_id' => $product->variation_id,
-                      'description' => $product->description,
+                    'description' => $product->description,
                     'reason' => $request['reason'],
                      'gender' => $product->gender,  
                      'size' => $product->size,
@@ -197,7 +197,7 @@ class adminOnHandsController extends Controller
 
         $productData = $productData->paginate(10);
 
-        return view('admin.products.sort.sortProducts', compact('productData'));
+        return view('admin.products.sort.onhandProducts', compact('productData'));
 
     }
 }

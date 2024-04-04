@@ -24,6 +24,7 @@ class adminOnProcessController extends Controller
             "status" => "required",
             "gender" => "required",
             "variation_id" => "required",
+            "userId" => "required|exists:customers,id",
             "size" => "required",
             "description" => "required",
             "price" => "required|numeric",
@@ -41,6 +42,7 @@ class adminOnProcessController extends Controller
         $storeProcess = Processing::create([
             'image_path' => $validated['image_path'],
             'variation_id' => $validated['variation_id'],
+            'userId' => $validated['userId'],
             'description' => $validated['description'],
             'gender' => $validated['gender'],            
             'size' => $validated['size'],           
@@ -72,6 +74,9 @@ class adminOnProcessController extends Controller
         if($request->filled(['id'])) {
             $processingData->where('id', $request->input('id'));
         }
+        if($request->filled(['userId'])) {
+            $processingData->where('userId', $request->input('userId'));
+        }
 
         if($request->filled(['price'])) {
             $processingData->where('price', $request->input('price'));
@@ -87,7 +92,7 @@ class adminOnProcessController extends Controller
 
     // Show to the processing url with the storeProcess data that holds the data from the on_process table 
     public function proccessing(){
-        $filterOnProcess = Processing::all();
+        $filterOnProcess = Processing::paginate(20);
         return view('admin.products.proccessing', compact('filterOnProcess'));
     }
     // remove a product
@@ -131,6 +136,7 @@ class adminOnProcessController extends Controller
         // get the move option value 
         $moveTo = $request->input('moveProduct');
         // check the move to inpout value  
+      
         switch($moveTo) {
             // if option 1 is selected...
             case 1: 
@@ -154,14 +160,14 @@ class adminOnProcessController extends Controller
             case 2:
                 // validate the id must be numeric 
                 $validated = $request->validate([
-                    'userId' => 'required|numeric',
+                    'userId' => 'required|numeric|exists:customers,id',
                 ]);
                 // move to cancel return table
-                  CancelReturn::create([
-                    'userId' => 1,
+                CancelReturn::create([
                     'image_path' => $product->image_path,
+                    'userId' => $validated['userId'],
                     'variation_id' => $product->variation_id,
-                      'description' => $product->description,
+                    'description' => $product->description,
                     'reason' => $request['reason'],
                      'gender' => $product->gender,  
                      'size' => $product->size,

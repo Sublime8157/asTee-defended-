@@ -23,7 +23,6 @@
                             <th class="adminTable w-24">Quantity</th>                                                                       
                             <th class="adminTable w-24 text-center">Action</th>
                     </tr>
-                    
                         <tr>
                                 <td colspan="10"><hr class="w-full mt-1 mb-3"></td>
                         </tr>

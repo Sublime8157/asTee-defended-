@@ -23,7 +23,7 @@ class adminCancelReturnController extends Controller
             // To lessen the errors we should practice naming the inputs fields similar to the model 
             "status" => "required",
             "gender" => "required",
-            "userId" => "required|numeric",
+            "userId" => "required|numeric|exists:customers,id",
             "variation_id" => "required",
             "size" => "required",
             "description" => "required",
@@ -48,6 +48,7 @@ class adminCancelReturnController extends Controller
             'variation_id' => $validated['variation_id'],
             'description' => $validated['description'],
             'reason' => $validated['reason'],
+            'specify' => $request->specify,
             'gender' => $validated['gender'],            
             'size' => $validated['size'],           
             'price' => $validated['price'],
@@ -64,6 +65,9 @@ class adminCancelReturnController extends Controller
         
         if($request->filled(['variation_id'])) {
             $productReturnCancel->where('variation_id', $request->input('variation_id'));
+        }
+        if($request->filled(['userId'])) {
+            $productReturnCancel->where('userId', $request->input('userId'));
         }
 
         if($request->filled(['gender'])) {
@@ -89,7 +93,7 @@ class adminCancelReturnController extends Controller
 
     // show all of the product in cancel return 
     public function cancel_return(){
-        $filterReturnCancel = CancelReturn::all();
+        $filterReturnCancel = CancelReturn::paginate(10);
         return view('admin.products.cancelReturn', compact('filterReturnCancel'));
     }
     
