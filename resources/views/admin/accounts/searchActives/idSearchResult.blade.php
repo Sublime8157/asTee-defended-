@@ -1,6 +1,6 @@
 @foreach($userData as $user)
 <tr>                
-    <td><img src=" {{ asset('images/adminIcon.jpg') }}" alt="" width="60"></td>      
+    <td><img src=" {{ asset('storage/images/' . $user->profile) }}" alt="" width="60" class="rounded-full"></td>      
     <td class=" w-80 text-left">                          
         <div class="me-1">
             

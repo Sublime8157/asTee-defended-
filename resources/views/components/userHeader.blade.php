@@ -3,7 +3,7 @@
     <div class="flex justify-betweeen  md:justify-evenly  h-full w-full  items-center md:items-start">
         <div class=" flex-col self-start  md:relative top-0 left-0  items-start gap-2 md:w-48 w-16 flex border-r border-gray-100 mt-5 ">
            <div class="flex-row hidden md:flex items-center gap-2">
-                <img src="{{asset('images/adminIcon.jpg')}}" alt="" class="rounded-full" width="50px">
+                <img src="{{asset('storage/images/' . session('profile') )}}" alt="" class="rounded-full" width="50px">
                 <p class="text-sm">{{session('username')}}</p>
            </div>
            <div class="ps-2 pt-2">
@@ -15,7 +15,7 @@
                             <ion-icon name="ellipse" class="text-xs text-gray-500 {{ request()->is('userProfile/myAccount') ? 'block' : 'hidden' }}"></ion-icon>
                         </li> 
                     </a>
-                   <a href="/userProfile/myPurchase/{{ session('id') }}">
+                   <a href="{{ route('product.status', ['status' => 1]) }}">
                         <li class="flex items-center gap-1">
                             <ion-icon name="cart-outline" class="text-lg font-extrabold text-orange-800"></ion-icon>
                             <span class="hover:text-orange-800 hidden md:flex">My Purchase</span>

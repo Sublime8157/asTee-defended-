@@ -4,6 +4,7 @@
 <x-header />
 <x-nav />
 <x-notification />
+
 <div class="p-3">
     {{ $filterOnProcess->links('pagination::simple-tailwind') }}
 </div>
@@ -90,6 +91,7 @@
             </form>
            </tr>
            <tbody id="productTableBody">
+            
            {{-- the variable onHandProducts is from controller and assigned it to a product variable to query in product table  --}}
            {{-- Take note that the words after $product is a table name in product table from database --}}
            {{-- We then loop to the database  and each data in product table these code below will execute  --}}

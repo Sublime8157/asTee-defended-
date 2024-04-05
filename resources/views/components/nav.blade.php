@@ -1,6 +1,9 @@
 
 <body style="background-color: #f9f6f6;">
-    <div class="flex justify-between items-start">
+    <div class="w-screen h-screen items-center justify-center lg:hidden flex bg-green-100">
+        <h1 class="text-base ">Not Availble for Mobile Devices</h1>
+    </div>
+    <div class=" justify-between items-start lg:flex hidden">
         {{-- Side Bar --}}
             <div class=" left-0 h-screen p-1 bg-gray-800 " style="width: 200px;" id="nav">
                 {{-- DASHBOARD TAB --}}

@@ -469,3 +469,16 @@ $('#reason').on('change', function() {
     }
    
 })
+
+// setInterval(function(){
+//     $.ajax({
+//         url: "/updateTable ",
+//         method: "GET",
+//         success: function(response) {
+//            $('#productTableBody').html(response);
+//         },
+//         error: function(xhr, status, error) {
+//             console.error(xhr.responseText);
+//         }
+//     })
+// },10000)

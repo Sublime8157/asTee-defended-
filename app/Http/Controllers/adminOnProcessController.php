@@ -95,6 +95,7 @@ class adminOnProcessController extends Controller
         $filterOnProcess = Processing::paginate(20);
         return view('admin.products.proccessing', compact('filterOnProcess'));
     }
+    
     // remove a product
     public function removeProduct($id) {
         $product = Processing::findOrFail($id); 
@@ -206,7 +207,12 @@ class adminOnProcessController extends Controller
         ]);
 
         return redirect()->back();
-
-
     }
+
+    //get the updated table 
+    // public function updateTable() {
+    //     $productData = Processing::all();
+        
+    //     return view('admin.products.sort.sortProducts', compact('productData'));
+    // }
 }

@@ -50,6 +50,7 @@ Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 't
 Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'productStatus'])->name('product.status');
 Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
 Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
+Route::post('/orderRecieved', [userProfileController::class, 'orderRecieved'])->name('order.recieved');
 
 
 // All these routes are responsible for admin panel
@@ -77,6 +78,8 @@ Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessi
 Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
 Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
+Route::get('/updateTable', [adminOnProcessController::class, 'updateTable'])->name('updateTable');
+
 // move a product
 Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
 // sort a product

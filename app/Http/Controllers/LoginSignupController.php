@@ -44,7 +44,7 @@ class LoginSignupController extends Controller
       ]);
 
       $validated['password'] = bcrypt($validated['password']);
-      
+      $validated['profile'] = 'default.png';
       $user = User::create($validated);
       return $user;
      
@@ -65,7 +65,7 @@ class LoginSignupController extends Controller
          $request->session()->put('isLoggedin', true);
          $request->session()->put('username', $user->username);
          $request->session()->put('id', $user->id);
-        
+         $request->session()->put('profile', $user->profile);
 
          $request->session()->regenerate();
          

@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('userId')->nulalble();
+            $table->unsignedBigInteger('productId')->nulalble();
+            $table->integer('starCount');
             $table->string('content');
             $table->timestamps();
-
+            
             $table->foreign('userId')->references('id')->on('customers');
+            $table->foreign('productId')->references('id')->on('product_on_process');
+            
         });
     }
 

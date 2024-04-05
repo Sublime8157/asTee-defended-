@@ -46,12 +46,16 @@
                     {{$errors->first()}}
                 </div>
                  @endif
-                <img src="{{ asset('storage/images/' . $user->profile )}} " alt="" width="100px" class="rounded-full ">
+                <div class="relative">
+                    <img src="{{ asset('storage/images/' . $user->profile )}} " alt="" width="100px" class="rounded-full ">
+                    <img src="#" alt="" id="imagePreview" class="absolute rounded-full top-0 hidden" width="100px ">
+                </div>
+                
                 <p class="text-xs text-gray-500">File size: maximum 2 MB <br>
                     File extension: .JPEG, .PNG</p>
                     <form action="{{ route('update.profile') }}" class="flex flex-col gap-2 items-center" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="file" name="profile" class="ms-6 w-auto  text-xs text-gray-700 text-center h-auto" style="font-size: 0px;">
+                        <input type="file" name="profile" onchange="imagePreview(this)" class="ms-6 w-auto  text-xs text-gray-700 text-center h-auto" style="font-size: 0px; ">
                         <button type="submit" class="text-xs px-2 py-1 bg-blue-700 w-20 rounded-sm  text-white">Save</button>
                     </form>
             </div>

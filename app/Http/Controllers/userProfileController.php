@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Sold;
 use App\Models\Processing;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -58,21 +59,47 @@ class userProfileController extends Controller
    }
    //Update the user profile
    public function updateProfile(Request $request) {
-    $validated = $request->validate([
-        "profile" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-    ]);
+        $validated = $request->validate([
+            "profile" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
-    $filename = $validated['profile']->getClientOriginalName();
-    $validated['profile']->storeAs('public/images', $filename);
+        $filename = $validated['profile']->getClientOriginalName();
+        $validated['profile']->storeAs('public/images', $filename);
 
-    $id = session()->get('id');
-    $userId = User::findOrFail($id);
+        $id = session()->get('id');
+        $userId = User::findOrFail($id);
 
-    $userId->update([
-        'profile' => $filename
-    ]);
+        $userId->update([
+            'profile' => $filename
+        ]);
 
-    return redirect()->back()->with('success', 'Profile Updated');
-}
+        return redirect()->back()->with('success', 'Profile Updated, Your Updated Profile Will Show On Your Next Login!');
+    }
+    public function orderRecieved(Request $request) {
+        // validate the text boxs
+        $validated = $request->validate([
+            "productId" => "required",
+            "userId" => "required",
+            "amount" => "required",
+            "quantity" => "required"
+        ]);
+        // get the id of the product 
+        $productId = $validated["productId"];
+        $product = Processing::findOrFail($productId);
+        // update the product status from toRecieve(3) to toReview(4)
+        $product->update([
+            "productStatus" => 4
+        ]);
+
+        // when the user recieved the order insert the product into sold table 
+        Sold::create([
+            "productId" => $validated["productId"],
+            "userId" => $validated["userId"],
+            "amount" => $validated["amount"],
+            "quantity" => $validated["quantity"]
+        ]);
+        
+        return redirect()->back()->with('success', 'Order Moved to Feedback');
+    }
 
 }
