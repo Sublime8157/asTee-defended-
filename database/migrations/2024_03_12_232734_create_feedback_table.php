@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('userId')->nulalble();
             $table->unsignedBigInteger('productId')->nulalble();
-            $table->integer('starCount');
-            $table->string('content');
+            $table->integer('starCountAll');
+            $table->integer('starCountQuality');
+            $table->integer('starCountService');
+            $table->string('specify')->nullable();
             $table->timestamps();
-            
+
             $table->foreign('userId')->references('id')->on('customers');
             $table->foreign('productId')->references('id')->on('product_on_process');
             

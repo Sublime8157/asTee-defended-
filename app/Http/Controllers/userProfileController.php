@@ -14,20 +14,23 @@ class userProfileController extends Controller
 {
     // show the to pay products of user 
    public function toPay() {
+    // get the user id 
     $userId = session('id');
+    // get the product from processing based on user id 
         $product = Processing::
                               where('userId', $userId)
                             ->where('productStatus', 1)
                             ->get();
-
+    // iterate through all the description table to limit to 7 wrods assign to displayDescription variable 
         foreach($product as $item) {
             $item->displayDescription = Str::words($item->description, 7);
         }
+        // count all the products based on status 
         $toPayCount = $product->count();
         $toShipCount = Processing::where('userId',$userId)->where('productStatus', 2)->count(); 
         $toRecieveCount = Processing::where('userId',$userId)->where('productStatus', 3)->count();
         $feedBackCount = Processing::where('userId',$userId)->where('productStatus',4)->count();
-
+        // return variables in view 
         return view('user.userProfile.myPurchase', 
         compact('product',
         'toPayCount',
@@ -43,7 +46,7 @@ class userProfileController extends Controller
                             ->where('productStatus', $status)
                             ->get();
     foreach($product as $item) {
-        $item->displayDescription = Str::words($item->description, 7);
+        $item->displayDescription = Str::words($item->description, 6);
     }
 
     $toPayCount = Processing::where('userId',$userId)->where('productStatus', 1)->count();
@@ -59,24 +62,27 @@ class userProfileController extends Controller
    }
    //Update the user profile
    public function updateProfile(Request $request) {
+        // validate the user uploaded image 
         $validated = $request->validate([
             "profile" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-
+        // get the original file name 
         $filename = $validated['profile']->getClientOriginalName();
-        $validated['profile']->storeAs('public/images', $filename);
-
+        // upload the image to storage/public/images
+        $validated['profile']->storeAs('public/images', $filename); 
+        // get the user id  
         $id = session()->get('id');
+        // find in customers(User) table 
         $userId = User::findOrFail($id);
-
+        // update the user profile into the user uploaded image 
         $userId->update([
             'profile' => $filename
         ]);
-
+        // return 
         return redirect()->back()->with('success', 'Profile Updated, Your Updated Profile Will Show On Your Next Login!');
     }
     public function orderRecieved(Request $request) {
-        // validate the text boxs
+        // validate the text boxes
         $validated = $request->validate([
             "productId" => "required",
             "userId" => "required",

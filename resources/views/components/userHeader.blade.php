@@ -19,7 +19,7 @@
                         <li class="flex items-center gap-1">
                             <ion-icon name="cart-outline" class="text-lg font-extrabold text-orange-800"></ion-icon>
                             <span class="hover:text-orange-800 hidden md:flex">My Purchase</span>
-                            <ion-icon name="ellipse" class="text-xs text-gray-500 {{ request()->is('userProfile/myPurchase') ? 'block' : 'hidden' }}"></ion-icon>
+                            <ion-icon name="ellipse" class="text-xs text-gray-500 {{ Route::currentRouteName() == 'product.status' && request()->status <= 4  ? 'block' : 'hidden' }}"></ion-icon>
                         </li>
                    </a>
                    <a href="/userProfile/myPassword">

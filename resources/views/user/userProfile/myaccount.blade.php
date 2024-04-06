@@ -53,6 +53,7 @@
                 
                 <p class="text-xs text-gray-500">File size: maximum 2 MB <br>
                     File extension: .JPEG, .PNG</p>
+                    {{-- enctype is important when handling image upload unless it was in ajax  --}}
                     <form action="{{ route('update.profile') }}" class="flex flex-col gap-2 items-center" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="profile" onchange="imagePreview(this)" class="ms-6 w-auto  text-xs text-gray-700 text-center h-auto" style="font-size: 0px; ">

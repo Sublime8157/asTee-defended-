@@ -79,15 +79,73 @@
                                  <span class="text-black ">Total: ₱</span><span id="totalAmount{{$item->id}}">300.00</span>
                             @endif
                             {{-- dialog for review  --}}
-                            <dialog id="feedBackModal{{$item->id}}" class="w-screen h-screen"> 
-                                <div class="w-full h-full bg-gray-100 flex flex-col ">
+                            <dialog id="feedBackModal{{$item->id}}" class=" w-screen h-screen" > 
+                                <div class="rounded w-full px-4 gap-4 h-full bg-gray-100 flex flex-col">
                                     {{-- back button --}}
-                                    <div class="w-full p-4" onclick="closeReviewDialog({{$item->id}})">
-                                        <ion-icon name="arrow-back-outline" class="text-xl cursor-pointer"></ion-icon>
+                                    <div class=" w-full p-2 gap-2 flex items-center " onclick="closeReviewDialog({{$item->id}})">
+                                        <ion-icon name="arrow-back-outline" class="text-lg cursor-pointer"></ion-icon> 
+                                        <span class="text-sm ">Back</span>
                                     </div>
-                                    <form action="">
-                                        
-                                    </form>
+                                    {{-- product details to review --}}
+                                    <div class="bg-gray-200 p-2 rounded">
+                                        <div class="flex flex-col gap-2">
+                                           <div class="flex-row flex items-center gap-2">
+                                            {{-- product details  --}}
+                                               <div>
+                                                {{-- image  --}}
+                                                    <img src="{{ asset('images/' . $item->image_path) }}" alt="" class="md:w-40 w-20 bg-gray-200 rounded  ">
+                                               </div>
+                                               <div class="flex flex-col gap-1">
+                                                {{-- details  --}}
+                                                   <span class="md:text-base text-sm text-black font-semibold">{{$item->displayDescription}}</span>
+                                                   <div class="flex flex-row text-sm ">
+                                                        <span>{{$item->variationType()}}</span>|<span> {{$item->genderShirt()}}</span> | 
+                                                        <span>{{$item->sizeShirt()}}</span>
+                                                   </div>
+                                                   <div class="text-orange-700 text-sm md:text-base">
+                                                         ₱{{$item->price}}.00
+                                                   </div>
+                                               </div>
+                                               
+                                           </div>
+                                           {{-- ratings --}}
+                                            <div class="flex flex-col">
+                                                    <form action="" id="reviewForm{{$item->id}}">
+                                                        @csrf
+                                                         {{-- over all  --}}
+                                                        <x-ratings id="all{{$item->id}}" font="font-bold" title="Overall Ratings" ratingType="overAll" showOtherRatings="showOtherRatings({{$item->id}}" hide="block" input="starCountAll"> </x-ratings>
+                                                        <div id="productServiceRatings{{$item->id}}" class="hidden">
+                                                                {{-- product quality --}}
+                                                                <x-ratings id="quality{{$item->id}}" font="font-normal"  title="Product Quality " ratingType="quality" input="starCountQuantity" showOtherRatings="" hide="opacity-0"> </x-ratings>
+                                                                {{-- service  --}}
+                                                                <x-ratings id="service{{$item->id}}" font="font-normal"  title="Seller Service" ratingType="service" input="starCountService" showOtherRatings="" hide="opacity-0"> </x-ratings>
+                                                                <textarea name="specify" id="specifyValue{{$item->id}}" cols="30" rows="10" class="hidden"></textarea>
+                                                        </div>
+                                                        <input type="hidden" value="{{$item->userId}}" name="userId" id="userId{{$item->id}}">
+                                                        <input type="hidden" value="{{$item->id}}" name="productId" id="productId{{$item->id}}">
+                                                    </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- please specify --}}
+                                    <div class="self-center w-full">
+                                        <label class="text-xs md:text-sm">Please Specify (Optional)</label>
+                                        <textarea id="specify{{$item->id}}" onkeyup="getTheText({{$item->id}})" class="mt-2 text-sm w-full h-40 rounded" placeholder="What do you think of the quality and services?"></textarea>
+                                    </div>
+                                    {{-- social media accounts --}}
+                                    <div class="p-2 flex flex-col gap-2">
+                                        If you have anymore concerns please contact us! 
+                                        <div class="flex flex-row items-center gap-2 text-xl   rounded">
+                                            <ion-icon name="logo-facebook"></ion-icon>
+                                            <ion-icon name="logo-twitter"></ion-icon>
+                                            <ion-icon name="logo-instagram"></ion-icon>
+                                            <ion-icon name="mail-outline"></ion-icon>
+                                        </div>
+                                    </div>
+                                    {{-- buttons --}}
+                                    <div class="h-full flex justify-center py-4 items-end w-full">
+                                        <button class="w-full py-4 px-2 text-base bg-blue-700 text-white rounded hover:opacity-70" onclick="submitReview({{$item->id}})">Submit</button>
+                                    </div>
                                 </div>
                             </dialog>
                         </div>
@@ -121,11 +179,8 @@
                        {{-- embedded script for computing the total amount  --}}
                        @include('user.userProfile.totalAmount')
                     @endforeach
-                    
                 </div>
             </div>
         </div>
     </div>
-<script>
-</script>
 <x-userFooter />
