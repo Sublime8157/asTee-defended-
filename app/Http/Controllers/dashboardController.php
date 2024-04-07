@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use App\Models\Sold;
+use App\Models\Sales;
 use Illuminate\Http\Request;
 use App\Models\OnHand;
 use App\Models\Processing;
@@ -29,8 +29,8 @@ class dashboardController extends Controller
             $monthCount[]=count($values);
         }
        
-       // Collect all the data with column id, created_at, quantity, and amount from the Sold model
-        $soldData = Sold::select('id', 'created_at', 'quantity', 'amount')->get();
+       // Collect all the data with column id, created_at, quantity, and amount from the Sales model
+        $soldData = Sales::select('id', 'created_at', 'quantity', 'amount')->get();
 
         // Group the data based on month and assign it to $salesByMonth
         $salesByMonth = $soldData->groupBy(function($data) {

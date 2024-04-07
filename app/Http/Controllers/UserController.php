@@ -11,12 +11,19 @@ use App\Models\OnHand;
 use App\Models\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Models\Products;
 
 class UserController extends Controller
 {
     // Function for showing the homepage
     public function home(){
-        return view('user.homepage');
+    
+       $users  = User::query()
+                    ->join('Products', 'User.id', '=', 'Products.userId')
+                    ->select('User.fname, User.profile','Products*')
+                    ->get();
+       
+       return view('user.homepage', compact('users'));
     }
     // Function for about us UI
     public function about_us() {

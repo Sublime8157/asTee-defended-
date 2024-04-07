@@ -11,20 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('userId')->nulalble();
-            $table->integer('productId');
-            $table->integer('starCountAll');
-            $table->integer('starCountQuality');
-            $table->integer('starCountService');
-            $table->string('specify')->nullable();
+            $table->unsignedBigInteger('userId');
+            $table->string('image_path')->nullable();
+            $table->string('description');
+            $table->integer('price')->nullable();
+            $table->integer('quantity')->nullable();
             $table->timestamps();
 
-            
             $table->foreign('userId')->references('id')->on('customers');
-           
-            
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('products');
     }
 };

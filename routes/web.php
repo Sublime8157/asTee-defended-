@@ -51,7 +51,7 @@ Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'pr
 Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
 Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
 Route::post('/orderRecieved', [userProfileController::class, 'orderRecieved'])->name('order.recieved');
-
+Route::post('/submitReview', [userProfileController::class, 'submitReview'])->name('submitReview');
 
 // All these routes are responsible for admin panel
 Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');

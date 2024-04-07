@@ -70,13 +70,22 @@ function orderRecieved(id) {
 
 // show the review modal
 function reviewButton(id) {
+    var textArea = $('#specify' + id);
+    textArea.val("");
     document.getElementById('feedBackModal' + id).showModal();
 }
-// close the review modal
+// close the modal with confirmation
 function closeReviewDialog(id) {
-    document.getElementById('feedBackModal' + id).close();
+    var specifyValue = $('#specifyValue' +id).val();
+    if (specifyValue == "") {
+        document.getElementById('feedBackModal' + id).close();
+    }
+    else {
+        if(confirm("Are you sure you want to quit reviewing? your progress will be loss")) {
+            document.getElementById('feedBackModal' + id).close();
+        }
+    }
 }
-
 function showOtherRatings(id, e){
     e.name === 'chevron-down-outline' ? (e.name = 'chevron-up-outline') : (e.name  = 'chevron-down-outline');
     $('#productServiceRatings' + id).toggle();
@@ -162,13 +171,6 @@ function getTheText(id) {
 }
 
 function submitReview(id) {
-    var all = $('#all' + id).val();
-    var quality = $('#quality' + id).val();
-    var service = $('#service' + id).val();
-    var userId = $('#userId' + id).val();
-    var productId = $('#productId' + id).val();
-    var specifyValue = $('#specifyValue' +id).val();
-    alert(userId + productId + specifyValue);
-    alert(all + quality + service);
-    $('#reviewForm').submit();
+    $('#reviewForm' + id).submit();
 }
+// close the dialog 

@@ -129,7 +129,12 @@ input[type="text"], select, textarea     {
 .productImage:hover  .showIcons{
     opacity: 100;
 }
-
+#thankYouNotif {
+   
+    animation: sucessMessage 500ms;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
 
 @keyframes fade-out {
     0% {

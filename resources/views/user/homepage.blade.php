@@ -235,6 +235,9 @@
         </div>              
     </div>
     {{-- Featured Customers Feedback --}}
+    @foreach ($user as $userFeedback )
+        {{$userFeedback->fname}}
+    @endforeach
      <div class="text-center">
             <ion-icon name="chatbubbles" class="text-5xl text-red-500"></ion-icon>
             <h1 class="font-extrabold text-lg md:text-2xl tracking-wide">

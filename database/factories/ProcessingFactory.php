@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\products>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Processing>
  */
-class CancelReturnFactory extends Factory
+class ProcessingFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -25,8 +25,7 @@ class CancelReturnFactory extends Factory
             'userId'=> 1,
             'price' => $this->faker->randomNumber(2),
             'quantity' => $this->faker->randomNumber(2),
-            'reason' => fake()->numberBetween($min = 1, $max = 7),
-           
+            'productStatus' => fake()->numberBetween($min = 1, $max = 4),
         ];
     }
 }

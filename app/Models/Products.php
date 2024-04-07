@@ -13,17 +13,11 @@ class Products extends Model
 
     protected $table = 'products';
     protected $fillable = [
+        'userId',
         'image_path',
-        'variation_id',
         'description',
-        'gender',
-        'size',
-        'status',
         'price',
         'quantity',
-        'status',
-        'productStatus',
-        
     ];
 
     // variation function created to distiguished the relation between the product table 

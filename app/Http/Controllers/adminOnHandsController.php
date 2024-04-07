@@ -38,9 +38,6 @@ class adminOnHandsController extends Controller
         $imageName = $request->file('image_path')->getClientOriginalName();
         $request->file('image_path')->storeAs('public/images', $imageName);
         $validated['image_path'] =  $imageName;
-
-       
-      
         // insert the data in on_hand_product table 
         $storeOnHand = OnHand::create([
             'image_path' => $validated['image_path'],
@@ -52,6 +49,8 @@ class adminOnHandsController extends Controller
             'quantity' => $validated['quantity'],
            
         ]);
+
+        
         // Redirect to products/onHand url when success 
         return redirect()->to('products/onHand');        
     }

@@ -1,7 +1,14 @@
-<x-userHeader />
+<x-userHeader /> 
+<div class="absolute  top-0 bg-blue-700   text-center w-full" id="thankYouNotif">
+    @if(session()->has('Success'))
+        <p class="py-2 text-white text-sm">{{ @session()->get('Success') }}</p>
+    @endif
+   
+</div>
     <div class="bg-white p-5 min-h-full   md:w-8/12 w-full">
         <h3 class="font-bold text-orange-800">My Purchase</h3>
         <h6 class="font-light text-gray-500 text-sm">Manage your Purchase</h6>
+       
         <hr class="mt-4 mb-8">
         <div class="w-full justify-evenly  gap-4flex items-center flex-row">
             <div class="w-full flex justify-between  gap-10 flex-col">
@@ -110,17 +117,21 @@
                                            </div>
                                            {{-- ratings --}}
                                             <div class="flex flex-col">
-                                                    <form action="" id="reviewForm{{$item->id}}">
+                                                    <form action="{{route('submitReview')}}" id="reviewForm{{$item->id}}" method="POST">
                                                         @csrf
                                                          {{-- over all  --}}
                                                         <x-ratings id="all{{$item->id}}" font="font-bold" title="Overall Ratings" ratingType="overAll" showOtherRatings="showOtherRatings({{$item->id}}" hide="block" input="starCountAll"> </x-ratings>
                                                         <div id="productServiceRatings{{$item->id}}" class="hidden">
                                                                 {{-- product quality --}}
-                                                                <x-ratings id="quality{{$item->id}}" font="font-normal"  title="Product Quality " ratingType="quality" input="starCountQuantity" showOtherRatings="" hide="opacity-0"> </x-ratings>
+                                                                <x-ratings id="quality{{$item->id}}" font="font-normal"  title="Product Quality " ratingType="quality" input="starCountQuality" showOtherRatings="" hide="opacity-0"> </x-ratings>
                                                                 {{-- service  --}}
                                                                 <x-ratings id="service{{$item->id}}" font="font-normal"  title="Seller Service" ratingType="service" input="starCountService" showOtherRatings="" hide="opacity-0"> </x-ratings>
                                                                 <textarea name="specify" id="specifyValue{{$item->id}}" cols="30" rows="10" class="hidden"></textarea>
                                                         </div>
+                                                        <input type="hidden" name="image_path" value="{{$item->image_path}}">
+                                                        <input type="hidden" name="description" value="{{$item->description}}">
+                                                        <input type="hidden" name="price" value="{{$item->price}}">
+                                                        <input type="hidden" name="quantity" value="{{$item->quantity}}">
                                                         <input type="hidden" value="{{$item->userId}}" name="userId" id="userId{{$item->id}}">
                                                         <input type="hidden" value="{{$item->id}}" name="productId" id="productId{{$item->id}}">
                                                     </form>
@@ -173,6 +184,7 @@
                                 <input type="hidden" name="userId" value="{{$item->userId}}">
                                 <input type="hidden" name="amount" value="{{$item->price}}">
                                 <input type="hidden" name="quantity" value="{{$item->quantity}}">
+                              
                             </form>
                         </div>
                        <hr class="my-2 w-full">

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Sold;
+use App\Models\Sales;
+use App\Models\Products;
 use App\Models\Processing;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use App\Models\feedback;
 
 use Illuminate\Http\Request;
 
@@ -87,7 +89,8 @@ class userProfileController extends Controller
             "productId" => "required",
             "userId" => "required",
             "amount" => "required",
-            "quantity" => "required"
+            "quantity" => "required",
+         
         ]);
         // get the id of the product 
         $productId = $validated["productId"];
@@ -97,15 +100,51 @@ class userProfileController extends Controller
             "productStatus" => 4
         ]);
 
-        // when the user recieved the order insert the product into sold table 
-        Sold::create([
+        // when the user recieved the order insert the product into sales table 
+        Sales::create([
             "productId" => $validated["productId"],
             "userId" => $validated["userId"],
             "amount" => $validated["amount"],
-            "quantity" => $validated["quantity"]
+            "quantity" => $validated["quantity"],
         ]);
+
         
+        //insert to sold products
         return redirect()->back()->with('success', 'Order Moved to Feedback');
     }
+    // submit the review 
+    public function submitReview(Request $request) {
+        // validate the inputs 
+        $validated = $request->validate([
+            "userId" => 'required|integer|exists:customers,id',
+            "productId" => 'required',
+            "starCountAll" => 'required|integer',
+            "starCountQuality" => 'required|integer',
+            "starCountService" => 'required|integer',
+            "image_path" => 'required',
+            "description" => 'required',
+            "price" => 'required|integer',
+            "quantity" => 'required|integer'
+        ]);
+        // insert into feedback table 
+        feedback::create([
+            "userId" => $validated['userId'],
+            "productId" => $validated['productId'],
+            "starCountAll" => $validated['starCountAll'],
+            "starCountQuality" => $validated['starCountQuality'],
+            "starCountService" => $validated['starCountService'],
+            "specify" => $request->specify
+        ]);
+        Products::create([
+            'userId' => $validated['userId'],
+            'image_path' => $validated['image_path'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'quantity' => $validated['quantity']
+        ]);
 
+        $producToDelete = Processing::findOrFail($request->productId);
+        $producToDelete->delete();
+        return redirect()->back()->with('Success', 'Thank you for your feedback');
+    }
 }
