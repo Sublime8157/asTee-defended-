@@ -235,70 +235,40 @@
         </div>              
     </div>
     {{-- Featured Customers Feedback --}}
-    @foreach ($user as $userFeedback )
-        {{$userFeedback->fname}}
-    @endforeach
      <div class="text-center">
             <ion-icon name="chatbubbles" class="text-5xl text-red-500"></ion-icon>
             <h1 class="font-extrabold text-lg md:text-2xl tracking-wide">
                     Featured Feedbacks
             </h1>
         </div>
-    <div class="w-full flex justify-evenly flex-wrap flex-row p-10 mt-5">
-        <div class="font-extralight shadow-2xl p-10 w-80 rounded tracking-wider h-96 flex justify-center items-center flex-col relative" >
-            <div class="absolute top-0 right-0 p-5">
-                <ion-icon name="logo-facebook" class="text-blue-500 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                <ion-icon name="logo-instagram" class="text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                <ion-icon name="logo-twitter" class="text-blue-300 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-            </div>
-                <div class="opacity-75 text-md" style="font-family: Arial, Helvetica, sans-serif">
-                      "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, voluptatum. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi, aliquam. "
+    <div class="w-full flex justify-center gap-4 flex-wrap flex-row p-10 mt-5">
+        @foreach ($feedback as $userFeedback)
+            <div class="font-extralight shadow-2xl p-10 w-80 rounded tracking-wider h-96 flex justify-center items-center flex-col relative">
+                <div class="absolute top-0 right-0 p-5">
+                    <ion-icon name="logo-facebook" class="text-blue-500 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
+                    <ion-icon name="logo-instagram" class="text-lg cursor-pointer hover:translate-y-1"></ion-icon>
+                    <ion-icon name="logo-twitter" class="text-blue-300 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
                 </div>
-                <div class="flex flex-row mt-10 items-center self-start ps-5" >
-                    <div class="pe-5">
-                           <img src="{{asset('images/p1.jpg')}}" alt="Customer" class="rounded-full" width="50px">
+                    <div class="text-gray-500 text-sm  italic " style="font-family: Arial, Helvetica, sans-serif">
+                        "{{$userFeedback->specify}}"
+                    </div>
+                    <div class="flex flex-row mt-10 gap-2 items-center self-start " >
+                        <div class="">
+                            <img src="{{asset('storage/images/' . $userFeedback->profile )}}" alt="Customer" class="rounded-full" width="50px">
+                        </div>
+                        <div>
+                            <h1 class="text-black text-base" style="font-family: Arial, Helvetica, sans-serif">{{$userFeedback->fname}}</h1>
+                            <h1 class="text-xs text-gray-500">{{$userFeedback->created_date}}</h1>
+                        </div>
+                       
                     </div>
                     <div>
-                        <h1>Customer 1 </h1>
+                        {{$userFeedback->starCountAll}}
+                        {{$userFeedback->starCountQuality}}
+                        {{$userFeedback->starCountService}}
                     </div>
-                </div>
-        </div>
-        <div class="font-extralight shadow-2xl p-10 w-80 rounded tracking-wider h-96 flex justify-center items-center flex-col relative" >
-            <div class="absolute top-0 right-0 p-5">
-                <ion-icon name="logo-facebook" class="text-blue-500 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                <ion-icon name="logo-instagram" class="text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                <ion-icon name="logo-twitter" class="text-blue-300 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
             </div>
-            <div class="opacity-75 text-md" style="font-family: Arial, Helvetica, sans-serif">
-                  "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, voluptatum. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi, aliquam. "
-            </div>
-            <div class="flex flex-row mt-10 items-center self-start ps-5" >
-                <div class="pe-5">
-                       <img src="{{asset('images/p1.jpg')}}" alt="Customer" class="rounded-full" width="50px">
-                </div>
-                <div>
-                    <h1>Customer 1 </h1>
-                </div>
-            </div>
-        </div>
-        <div class="font-extralight shadow-2xl p-10 w-80 rounded tracking-wider h-96 flex justify-center items-center flex-col relative" >
-            <div class="absolute top-0 right-0 p-5">
-                <ion-icon name="logo-facebook" class="text-blue-500 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                <ion-icon name="logo-instagram" class="text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                <ion-icon name="logo-twitter" class="text-blue-300 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-            </div>
-            <div class="opacity-75 text-md" style="font-family: Arial, Helvetica, sans-serif">
-                "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, voluptatum. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi, aliquam. "
-            </div>
-            <div class="flex flex-row mt-10 items-center self-start ps-5" >
-                <div class="pe-5">
-                    <img src="{{asset('images/p1.jpg')}}" alt="Customer" class="rounded-full" width="50px">
-                </div>
-                <div>
-                    <h1>Customer 1 </h1>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
     {{-- Footer --}}
 <x-footer />

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('userId')->nulalble();
-            $table->integer('productId');
+            $table->unsignedBigInteger('productId');
             $table->integer('starCountAll');
             $table->integer('starCountQuality');
             $table->integer('starCountService');
@@ -23,7 +23,7 @@ return new class extends Migration
 
             
             $table->foreign('userId')->references('id')->on('customers');
-           
+            $table->foreign('productId')->references('id')->on('products');
             
         });
     }

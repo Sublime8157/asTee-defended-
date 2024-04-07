@@ -11,19 +11,20 @@ use App\Models\OnHand;
 use App\Models\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use App\Models\Products;
+use App\Models\feedback;
+use App\Models\customers;
 
 class UserController extends Controller
 {
     // Function for showing the homepage
     public function home(){
     
-       $users  = User::query()
-                    ->join('Products', 'User.id', '=', 'Products.userId')
-                    ->select('User.fname, User.profile','Products*')
-                    ->get();
+       $feedback  = feedback::query()
+                   ->selectRaw('customers.profile, customers.fname, DATE(feedback.created_at) as created_date, feedback.*')
+                   ->join('customers','customers.id','=','feedback.userId')
+                   ->get();
        
-       return view('user.homepage', compact('users'));
+       return view('user.homepage', compact('feedback'));
     }
     // Function for about us UI
     public function about_us() {
