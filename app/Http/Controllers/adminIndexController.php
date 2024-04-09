@@ -5,6 +5,7 @@ use App\Models\adminLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\feedback;
 
 class adminIndexController extends Controller
 {
@@ -46,6 +47,19 @@ class adminIndexController extends Controller
     }
   
     public function feedbacks() {
-        return view('admin.feedbacks');
+        $feedbacks = feedback::query()
+                    ->orderBy('id','desc')
+                    ->get();
+        return view('admin.feedbacks', compact('feedbacks'));
+    }
+
+    public function toFeature($id) {
+        $reviewId = feedback::findOrFail($id);
+        $reviewId->update([
+            'featured' => 2
+        ]);
+
+        return redirect()->back();
+
     }
 }

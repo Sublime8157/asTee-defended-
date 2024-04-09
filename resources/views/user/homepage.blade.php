@@ -243,30 +243,60 @@
         </div>
     <div class="w-full flex justify-center gap-4 flex-wrap flex-row p-10 mt-5">
         @foreach ($feedback as $userFeedback)
-            <div class="font-extralight shadow-2xl p-10 w-80 rounded tracking-wider h-96 flex justify-center items-center flex-col relative">
-                <div class="absolute top-0 right-0 p-5">
+            <div class="font-extralight shadow-2xl p-5 w-80 rounded tracking-wider  flex justify-center items-center flex-col" >
+                {{-- social media icons  --}}
+                <div class=" top-0 right-0 p-5 self-end">
                     <ion-icon name="logo-facebook" class="text-blue-500 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
                     <ion-icon name="logo-instagram" class="text-lg cursor-pointer hover:translate-y-1"></ion-icon>
                     <ion-icon name="logo-twitter" class="text-blue-300 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
                 </div>
-                    <div class="text-gray-500 text-sm  italic " style="font-family: Arial, Helvetica, sans-serif">
+                {{-- specify textarea  --}}
+                    <div class="text-gray-500 w-full h-full text-sm  italic p-4 " style="font-family: Arial, Helvetica, sans-serif">
                         "{{$userFeedback->specify}}"
-                    </div>
-                    <div class="flex flex-row mt-10 gap-2 items-center self-start " >
-                        <div class="">
-                            <img src="{{asset('storage/images/' . $userFeedback->profile )}}" alt="Customer" class="rounded-full" width="50px">
-                        </div>
-                        <div>
-                            <h1 class="text-black text-base" style="font-family: Arial, Helvetica, sans-serif">{{$userFeedback->fname}}</h1>
-                            <h1 class="text-xs text-gray-500">{{$userFeedback->created_date}}</h1>
-                        </div>
                        
                     </div>
-                    <div>
-                        {{$userFeedback->starCountAll}}
-                        {{$userFeedback->starCountQuality}}
-                        {{$userFeedback->starCountService}}
+                    {{-- star ratings  --}}
+                    <div class="flex flex-row items-center gap-2 self-start">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-500">Overall</span>
+                            <span class="text-xs text-gray-500">Product Quality</span>
+                            <span class="text-xs text-gray-500">Service </span>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex flex-row items-center">
+                                {{-- star ratings  --}}
+                                @for($i = 0; $i < $userFeedback->starCountAll; $i++)
+                                    <ion-icon name="star" class="text-base text-yellow-300"></ion-icon>
+                                @endfor
+                            </div>
+                            <div class="flex flex-row items-center">
+                                
+                                {{-- star ratings  --}}
+                                @for($i = 0; $i <$userFeedback->starCountQuality; $i++)
+                                    <ion-icon name="star" class="text-base text-yellow-300"></ion-icon>
+                                @endfor
+                            </div>
+                            <div class="flex flex-row items-center">
+                               
+                                {{-- star ratings  --}}
+                                @for($i = 0; $i < $userFeedback->starCountService; $i++)
+                                    <ion-icon name="star" class="text-base text-yellow-300"></ion-icon>
+                                @endfor
+                            </div>
+                        </div>
                     </div>
+                    {{-- user image  --}}
+                    <div class="flex flex-row mt-10 gap-2 items-center self-start">
+                        <div class="">
+                            <img src="{{asset('storage/images/' . $userFeedback->profile )}}" alt="Customer" class="rounded-full" width="34px">
+                        </div>
+                        {{-- user first name and date created  --}}
+                        <div>
+                            <h1 class="text-black text-sm" style="font-family: Arial, Helvetica, sans-serif">{{$userFeedback->fname}}</h1>
+                            <h1 class="text-xs text-gray-500">{{$userFeedback->created_date}}</h1>
+                        </div>
+                    </div>
+                   
             </div>
         @endforeach
     </div>

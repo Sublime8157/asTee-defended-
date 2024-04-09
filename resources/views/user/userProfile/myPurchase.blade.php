@@ -1,9 +1,11 @@
 <x-userHeader /> 
 <div class="absolute  top-0 bg-blue-700   text-center w-full" id="thankYouNotif">
     @if(session()->has('Success'))
-        <p class="py-2 text-white text-sm">{{ @session()->get('Success') }}</p>
+        <p class="py-2 text-white text-sm" id="successMessage">{{ @session()->get('Success') }}</p>
     @endif
-   
+   @if($errors->any()) 
+    {{ $errors->first() }}
+   @endif
 </div>
     <div class="bg-white p-5 min-h-full   md:w-8/12 w-full">
         <h3 class="font-bold text-orange-800">My Purchase</h3>
@@ -68,7 +70,7 @@
                         <div class="flex flex-row gap-4 ">
                             {{-- image --}}
                             <div>
-                                <img src="{{ asset('images/' . $item->image_path) }}" alt="" class="md:w-40 w-20 bg-gray-200 rounded p-2 ">
+                                <img src="{{ asset('storage/images/' . $item->image_path) }}" alt="" class="md:w-40 w-20 bg-gray-200 rounded p-2 ">
                             </div>
                             <div class="md:text-base text-xs">
                                 {{-- details --}}
@@ -76,15 +78,147 @@
                                     <p>{{$item->sizeShirt()}} | {{$item->variationType()}} | {{$item->genderShirt()}}</p>
                                     <p id="price{{$item->id}}">{{$item->price}}</p>
                                     <p>Qty: <span id="quantity{{$item->id}}">{{$item->quantity}}</span></p>
+
                             </div>
                         </div>
                         <div class="self-end md:text-base text-xs text-orange-700 pe-4">
-                            {{-- total --}}
+                            {{-- check if current the url is on toreview or 4  replace the total to review button if true   --}}
                             @if(request()->status == 4)
+                            {{-- review button in to review tab  --}}
                                  <button class="py-1 px-2 text-sm border-orange-500 border rounded" onclick="reviewButton({{$item->id}})">Review</button>
                             @else
-                                 <span class="text-black ">Total: ₱</span><span id="totalAmount{{$item->id}}">300.00</span>
+                            {{-- total --}}
+                                 <span class="text-black ">Total: ₱</span><span>{{$item->total}}</span>
                             @endif
+                            {{-- cancel button for to pay   --}}
+                            <div class=" py-1 {{ Route::currentRouteName() == 'product.status' && request()->status !=1 ? 'hidden' : 'block' }} ">
+                                {{-- cancel button that show the dialog  --}}
+                                <a onclick="showCancelForm({{$item->id}})" class="cursor-pointer py-1 px-2 border border-orange-600 rounded text-sm hover:bg-orange-600 hover:text-white ">
+                                    Cancel Order
+                                </a>
+                                {{-- dialog for canceling  --}} 
+                                <dialog id="cancelDialog{{$item->id}}" class="bg-inherit w-screen h-screen rounded-sm">
+                                    <div class="flex flex-col bg-white h-full">
+                                        {{-- back button  --}}
+                                        <div class=" w-full p-2 gap-2 flex items-center " onclick="closeCancelDialog({{$item->id}})">
+                                            <ion-icon name="arrow-back-outline" class="text-lg cursor-pointer"></ion-icon> 
+                                            <span class="text-sm ">Back</span>
+                                        </div>
+                                        {{-- product details to cancel --}}
+                                        <div class="w-full flex justify-between h-full flex-col">
+                                            <div class="flex-col flex gap-4  p-2 md:p-4 ">
+                                                <div class="flex flex-row bg-gray-100  p-4  rounded gap-2">
+                                                    <div>
+                                                        <img src="{{ asset('storage/images/' . $item->image_path) }}" alt="Product Image" width="100px">
+                                                    </div>
+                                                    <div class="flex flex-col w-full gap-2">
+                                                        <div>
+                                                            <p class="text-black">{{$item->displayDescription}}</p>
+                                                        </div>
+                                                        <div class="text-gray-600 flex flex-row ">
+                                                            <span>{{$item->variationType()}}</span> | 
+                                                            <span>{{$item->genderShirt()}}</span> | 
+                                                            <span>{{$item->sizeShirt()}}</span> 
+                                                        </div>
+                                                        <div>
+                                                            <span class="font">Qty: <span>{{$item->quantity}}</span></span>
+                                                        </div>
+                                                        <div class="flex flex-row w-full md:text-lg text-sm justify-between">
+                                                                <span class="font-bold">₱<span>{{$item->price}}</span></span>
+                                                                <span class="font-bold">₱<span>{{$item->total}}</span></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- form or cancellation  --}}
+                                                <div class="w-full">
+                                                    <form action="{{ route('submitOrder.cancel', $item->id ) }}" method="POST" class="bg-gray-100 p-4 h-full flex flex-col justify-between" id="cancelForm{{$item->id}}">
+                                                        @csrf
+                                                        <input type="hidden" name="image_path" value="{{$item->image_path}}" >
+                                                        <input type="hidden" name="userId" value="{{$item->userId}}">
+                                                        <input type="hidden" name="description" value="{{$item->description}}">
+                                                        <input type="hidden" name="gender" value="{{$item->gender}}">
+                                                        <input type="hidden" name="variation_id" value="{{$item->variation_id}}">
+                                                        <input type="hidden" name="size" value="{{$item->size}}"> 
+                                                        <input type="hidden" name="price" value="{{$item->price}}">
+                                                        <input type="hidden" name="quantity" value="{{$item->quantity}}">
+                                                        <input type="hidden" name="total" value="{{$item->total}}">
+                                                        <div class="flex flex-col gap-4 ">
+                                                            <div>
+                                                                <label for="" class="font-bold ">Cancellation Reason*</label>
+                                                                <select name="reason" id="" class="mt-1 w-full h-10 text-sm ">
+                                                                    <option value="1">Wrong Product</option>
+                                                                    <option value="2">Different Color</option>
+                                                                    <option value="3">Wrong Design</option>
+                                                                    <option value="4">Reason 1 </option>
+                                                                    <option value="5">Reason 2 </option>
+                                                                    <option value="6">Reason 3 </option>
+                                                                    <option value="7">Reason 4 </option>
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <label for="" class="font-bold">Specify(Optional)</label>
+                                                                <textarea name="specify" id="" class="mt-1 w-full h-40 rounded text-sm "></textarea>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </form>
+                                                </div>
+                                                <div class="p-2 flex flex-col gap-2 md:hidden ">
+                                                    If you have anymore concerns please contact us! 
+                                                    <div class="flex flex-row items-center gap-2 text-xl   rounded">
+                                                        <ion-icon name="logo-facebook"></ion-icon>
+                                                        <ion-icon name="logo-twitter"></ion-icon>
+                                                        <ion-icon name="logo-instagram"></ion-icon>
+                                                        <ion-icon name="mail-outline"></ion-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bg-gray-100 w-full p-4">
+                                                <button class="w-full px-4 py-2 bg-orange-700 rounded md:text-base text-sm text-white" onclick="openCancelConfirmation({{$item->id}})">Confirm</button>
+                                                <dialog class="modal  w-80 rounded" id="cancelConfirmation{{$item->id}}"> 
+                                                    <div class="flex flex-col w-full justify-center items-center  shadow-lg rounded  ">
+                                                         <div class="p-4 text-sm">
+                                                             Are you sure you want to cancel this order?
+                                                         </div>
+                                                         <div class="flex flex-row justify-evenly w-full border-t ">
+                                                             <button class="w-72 border-r  py-1 bg-orange-400 hover:opacity-70 text-white" onclick="submitCancel({{$item->id}})">Confirm</button>
+                                                             <button class="px-8 border border-orange-200 hover:opacity-70 closeModal" onclick="closeConfirmationModal({{$item->id}})">No</button>
+                                                         </div>
+                                                     </div>
+                                                 </dialog>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dialog>
+                                {{-- form for processing the cancel  --}}
+                            </div>
+                            {{-- order recieved button with dialog --}}
+                            <div class="self-end my-2 {{ Route::currentRouteName() == 'product.status' && request()->status != 3 ? 'hidden' : 'block'}}">
+                                <a  onclick="showConfirmationDialog({{$item->id}})" class=" py-1 md:py-2 px-2 md:px-4 text-xs md:text-sm bg-orange-500 cursor-pointer text-white rounded hover:opacity-70">
+                                    Order Recieved
+                                </a>
+                            </div>
+                            {{-- modal for confirmation if the order was recieved --}}
+                            <dialog class="modal  w-80 rounded" id="confirmationDialog{{$item->id}}"> 
+                               <div class="flex flex-col w-full justify-center items-center  shadow-lg rounded  ">
+                                    <div class="p-4 text-sm">
+                                        Are you sure you recieved the order?
+                                    </div>
+                                    <div class="flex flex-row justify-evenly w-full border-t ">
+                                        <button class="w-72 border-r  py-1 bg-orange-400 hover:opacity-70 text-white" onclick="orderRecieved({{$item->id}})">Confirm</button>
+                                        <button class="px-8 border border-orange-200 hover:opacity-70 closeModal" onclick="closeConfirmationModal({{$item->id}})">No</button>
+                                    </div>
+                                </div>
+                            </dialog>
+                            {{-- form for recieving order --}}
+                            <form action="{{ route('order.recieved') }}" class="hidden" id="orderRecieved{{$item->id}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="productId" value="{{$item->id}}">
+                                <input type="hidden" name="userId" value="{{$item->userId}}">
+                                <input type="hidden" name="amount" value="{{$item->price}}">
+                                <input type="hidden" name="quantity" value="{{$item->quantity}}">
+                              
+                            </form> 
                             {{-- dialog for review  --}}
                             <dialog id="feedBackModal{{$item->id}}" class=" w-screen h-screen" > 
                                 <div class="rounded w-full px-4 gap-4 h-full bg-gray-100 flex flex-col">
@@ -160,36 +294,8 @@
                                 </div>
                             </dialog>
                         </div>
-                        {{-- order recieved button --}}
-                        <div class="self-end my-2 {{ Route::currentRouteName() == 'product.status' && request()->status != 3 ? 'hidden' : 'block'}}">
-                            <a  onclick="showConfirmationDialog({{$item->id}})" class=" py-1 md:py-2 px-2 md:px-4 text-xs md:text-sm bg-orange-500 cursor-pointer text-white rounded hover:opacity-70">
-                                Order Recieved
-                            </a>
-                            {{-- modal for confirmation --}}
-                            <dialog class="modal  w-80 rounded" id="confirmationDialog{{$item->id}}"> 
-                               <div class="flex flex-col w-full justify-center items-center  shadow-lg rounded  ">
-                                    <div class="p-4 text-sm">
-                                        Are you sure you recieved the order?
-                                    </div>
-                                    <div class="flex flex-row justify-evenly w-full border-t ">
-                                        <button class="w-72 border-r  py-1 bg-orange-400 hover:opacity-70 text-white" onclick="orderRecieved({{$item->id}})">Confirm</button>
-                                        <button class="px-8 border border-orange-200 hover:opacity-70 closeModal" onclick="closeConfirmationModal({{$item->id}})">No</button>
-                                    </div>
-                                </div>
-                            </dialog>
-                            {{-- form for recieving order --}}
-                            <form action="{{ route('order.recieved') }}" class="hidden" id="orderRecieved{{$item->id}}" method="POST">
-                                @csrf
-                                <input type="hidden" name="productId" value="{{$item->id}}">
-                                <input type="hidden" name="userId" value="{{$item->userId}}">
-                                <input type="hidden" name="amount" value="{{$item->price}}">
-                                <input type="hidden" name="quantity" value="{{$item->quantity}}">
-                              
-                            </form>
-                        </div>
                        <hr class="my-2 w-full">
                        {{-- embedded script for computing the total amount  --}}
-                       @include('user.userProfile.totalAmount')
                     @endforeach
                 </div>
             </div>

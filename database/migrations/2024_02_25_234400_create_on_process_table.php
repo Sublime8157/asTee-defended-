@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('size');
             $table->integer('price');
             $table->integer('quantity');
+            $table->integer('total');
             $table->unsignedBigInteger('productStatus');
             $table->timestamps();
 

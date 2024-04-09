@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('starCountQuality');
             $table->integer('starCountService');
             $table->string('specify')->nullable();
+            $table->integer('featured');
             $table->timestamps();
 
             

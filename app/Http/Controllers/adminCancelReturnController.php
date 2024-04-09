@@ -163,6 +163,7 @@ class adminCancelReturnController extends Controller
             case 2:
                 // move to cancel return table
                 Processing::create([
+                    'userId' => $product->userId,
                     'image_path' => $product->image_path,
                     'status' => $product->status,
                     'gender' => $product->gender,
@@ -171,7 +172,8 @@ class adminCancelReturnController extends Controller
                     'description' => $product->description,
                     'price' => $product->price,
                     'quantity' => $product->quantity,
-                    'productStatus' => 1,
+                    'total' => $product->total,
+                    'productStatus' => 1
                 ]);
                 // delete from the processing table 
                 $product->delete();

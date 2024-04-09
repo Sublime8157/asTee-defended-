@@ -376,6 +376,7 @@ function moveProductOption(prodId) {
    if(moveTo.value == 2 ){
     prodIdInput.style.display =  'block';
    }
+  
    else {
     prodIdInput.style.display =  'none';
    }
@@ -470,15 +471,7 @@ $('#reason').on('change', function() {
    
 })
 
-// setInterval(function(){
-//     $.ajax({
-//         url: "/updateTable ",
-//         method: "GET",
-//         success: function(response) {
-//            $('#productTableBody').html(response);
-//         },
-//         error: function(xhr, status, error) {
-//             console.error(xhr.responseText);
-//         }
-//     })
-// },10000)
+function featured(id) {
+    
+    $('#featureForm' + id).submit();
+}

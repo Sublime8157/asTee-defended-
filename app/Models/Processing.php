@@ -21,6 +21,7 @@ class Processing extends Model
         'price',
         'productStatus',
         'quantity',
+        'total'
     ];
 
     use HasFactory;

@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('profile')->nullable();
             $table->string('image_path')->nullable();
             $table->string('fname');
-            $table->string('mname');
+            $table->string('mname')->nullable();
             $table->string('lname');
-            $table->integer('age');
+            $table->date('birthday');
+            $table->string('address');
             $table->string('email')->unique();
             $table->string('username')->unique();
             $table->unsignedBigInteger('userStatus');

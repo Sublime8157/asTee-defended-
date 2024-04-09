@@ -17,7 +17,7 @@
     <td class="ps-2">{{$product->sizeShirt()}}</td>
     <td class="ps-2">{{$product->price}}</td>
     <td class="ps-2">{{$product->quantity}}</td>       
- 
+    <td class="ps-2">{{$product->total}}</td>
     @if ($product->productStatus)
         <td class="ps-2">{{$product->producStats()}}</td>
     @else

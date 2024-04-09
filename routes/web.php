@@ -27,7 +27,7 @@ Route::get('/logout',  [LoginSignupController::class, 'logout']);
 Route::get('/', [LoginSignupController::class, 'LoginSignup'])->name('userLogin');
 
 // Route for logging in proccess
-Route::post('/login/process', [LoginSignupController::class, 'process']);
+Route::post('/login/process', [LoginSignupController::class, 'process'])->name('loginProcess');
 // Route for registering a user 
 Route::post('/store', [LoginSignupController::class, 'store']);
 
@@ -44,7 +44,7 @@ Route::get('/Product', [productsController::class, 'displayOnHandsProducts']);
 Route::get('/DIY',  [UserController::class, 'DIY']);
 
 // These routes was for updating the user Profile
-Route::post('/updateProfile', [UserController::class, 'updateProfile']);
+Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
 Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
 Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 'toPay']);
 Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'productStatus'])->name('product.status');
@@ -57,7 +57,7 @@ Route::post('/submitReview', [userProfileController::class, 'submitReview'])->na
 Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
 Route::get('/dashboard', [dashboardController::class, 'dashboard']);
 Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
-
+Route::patch('/featureReview/{id}',[adminIndexController::class, 'toFeature'])->name('featureReview');
 
 // Routes for admin products panel tab 
 // for onhnad products tab 
@@ -79,6 +79,7 @@ Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcess
 Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
 Route::get('/updateTable', [adminOnProcessController::class, 'updateTable'])->name('updateTable');
+Route::post('/submitCancel/{id}', [adminOnProcessController::class, 'submitToCancel'])->name('submitOrder.cancel');
 
 // move a product
 Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');

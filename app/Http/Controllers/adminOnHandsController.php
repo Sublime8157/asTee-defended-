@@ -111,7 +111,6 @@ class adminOnHandsController extends Controller
             "description" => "required|nullable",
             "price" => "required|numeric",
             "quantity" => "required|numeric",
-           
         ]);
         // find the product id in onhand table 
         $product = OnHand::findOrFail($id);
@@ -137,10 +136,15 @@ class adminOnHandsController extends Controller
         // get the move option value 
         $moveTo = $request->input('moveProduct');
         // check the moveTo to input value
+        $validated = $request->validate([
+            'userId' => 'required|numeric|exists:customers,id',
+        ]);
         switch($moveTo) {
             case 1: 
+                $total = $product->price * $product->quantity;
                   // move to processing table 
                 Processing::create([
+                    'userId' => $validated['userId'],
                     'status' => $product->status,
                     'image_path' => $product->image_path,
                     'gender' => $product->gender,
@@ -150,7 +154,7 @@ class adminOnHandsController extends Controller
                     'price' => $product->price,
                     'quantity' => $product->quantity,
                     'productStatus' => 1,
-                    
+                    'total' => $total
                 ]);
                 // delete from the onhand table 
                 $product->delete();
@@ -159,10 +163,10 @@ class adminOnHandsController extends Controller
 
             case 2:
                 // validate the id must be numeric 
-                $validated = $request->validate([
-                    'userId' => 'required|numeric|exists:customers,id',
-                ]);
+             
                 // move to cancel return table
+                $total = $product->price * $product->quantity;
+
                   CancelReturn::create([
                     'userId' => $validated['userId'],
                     'image_path' => $product->image_path,
@@ -173,7 +177,7 @@ class adminOnHandsController extends Controller
                      'size' => $product->size,
                      'price' => $product->price,
                     'quantity' => $product->quantity,
-                   
+                    'total' => $total
                 ]);
                 // delete from the onhand table 
                 $product->delete();

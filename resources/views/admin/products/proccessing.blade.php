@@ -24,6 +24,7 @@
                 <th class="adminTable">Size</th>
                 <th class="adminTable">Price</th>
                 <th class="adminTable w-24">Quantity</th>
+                <th class="adminTable w-24">Total</th>
                  <th class="adminTable w-24">Status</th>
                 <th class="adminTable w-24">Action</th>
            </tr>
@@ -81,7 +82,8 @@
                         <option value="1">To Pay</option>
                         <option value="2">To Ship</option>
                         <option value="3">To Recieve</option>
-                        <option value="4">Feedback</option>
+                        <option value="4">To Review</option>
+                        <option value="5">To Cancel</option>
                     </select>
                 </td>
                 {{-- filter button --}}
@@ -118,6 +120,7 @@
                 <td class="ps-2">{{$product->sizeShirt()}}</td>
                 <td class="ps-2">{{$product->price}}</td>
                 <td class="ps-2">{{$product->quantity}}</td>
+                <td class="ps-2">{{$product->total}}</td>
                 <td class="ps-2">{{$product->producStats()}}</td>
                 <td>
                     <form action="{{ route('productProcess.remove', $product->id) }}" method="POST" id="removeProduct{{$product->id}}">
@@ -143,6 +146,7 @@
                             option1="On Hand"
                             option2="Return Cancel"
                             inputTypes="prodIdInput{{$product->id}}"
+                            :onHand="false"
                             :cancel="true"> 
                         </x-moveProduct>
                     </dialog>
@@ -155,7 +159,8 @@
                                     <option value="1">To Pay</option>
                                     <option value="2">To Ship</option>
                                     <option value="3">To Recieve</option>
-                                    <option value="4">Feedback</option>
+                                    <option value="4">To Review</option>
+                                    <option value="5">To Cancel</option>
                                 </select>
                                 <button type="submit" class="text-sm text-white  rounded px-2 py-1 w-full" style="background-color: #ff8906">Update</button>
                           </form>
@@ -251,7 +256,8 @@
                 <div class="me-2">
                     <label for="">Description*</label><br>
                     <textarea name="description" id="desc" cols="50" rows="2" class="text-xs rounded"></textarea>
-               </div>
+               </div> 
+               <input type="hidden" value="" name="total">
            </div>
            {{-- Image input --}}
             <div class="flex items-center flex-col">

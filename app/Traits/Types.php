@@ -14,7 +14,9 @@ trait Types {
             case 3:
                 return 'To Recieve';
             case 4:
-                return 'Feedback';
+                return 'To Review';
+            case 5:
+                return 'To Cancel';
             default:
                 return 'Error Occcur';
         }

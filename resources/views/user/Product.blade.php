@@ -105,6 +105,7 @@
                                         @csrf
                                         <input type="hidden" name="prodId" value="{{$table->id}}">
                                         <input type="hidden" name="userId" value="{{$user['id']}}">
+                                        <input type="hidden" name="quantity" value="1">
                                         <button type="submit" class="addToCartBtn"><ion-icon name="cart" class="ps-2 text-green-600 text-xl"></button>
                                     </form> 
                                     @else
@@ -131,6 +132,9 @@
                                     {{-- Size  --}}
                                 <div class="text-xs px-1">
                                     <b> Size:</b> {{$table->sizeShirt()}} 
+                                </div>
+                                <div class="text-xs px-1">
+                                    <b> Qty:</b> {{$table->quantity}} 
                                 </div>
                                 <div class="px-1">
                                     {{-- Price --}}

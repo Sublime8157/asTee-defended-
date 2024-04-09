@@ -23,6 +23,7 @@
                 <th class="adminTable">Size</th>
                 <th class="adminTable">Price</th>
                 <th class="adminTable w-24">Quantity</th>        
+                <th class="adminTable w-24">Total</th>
                 <th class="adminTable w-20">Reason</th>                                                               
                 <th class="adminTable w-24">Action</th>
            </tr>
@@ -105,6 +106,7 @@
                     <td class="ps-2">{{$product->sizeShirt()}}</td>
                     <td class="ps-2">{{$product->price}}</td>
                     <td class="ps-2">{{$product->quantity}}</td>
+                    <td class="ps-2">{{$product->total}}</td>
                     @if ($product->reason == 7)
                      <td class="ps-2">{{$product->specify}}</td>
                     @else
@@ -127,21 +129,20 @@
                                 img="{{$product->image_path}}"> </x-editForm>
                         </dialog>
                         {{-- move product dialog with form  --}}
-                        <dialog id="moveProductDialog{{$product->id}}">       
-                            <x-moveProduct  route="move.cancelReturnProduct" :id="$product->id" 
+                        <dialog id="moveProductDialog{{$product->id}}">
+                            <x-moveProduct  route="move.cancelReturnProduct" :id="$product->id"
                                 selectId="moveProductOption{{$product->id}}"
                                 onchangeFunction="moveProductOption({{$product->id}})"
                                 option1="On Hand"
                                 option2="Processing"
-                             
-                                :cancel="false"> 
+                                :cancel="false"
+                                :onHand="false"> 
                             </x-moveProduct>
                         </dialog>
                         <button type="button" onclick="showMenus({{ $product->id }})" >
                             <div class="relative z-20">
                                 <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
                                 <div class="absolute bg-white hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $product->id }}">
-                                    
                                    {{-- edit the product info  --}}
                                    <a onclick="editProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Edit</a>
                                    {{-- move a product  --}}

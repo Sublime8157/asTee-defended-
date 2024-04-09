@@ -22,6 +22,9 @@ class UserController extends Controller
        $feedback  = feedback::query()
                    ->selectRaw('customers.profile, customers.fname, DATE(feedback.created_at) as created_date, feedback.*')
                    ->join('customers','customers.id','=','feedback.userId')
+                   ->where('featured',2)
+                   ->latest('created_at')
+                   ->take(3)
                    ->get();
        
        return view('user.homepage', compact('feedback'));
@@ -56,34 +59,7 @@ class UserController extends Controller
         return view('user.userProfile.myPassword');
      }
 
-    
-    // Update the users information
-    public function updateProfile(Request $request){
-    // Validate the users input with Laravel default validation
-    $request->validate([
-        'fname' => 'nullable|string',
-        'mname' => 'nullable|string',
-        'lname' => 'nullable|string',
-        'age' => 'nullable|integer',
-        'email' => ['nullable', 'email', Rule::unique('customers', 'email')],
-        'username' => ['nullable', Rule::unique('customers', 'username')],
-    ]);
 
-    // Find the user assigned to the variable 'user'
-    $user = User::find(auth()->id());
-
-    // Update user information based on the filled fields in the request
-    $user->update([
-        'fname' => $request->filled('fname') ? $request->fname : $user->fname,
-        'mname' => $request->filled('mname') ? $request->mname : $user->mname,
-        'lname' => $request->filled('lname') ? $request->lname : $user->lname,
-        'age' => $request->filled('age') ? $request->age : $user->age,
-        'email' => $request->filled('email') ? $request->email : $user->email,
-        'username' => $request->filled('username') ? $request->username : $user->username,
-    ]);
-
-    return redirect()->back()->with(['success' => 'Updating Success!']);
-}
 
 // store added product 
     public function store(Request $request) {
@@ -99,7 +75,8 @@ class UserController extends Controller
         if($cartItem <= 0 ) {
             $cart = Cart::create([
                 'userId' =>$validate['userId'],
-                'productId' =>$validate['prodId']
+                'productId' =>$validate['prodId'],
+                'quantity' => 1
             ]);
         }
         // return back
@@ -113,18 +90,22 @@ class UserController extends Controller
 // display the user added to cart
     public function cart($userId) {
         // find the user id from cart assign to userCart
-        $userCart = Cart::where('userId', '=', $userId)->get();
+        $userCart = Cart::where('userId', $userId)->get();
         $products = [];
+        $prodQty = [];
+
         // assign to cartItem all the userCart result
         foreach($userCart as $cartItem) {
             // find the productId column of Cart from OnHand  
             $product = OnHand::find($cartItem->productId);       
+            // $quantity = OnHand::select('quantity')->where('id', $cartItem->productId)->value('quantity');
+            // $prodQty[$cartItem->productId] = $quantity;
             if($product){             
                 // store to products array 
                 $products[] = $product;   
             }
         }
-     return view('user.userCart', compact('userCart','products'));
+     return view('user.userCart', compact('userCart','products','prodQty'));
     }
     
     // remove a list of items  

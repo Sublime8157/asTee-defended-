@@ -41,6 +41,9 @@ class multipleSeeder extends Seeder
         productStatus::insert([            
             'status' => 'To Feedback'
         ]);
+        productStatus::insert([
+            'status' => 'To Cancel'
+        ]);
      }
 
     //  Populate the genders table with these value 

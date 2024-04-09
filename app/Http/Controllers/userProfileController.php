@@ -9,11 +9,41 @@ use App\Models\Processing;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Models\feedback;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class userProfileController extends Controller
 {
+
+        
+    // Update the users information
+    public function updateUserInfo(Request $request){
+        // Validate the users input with Laravel default validation
+        $request->validate([
+            'fname' => 'nullable|string',
+            'mname' => 'nullable|string',
+            'lname' => 'nullable|string',
+            'age' => 'nullable|integer',
+            'username' => ['nullable', Rule::unique('customers', 'username')],
+        ]);
+    
+        // Find the user assigned to the variable 'user'
+        $user = User::find(auth()->id());
+    
+        // Update user information based on the filled fields in the request
+        $user->update([
+            'fname' => $request->filled('fname') ? $request->fname : $user->fname,
+            'mname' => $request->filled('mname') ? $request->mname : $user->mname,
+            'lname' => $request->filled('lname') ? $request->lname : $user->lname,
+            'age' => $request->filled('age') ? $request->age : $user->age,
+            'username' => $request->filled('username') ? $request->username : $user->username,
+            'address' => $request->filled('address') ? $request->address : $user->address,
+        ]);
+    
+        return redirect()->back()->with(['success' => 'Updating Success!']);
+    }
+
+    
     // show the to pay products of user 
    public function toPay() {
     // get the user id 
@@ -133,7 +163,8 @@ class userProfileController extends Controller
             "starCountAll" => $validated['starCountAll'],
             "starCountQuality" => $validated['starCountQuality'],
             "starCountService" => $validated['starCountService'],
-            "specify" => $request->specify
+            "specify" => $request->specify,
+            "featured" => 1
         ]);
         Products::create([
             'userId' => $validated['userId'],

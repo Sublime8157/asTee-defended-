@@ -15,7 +15,8 @@ class feedback extends Model
         "starCountQuality",
         "starCountService",
         "specify",
-        "created_at"
+        "created_at",
+        "featured"
     ];
     use HasFactory;
 }

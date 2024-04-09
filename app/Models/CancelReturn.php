@@ -24,6 +24,7 @@ class CancelReturn extends Model
         'size',
         'price',
         'quantity',
+        'total'
     ];
     use HasFactory;
 }

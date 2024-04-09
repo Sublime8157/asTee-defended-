@@ -140,7 +140,7 @@
                                 <div class="text-xs sm:text-base flex items-center">Total (<span id="countItems" class="font-bold pe-1"></span> Item/s): 
                                 {{-- total amount of items selected in cart  --}}
                                 <h1 class="text-orange-600 md:text-3xl text-base font-extralight me-2">
-                                    ₱<span id="totalAmountTxt" class="md:text-base text-sm"></span>
+                                    ₱<span id="totalAmountTxt" class="md:text-2xl text-sm"></span>
                                     <input type="hidden" value="" id="totalAmountVal"  disabled>
                                 </h1>
                                 {{-- checkout button --}}

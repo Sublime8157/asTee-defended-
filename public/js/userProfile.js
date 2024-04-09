@@ -169,8 +169,34 @@ function getTheText(id) {
    var specifyValue = $('#specifyValue' +id);
    specifyValue.val(text);
 }
-
 function submitReview(id) {
     $('#reviewForm' + id).submit();
 }
-// close the dialog 
+
+setTimeout(function(){
+    $('#successMessage').css('display','none');
+},3000)
+
+// cancellation dialogs 
+function showCancelForm(id) {
+    // open form
+    document.getElementById('cancelDialog' + id).showModal();
+}
+function openCancelConfirmation(id) {
+    // show confirmation 
+    document.getElementById('cancelConfirmation' + id).showModal();
+}
+function closeCancelDialog(id) {
+    //close form  
+    document.getElementById('cancelDialog' +id).close();
+}
+function submitCancel(id) {
+    // submit form 
+    $('#cancelForm' + id).submit();
+}
+function closeConfirmationModal(id) {
+    // close confirmation 
+    document.getElementById('cancelConfirmation' + id).close();
+}
+
+

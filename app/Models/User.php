@@ -23,10 +23,11 @@ class User extends Authenticatable
         'fname',
         'mname',
         'lname',
-        'age',
+        'birthday',
         'email',
         'userStatus',
         'username',
+        'address',
         'password',
         'created_at'
     ];

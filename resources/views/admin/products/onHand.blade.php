@@ -122,7 +122,9 @@
                                             inputTypes="prodIdInput{{$product->id}}"
                                             option1="Processing"
                                             option2="Cancel Return"
+                                            :onHand="true"
                                             :cancel="true"
+                                            
                                             > 
                                         </x-moveProduct>
                                     </dialog>

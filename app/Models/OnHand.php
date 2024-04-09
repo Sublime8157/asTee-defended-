@@ -18,7 +18,7 @@ class OnHand extends Model
         'gender',
         'size',
         'price',
-        'quantity',
+        'quantity'
     ];
 
     

@@ -37,7 +37,8 @@ class adminOnProcessController extends Controller
         $request->file('image_path')->storeAs('public/images', $imageName);
         $validated['image_path'] =  $imageName;
 
-        
+       
+        $total = $request->quantity * $request->price;
         // insert the data in on_process_product table 
         $storeProcess = Processing::create([
             'image_path' => $validated['image_path'],
@@ -49,7 +50,7 @@ class adminOnProcessController extends Controller
             'productStatus' => $validated['productStatus'],
             'price' => $validated['price'],
             'quantity' => $validated['quantity'],
-           
+            'total' => $total
         ]);
         // redirect to processing tab 
         return redirect()->to('/products/proccessing');        
@@ -160,13 +161,12 @@ class adminOnProcessController extends Controller
             // if option 2 is selected 
             case 2:
                 // validate the id must be numeric 
-                $validated = $request->validate([
-                    'userId' => 'required|numeric|exists:customers,id',
-                ]);
+              
                 // move to cancel return table
+
                 CancelReturn::create([
+                    'userId' => $product->userId,
                     'image_path' => $product->image_path,
-                    'userId' => $validated['userId'],
                     'variation_id' => $product->variation_id,
                     'description' => $product->description,
                     'reason' => $request['reason'],
@@ -174,6 +174,7 @@ class adminOnProcessController extends Controller
                      'size' => $product->size,
                      'price' => $product->price,
                     'quantity' => $product->quantity,
+                    'total' => $product->total
                    
                 ]);
                 // delete from the onhand table 
@@ -207,6 +208,40 @@ class adminOnProcessController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function submitToCancel(Request $request, $id) {
+        $validated = $request->validate([
+            'userId' => 'required|exists:customers,id',
+            'image_path' => 'required',
+            'variation_id' => 'required|numeric',
+            'description' => 'required',
+            'reason' => 'required',
+            'gender' => 'required|numeric',
+            'size' => 'required|numeric',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'total' => 'required|numeric'
+        ]);
+
+        CancelReturn::create([
+            'userId' => $validated['userId'],
+            'image_path' => $validated['image_path'],
+            'variation_id' => $validated['variation_id'],
+            'description' => $validated['description'],
+            'reason' => $validated['reason'],
+            'specify' => $request->specify,
+            'gender' => $validated['gender'],
+            'size' => $validated['size'],
+            'price' => $validated['price'],
+            'quantity' => $validated['quantity'],
+            'total' => $validated['total']
+        ]);
+
+        $id = Processing::findOrFail($id);
+        $id->delete();
+
+        return redirect()->back()->with('Success','Your Order was Cancelled Successfully');
     }
 
     //get the updated table 

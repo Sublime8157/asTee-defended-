@@ -20,6 +20,7 @@
      <td class="ps-2">{{$product->sizeShirt()}}</td>
      <td class="ps-2">{{$product->price}}</td>
      <td class="ps-2">{{$product->quantity}}</td>
+     <td class="ps-2">{{$product->total}}</td>
      <td class="ps-2">{{$product->producStats()}}</td>
      <td>
          <form action="{{ route('productProcess.remove', $product->id) }}" method="POST" id="removeProduct{{$product->id}}">
@@ -57,7 +58,8 @@
                          <option value="1">To Pay</option>
                          <option value="2">To Ship</option>
                          <option value="3">To Recieve</option>
-                         <option value="4">Feedback</option>
+                         <option value="4">To Review</option>
+                         <option value="5">To Cancel</option>
                      </select>
                      <button type="submit" class="text-sm text-white  rounded px-2 py-1 w-full" style="background-color: #ff8906">Update</button>
                </form>

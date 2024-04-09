@@ -20,7 +20,7 @@
             @endif
             {{-- Login Form --}}
             <h1 class="text-lg font-bold mb-2">Login</h1>
-              <form action="login/process" class="ms-2" method="POST">
+              <form action="{{route('loginProcess')}}" class="ms-2" method="POST">
                     @csrf
                       <label for="username" class="text-sm">Username:</label>
                       <br><input type="text" name="username" placeholder="astee812" value="{{ old('username') }}" class="w-full rounded focus:outline-0 focus:outline-blue-300 border-b-gray-300 border-x-0 border-t-0 text-sm">
@@ -57,10 +57,10 @@
                 <input type="text" name="fname" placeholder="Firstname" class="w-80 m-1 p-2 border-none text-xs rounded focus:outline-blue-50" > 
                 <input type="text" name="mname" placeholder="Middlename" class="w-80 m-1 p-2  border-none text-xs rounded focus:outline-blue-50" >   
                 <input type="text" name="lname" placeholder="Lastname" class="w-80 m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >
-                <input type="text" name="age" placeholder="Age" class="w-14 p-2 m-1  border-none text-xs rounded focus:outline-blue-50" >
-                <input type="text" name="email" placeholder="Email" class="w-64 p-2 m-1  border-none text-xs rounded focus:outline-blue-50" >
+                <input type="text" name="email" placeholder="Email" class="w-80 p-2 m-1  border-none text-xs rounded focus:outline-blue-50" >
                 <input type="text" name="address" placeholder="Address" class="w-80 p-2 m-1 border-none text-xs rounded focus:outline-blue-50" >  
                 <input type="text" name="username" placeholder="Username" class="w-80  m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >
+                <input type="date" name="birthday" class="w-80  m-1 p-2 border-none text-xs rounded focus:outline-blue-50">
                 <input type="hidden" name="profile" value="default.png">
                 <div class="relative">
                   <input type="password" name="password" placeholder="Password"  class="w-80  password m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >
