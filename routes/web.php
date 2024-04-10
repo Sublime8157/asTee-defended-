@@ -46,6 +46,7 @@ Route::get('/DIY',  [UserController::class, 'DIY']);
 // These routes was for updating the user Profile
 Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
 Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
+Route::post('/checkout',[UserController::class, 'checkout'])->name('checkout.process');
 Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 'toPay']);
 Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'productStatus'])->name('product.status');
 Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');

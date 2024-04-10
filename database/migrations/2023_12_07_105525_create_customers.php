@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('birthday');
             $table->string('address');
             $table->string('email')->unique();
+            $table->bigInteger('contact')->nullable();
             $table->string('username')->unique();
             $table->unsignedBigInteger('userStatus');
             $table->timestamp('email_verified_at')->nullable();

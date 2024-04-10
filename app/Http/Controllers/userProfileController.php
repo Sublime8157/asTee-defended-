@@ -24,6 +24,7 @@ class userProfileController extends Controller
             'mname' => 'nullable|string',
             'lname' => 'nullable|string',
             'age' => 'nullable|integer',
+            'contact' => 'nullable',
             'username' => ['nullable', Rule::unique('customers', 'username')],
         ]);
     
@@ -36,6 +37,7 @@ class userProfileController extends Controller
             'mname' => $request->filled('mname') ? $request->mname : $user->mname,
             'lname' => $request->filled('lname') ? $request->lname : $user->lname,
             'age' => $request->filled('age') ? $request->age : $user->age,
+            'contact' => $request->filled('contact') ? $request->contact : $user->contact,
             'username' => $request->filled('username') ? $request->username : $user->username,
             'address' => $request->filled('address') ? $request->address : $user->address,
         ]);

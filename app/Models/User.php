@@ -28,6 +28,7 @@ class User extends Authenticatable
         'userStatus',
         'username',
         'address',
+        'contact',
         'password',
         'created_at'
     ];

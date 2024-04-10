@@ -98,14 +98,16 @@ class UserController extends Controller
         foreach($userCart as $cartItem) {
             // find the productId column of Cart from OnHand  
             $product = OnHand::find($cartItem->productId);       
-            // $quantity = OnHand::select('quantity')->where('id', $cartItem->productId)->value('quantity');
-            // $prodQty[$cartItem->productId] = $quantity;
+            $quantity = OnHand::where('id', $cartItem->productId)
+                                ->value('quantity');
+            $prodQty[$cartItem->productId] = $quantity;
+
             if($product){             
                 // store to products array 
                 $products[] = $product;   
             }
         }
-     return view('user.userCart', compact('userCart','products','prodQty'));
+     return view('user.userCart', compact('userCart','products','prodQty','userId'));
     }
     
     // remove a list of items  
@@ -128,7 +130,40 @@ class UserController extends Controller
         return redirect()->back();
     }
 
- 
+    public function checkout(Request $request) {
+        $data = $request->all();
+    
+        // Decode the JSON string into an array of objects
+        $quantities = json_decode($data['quantity'], true);
+        
+        // get the items name from request expecting an array from it 
+        $prodIdString = $data['items'];
+        // separe the value using , 
+        $prodId = explode(',', $prodIdString);
+        $products = [];
+        // iterate to each of the result from array 
+        foreach($prodId as $prodItem) {
+            // retrieve each of its data from OnHand
+            $product = OnHand::find($prodItem);
+            // if it is not empty 
+            if($product) {
+                // assign the value retrieve to array 
+                $products[] = $product;
+            }
+        }
+        $userInfo = User::all()->where('id', $data['userId']);
+        if(count($products) <= 0) {
+            return redirect()->back()->with(['error' => 'No selected product']);
+        }   
+        foreach($products as $prod) {
+                $prod->displayDescription = Str::words($prod->description, 10);
+        }
+        return view('user.checkout', ["products" => $products, 
+                                        "data" => $data, 
+                                        "quantities" => $quantities,
+                                        "userInfo" => $userInfo]);
+    }
+    
     
 }
     

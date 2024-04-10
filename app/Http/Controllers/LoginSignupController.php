@@ -29,6 +29,7 @@ class LoginSignupController extends Controller
          "lname" => 'required',
          "mname",
          "profile",
+         'contact' => 'required|numeric',
          "birthday" => 'required|date',
          'address' => 'required',
          "userStatus" => 'required|numeric',

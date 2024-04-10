@@ -14,6 +14,9 @@ var itemsTotalAmount = [];
 var totalAmountTxt = $('#totalAmountTxt');
 var minusBtn = $('.minusBtn');
 var addBtn = $('.addBtn');
+var prodIdItems = [];
+var itemsId = $('#itemsId');
+var inputQuantity = [];
 // for desktop view 
 var desktopQuantityValue = $('.desktopQuantityValue');
 var quantityDivDesktop = $('.quantityDivDesktop');
@@ -26,6 +29,7 @@ var addBtnMobile = $('.addButtonMobile');
 var minusBtnMobile = $('.minusButtonMobile');
 var qtyValMobile = $('.quantityValueMobile');
 var txtPriceMobile = $('.txtPriceMobile');
+var productsId = $('.prodId');
 // Select or deselect all items in the cart
 checkAllItems.on('click', function(){
     var unitPrice = $('.unitPrice');
@@ -34,6 +38,7 @@ checkAllItems.on('click', function(){
         checkAll.prop('checked', true);
         allItems = []; // clear before pushing items 
         itemsTotalAmount = [];
+        prodIdItems = [];
         checkAll.each(function(){
             allItems.push($(this).val());
             quantityDivDesktop.addClass('font-bold');
@@ -51,16 +56,23 @@ checkAllItems.on('click', function(){
         total.each(function(){
             itemsTotalAmount.push(parseFloat($(this).val())); //convert to float before getting the value of inputs
         });
+        productsId.each(function(){
+            prodIdItems.push(parseInt($(this).val()));
+        })
+
     }
     else {
+        
+     
         checkAll.prop('checked', false);
         allItems = []; // Clear the array when unchecking all
         itemsTotalAmount = []; 
+        prodIdItems = [];
         minusBtnDesktop.prop('disabled', true);
         addBtnDesktop.prop('disabled', true);
         quantityDivDesktop.removeClass('font-bold');
-             
         desktopQuantityValue.each(function(){
+            
             $(this).val(1); // Update the value of the input element
         });
         unitPrice.each(function(index){
@@ -70,10 +82,12 @@ checkAllItems.on('click', function(){
         qtyValMobile.each(function(){
             $(this).val(1); // Update the value of the input element
         });
+
         total.each(function(index){
             var value = parseInt($(this).val());
             txtPriceMobile.eq(index).text(value);
         });
+        
     }
 
     $('#removeAll').val(allItems);
@@ -83,12 +97,8 @@ checkAllItems.on('click', function(){
     },0) // sum of all items in itemsTotalAmount array 
     totalAmount.val(totaledPrice);  // assign the sum to the value of totalAmount input 
     totalAmountTxt.text(totaledPrice);
+    itemsId.val(prodIdItems);
 });
-
-
-
-
-
 // Add or remove specfic items from the cart
 function updateCart(id){
     var checkbox = $('#cart' + id);
@@ -99,15 +109,16 @@ function updateCart(id){
     var qty = $('#quantityValue' + id);
     var textPrice = $('#textPrice' + id);
     var quantityDiv = $('#quantityDiv' + id);
+    var prodId = $('#productId' + id);
 
     var desktopTextPrice = $('#desktopTextPrice' + id);
     var minusBtnDesktop = $('#desktopMinusButton' + id);
     var desktopAddButton = $('#desktopAddButton' + id);
     var desktopQuantityDiv = $('#desktopQuantityDiv' + id);
     var desktopQuantityValue = $('#desktopQuantityValue' + id);
-    
+    quantity = parseInt(qty.val());
     itemTotal = parseFloat(total.val());
-    
+    productId = parseInt(prodId.val());
     if(checkbox.prop('checked')) {
         allItems.push(id); // push the id in the allItems  array
         itemsTotalAmount.push(itemTotal);  // push the amount in the itemsTotalAmount array
@@ -117,6 +128,7 @@ function updateCart(id){
         addBtn.prop('disabled', false);
         quantityDiv.addClass('font-bold');
         desktopQuantityDiv.addClass('font-bold');
+        prodIdItems.push(productId);
     }   
     else {
         
@@ -124,7 +136,6 @@ function updateCart(id){
         if(allItemsArrIndex != -1) { //remove from the allItems array 
             allItems.splice(allItemsArrIndex);
         }
-
         minusBtn.prop('disabled', true); //disabled the inc and decr buttons 
         addBtn.prop('disabled', true); // 
         minusBtnDesktop.prop('disabled', true);
@@ -144,8 +155,12 @@ function updateCart(id){
         while ((itemsTotalAmountArrIndex = itemsTotalAmount.indexOf(price)) != -1) { 
                 itemsTotalAmount.splice(itemsTotalAmountArrIndex, 1);
             }
-    }
-
+        var prodIdIndex;
+        while((prodIdIndex = prodIdItems.indexOf(productId)) != -1){
+            prodIdItems.splice(prodIdIndex, 1);
+        }
+       }
+   
     $('#removeAll').val(allItems);  // assign the items of array to the value of removeAll input
     cartItemsCount.text(allItems.length); // replace the text of allItems span 
     var totaledPrice = itemsTotalAmount.reduce(function(total, value){ 
@@ -153,92 +168,135 @@ function updateCart(id){
     },0) // sum of all items in itemsTotalAmount array 
     totalAmount.val(totaledPrice);  // assign the sum to the value of totalAmount input 
     totalAmountTxt.text(totaledPrice); // change the text content of span 
-    
+    itemsId.val(prodIdItems);
 }
 
+var inputQuantity = [];
+
 function addButton(id) {
-    // cons of using a separate divs for mobile and desktop, you have to create separate computation as they should not share same ID's
-    // totalPrice is the total of computing the unit price and qty while the totalamount is the total of all the items inside carts including its quantity
     // Mobile computation
-    var value = $('#quantityValue' + id); // input value 
+    var value = $('#quantityValue' + id); // quantity input value 
     var txtPrice = $('#textPrice' + id); // text only 
     var unitPrice = $('#unitPrice' + id); // input value
     var checkBox = $('#cart' + id); // input checkbox
+    var desktopTextTotalPrice = $('#desktopTextPrice' + id);
     // get the value
     unitPriced = parseInt(unitPrice.val());
-    val = parseInt(value.val());
+    val = parseInt(value.val()); // Get the current quantity value and parse it as an integer
     // compute 
-    val++;
-    value.val(val)
+    val++; // Increment the quantity
+    value.val(val);
     totalPriceMobile = unitPriced * val;
 
-    //Desktop computation
-    var desktopTextPrice = $('#desktopTextPrice' + id);
+    // Desktop computation
     var desktopQuantityValue = $('#desktopQuantityValue' + id);
-    dekstopVal = parseInt(desktopQuantityValue.val());
-    dekstopVal++;
+    dekstopVal = parseInt(desktopQuantityValue.val()); // Get the current quantity value and parse it as an integer
+    dekstopVal++; // Increment the quantity
     desktopQuantityValue.val(dekstopVal);
     totalPriceDesktop = unitPriced * dekstopVal;
-    desktopTextPrice.text(totalPriceDesktop);
+
     // display the value 
     txtPrice.text(totalPriceMobile);
-    if(checkBox.prop('checked')) { 
+    desktopTextTotalPrice.text(totalPriceMobile);
+    // Calculate total amount
+    if (checkBox.prop('checked')) {
         itemsTotalAmount.push(unitPriced);
         var totaledPrice = itemsTotalAmount.reduce(function(total, price) {
             return total + price;
         })
         totalAmount.val(totaledPrice);
         totalAmountTxt.text(totaledPrice);
-        
     }
-    
+
+    // Update inputQuantity based on the id
+    var index = inputQuantity.findIndex(item => item.id === id);
+    if (index !== -1) {
+        inputQuantity[index].quantity = dekstopVal;
+    } else {
+        inputQuantity.push({ id: id, quantity: dekstopVal });
+    }
+    $('#quantitiesInput').val(JSON.stringify(inputQuantity));
+    console.log(inputQuantity);
+    $('#arrayList').val(itemsTotalAmount);
 }
-// minus qty button
+
+
+
+
 function minusButton(id) {
     var value = $('#quantityValue' + id);
     var txtPrice = $('#textPrice' + id);
     var unitPrice = $('#unitPrice' + id);
     var checkbox = $('#cart' + id);
-    val = parseInt(value.val());
-    unitPriced = parseInt(unitPrice.val());
-    price = parseInt(unitPrice.val());
+
+    var val = parseInt(value.val());
+    var unitPriced = parseInt(unitPrice.val());
 
     var desktopTextPrice = $('#desktopTextPrice' + id);
     var desktopQuantityValue = $('#desktopQuantityValue' + id);
-    desktopVal = parseInt(desktopQuantityValue.val());
-    if(val > 1) {
-        // for mobile 
-        val --;
-        value.val(val);
-        totalPriceMobile = unitPriced * val;
-        txtPrice.text(totalPriceMobile);
-        // for desktop 
-        desktopVal--;
-        desktopQuantityValue.val(desktopVal);
-        totalPriceDesktop = unitPriced * desktopVal;
-        desktopTextPrice.text(totalPriceDesktop);
+    var desktopVal = parseInt(desktopQuantityValue.val());
 
-        // remove the item in array list 
-        var itemsTotalAmountArrIndex = itemsTotalAmount.indexOf(unitPriced);
-        if(itemsTotalAmountArrIndex != -1) {
-            itemsTotalAmount.splice(itemsTotalAmountArrIndex, 1);
-        }
-        
-    }
-    
-    if(checkbox.prop('checked')) { 
-    var totaledPrice = itemsTotalAmount.reduce(function(total, price) {
-        return total + price;
-    })
-        totalAmount.val(totaledPrice);
+   if( val != 1) {
+     // for mobile
+     val--;
+     value.val(val);
+     totalPriceMobile = unitPriced * val;
+     txtPrice.text(totalPriceMobile);
+ 
+     // for desktop
+     desktopVal--;
+     desktopQuantityValue.val(desktopVal);
+     totalPriceDesktop = unitPriced * desktopVal;
+     desktopTextPrice.text(totalPriceDesktop);
+ 
+     // Update the total amount
+     var itemsTotalAmountArrIndex = itemsTotalAmount.indexOf(unitPriced);
+     if (itemsTotalAmountArrIndex != -1) {
+         itemsTotalAmount.splice(itemsTotalAmountArrIndex, 1);
+     }
+  
+ 
+     // Calculate total amount
+     var totaledPrice = itemsTotalAmount.reduce(function(total, price) {
+         return total + price;
+     });
+     totalAmount.val(totaledPrice);
      totalAmountTxt.text(totaledPrice);
-     desktopTextPrice.text(price);
-    }
-    
-     
+ 
+     // Update inputQuantity based on the id
+     var index = inputQuantity.findIndex(item => item.id === id);
+     if (index !== -1) {
+         inputQuantity[index].quantity = desktopVal;
+     }
+     $('#quantitiesInput').val(JSON.stringify(inputQuantity));
+     console.log(inputQuantity);
+ 
+     // Remove item from cart if quantity is 0
+     if (val === 0) {
+         checkbox.prop('checked', false);
+         var index = itemsTotalAmount.indexOf(unitPriced);
+         if (index !== -1) {
+             itemsTotalAmount.splice(index, 1);
+         }
+     }
+   }
+    $('#arrayList').val(itemsTotalAmount);
 }
-
 
 $('#editBtnCart').on('click', () => {
     $('#removeBtnCart').toggle();
-})
+});
+
+
+
+function showCheckOutDialog(){
+    document.getElementById('checkoutDialog').showModal()
+    let items = $('#itemsId').val();
+    let itemsList = items.split(',');
+    alert(itemsList);
+}
+function updateQuantities() {
+    let quantityInputs = document.querySelectorAll('.desktopQuantityValue');
+    let quantities = Array.from(quantityInputs).map(input => input.value);
+    document.getElementById('quantitiesInput').value = JSON.stringify(quantities);
+}

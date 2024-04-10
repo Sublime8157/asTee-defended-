@@ -22,6 +22,7 @@
                         <label for="" class="text-sm me-2 text-gray-500">Birthday</label>
                         <label for="" class="text-sm me-2 text-gray-500">Email</label>
                         <label for="" class="text-sm me-2 text-gray-500">Address</label>
+                        <label for="" class="text-sm me-2 text-gray-500">Contact</label>
                         <label for="" class="text-white">Submit</label>
                         {{-- <label for="" class="text-sm me-2 text-gray-500">Address</label> --}}
                     </div>
@@ -36,6 +37,7 @@
                             <input type="text" value="{{$user->birthday}}" class="w-60 md:w-80 h-8 text-xs md:text-sm border-none" disabled>
                             <input type="text" class="w-60 md:w-80 h-8 text-xs md:text-sm border-none" name="email" value="{{$user->email}}" disabled>
                             <input type="text" class="w-60 md:w-80 h-8 text-xs md:text-sm" name="address" placeholder="{{$user->address}}">
+                            <input type="text" class="w-60 md:w-80 h-8 text-xs md:text-sm" name="contact" placeholder="{{$user->contact}}">
                             <button class="bg-orange-600 text-white py-2 px-4 hover:opacity-60 w-60 md:w-80 h-8 text-xs md:text-sm">Save</button>
                     </div>
                 </form>

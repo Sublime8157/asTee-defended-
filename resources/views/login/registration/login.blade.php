@@ -61,6 +61,7 @@
                 <input type="text" name="address" placeholder="Address" class="w-80 p-2 m-1 border-none text-xs rounded focus:outline-blue-50" >  
                 <input type="text" name="username" placeholder="Username" class="w-80  m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >
                 <input type="date" name="birthday" class="w-80  m-1 p-2 border-none text-xs rounded focus:outline-blue-50">
+                <input type="text" name="contact" placeholder="Contact" class="w-80  m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >
                 <input type="hidden" name="profile" value="default.png">
                 <div class="relative">
                   <input type="password" name="password" placeholder="Password"  class="w-80  password m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >

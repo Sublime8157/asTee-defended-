@@ -3,25 +3,24 @@
 <x-header />
 <x-navbar />
 <body class="bg-gray-100 ">
+    <div class="text-center mt-2 ">
+        @if(session()->has('error'))
+            <span class="text-sm text-orange-800 font-bold ">{{ session()->get('error') }}</span>
+        @endif
+    </div>
     <div class="min-h-screen mb-5 w-full  flex justify-center items-start">
         <div class="mt-5 w-full  flex justify-center">
             <div class="w-full flex justify-center">        
                 {{-- this the table for desktop view  --}}
-              <div class="flex flex-col justify-center  items-center w-full h-full gap-2 ">
+              <div class="flex flex-col justify-center mx-0 lg:mx-10 items-center w-full h-full gap-2 ">
                 {{-- cart header desktop view--}}
-                    <div class="lg:flex w-auto justify-evenly  hidden h-10 lg:px-10 xl:px-10 py-8 items-center lg:gap-16 xl:gap-28  bg-white shadow flex-row">
+                    <div class="lg:flex w-full  justify-evenly  hidden h-10 lg:px-10 xl:px-10 py-8 items-center lg:gap-16 xl:gap-28  bg-white shadow flex-row">
                         {{-- table header --}}
-                        <div class="w-auto me-24">
+                        <div class="me-72">
                             <input type="checkbox" class="me-2 h-4 w-4 cursor-pointer checkAll" value="">
                             <span class="text-gray-500 text-sm font-normal text-center">Product</span>
                         </div>
-                        <div>    
-                        </div>
-                        <div>     
-                        </div>
-                        <div>      
-                        </div> 
-                        <div>
+                        <div class="ms-4">
                             <div class="text-gray-500 text-sm font-normal text-center ">Unit Price</div>
                         </div>
                        
@@ -45,7 +44,8 @@
                     </div>
                     {{-- table body --}}    
                     @foreach($products as $userCart)
-                    <div class="item rounded flex justify-evenly lg:px-6 lg:py-8 items-start lg:items-center mx-2 xl:gap-36 lg:gap-20  lg:mx-8 w-auto  bg-white shadow flex-col lg:flex-row">
+                    <input type="hidden" value="{{$userCart->id}}" id="productId{{$userCart->id}}" class="prodId">
+                    <div class="item rounded flex justify-evenly lg:px-6 lg:py-8 items-start lg:items-center mx-2 xl:gap-36 lg:gap-20   w-auto  bg-white shadow flex-col lg:flex-row">
                         {{-- edit btn visible only on mobile --}}
                         <div class="lg:hidden relative border-b border-gray-200 mb-2 w-full  flex-row-reverse p-2 flex text-gray-500 text-xs" >
                             <span id="editBtnCart" class="cursor-pointer">Edit</span>
@@ -58,6 +58,7 @@
                             </div>
                         </div>
                         <div class="flex-row items-center justify-center flex   px-2 py-2">
+                           
                             {{-- checkbox --}}
                            <div class="me-4">
                                 <input type="checkbox" name="" onclick="updateCart({{$userCart->id}})" value="{{$userCart->id}}" class="h-4 w-4 cursor-pointer list" id="cart{{$userCart->id}}">
@@ -75,18 +76,23 @@
                                         <p class="text-gray-500 text-sm flex flex-col">{{$userCart->variationType()}}| {{$userCart->sizeShirt()}} |   {{$userCart->genderShirt()}} </p>
                                    </div>
                                    {{-- total price (MobileV) --}}
-                                   <div class="lg:hidden flex">
-                                         ₱<span id="textPrice{{$userCart->id}}" class="txtPriceMobile">{{$userCart->price}}</span>
-                                        <input type="hidden" class="total" name="totalPrice" value="{{$userCart->price}}" id="totalPrice{{$userCart->id}}">
+                                   <div class="lg:hidden flex flex-row gap-2 items-center">
+                                        <div>
+                                            ₱<span id="textPrice{{$userCart->id}}" class="txtPriceMobile">{{$userCart->price}}</span>
+                                            <input type="hidden" class="total" name="totalPrice" value="{{$userCart->price}}" id="totalPrice{{$userCart->id}}">
+                                        </div>
+                                        <div class="text-xs text-gray-400 flex flex-row items-center">
+                                            <span>Stock:</span><input type="text" id="stockMobile{{$userCart->id}}" value="{{$prodQty[$userCart->id]}}" class="text-xs w-10  border-none" disabled>
+                                        </div>
                                     </div>
                                     {{--  quantity mobile View--}}
+                                    
                                     <div class="lg:hidden flex  items-center  justify-center border p-0  w-24  quantityDivMobile" id="quantityDiv{{$userCart->id}}">
                                         <button class="border-r minusBtn pe-2 minusButtonMobile" id="minusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>
                                         <input type="ext" name="quantity" id="quantityValue{{$userCart->id}}" value="1" class="quantityValueMobile w-10 text-center border-none h-4 text-xs" disabled>
                                         <button class="border-l ps-2 addBtn addButtonMobile"  id="addButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
                                     </div>  
                                 </div>
-                              
                             </div>
                         </div>
                         {{-- unit price Desktop View--}}
@@ -96,12 +102,15 @@
                             </span>
                         </div>
                         {{-- quantity Desktop View--}}
-                        <div class="lg:flex hidden">
+                        <div class="lg:flex hidden flex-col items-center ">
                             <div class="flex items-center  justify-center border p-0  w-24 quantityDivDesktop" id="desktopQuantityDiv{{$userCart->id}}">
-                                <button class="border-r pe-2 desktopMinusBtn " id="desktopMinusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>
-                                <input type="ext" name="quantity " id="desktopQuantityValue{{$userCart->id}}" value="1" class="desktopQuantityValue w-10 text-center border-none h-4 text-xs" disabled>
+                                <button class="border-r pe-2 desktopMinusBtn " id="desktopMinusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>    
+                                <input type="text" name="quantity[]" onchange="updateQuantities()" id="desktopQuantityValue{{$userCart->id}}" value="1" class="desktopQuantityValue w-10 text-center border-none h-4 text-xs" disabled>
                                 <button class="border-l ps-2 desktopAddButton"  id="desktopAddButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
                             </div>  
+                            <div class="text-xs text-gray-400 flex flex-row items-center">
+                                <span>Stock:</span><input type="text" id="stockDesktop{{$userCart->id}}" value="{{$prodQty[$userCart->id]}}" class="stockDesktop text-xs w-10  border-none" disabled>
+                            </div>
                         </div>
                         {{-- total price Desktop View--}}
                         <div class="lg:flex hidden w-4">
@@ -136,16 +145,29 @@
                                 </div>
                             </div>
                             <div>
+                                
                                 {{-- total number of items selected in cart  --}}
                                 <div class="text-xs sm:text-base flex items-center">Total (<span id="countItems" class="font-bold pe-1"></span> Item/s): 
                                 {{-- total amount of items selected in cart  --}}
                                 <h1 class="text-orange-600 md:text-3xl text-base font-extralight me-2">
                                     ₱<span id="totalAmountTxt" class="md:text-2xl text-sm"></span>
-                                    <input type="hidden" value="" id="totalAmountVal"  disabled>
+                                    
                                 </h1>
                                 {{-- checkout button --}}
-                                <button class="  bg-blue-700  text-white text-xs md:text-sm  w-20 md:w-40 text-center rounded hover:opacity-40 px-2 py-1 md:px-4 md:py-2">
-                                    Checkout</button>
+                                <form action="{{route('checkout.process')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" value="{{$userId}}" name="userId">
+                                    <input type="hidden" value="" id="itemsId" name="items">
+                                    <input type="hidden" name="quantity" id="quantitiesInput">
+                                    <input type="hidden" value="" id="totalAmountVal"  name="total">
+                                    {{-- <input type="text" value="" id="arrayList"> --}}
+                                    <button type="submit" class="  bg-blue-700  text-white text-xs md:text-sm  w-20 md:w-40 text-center rounded hover:opacity-40 px-2 py-1 md:px-4 md:py-2" >
+                                        Checkout </button>
+                                </form>
+                                    {{-- checkout dialog  --}}
+                                    <dialog id="checkoutDialog">
+                                        
+                                    </dialog>
                                 </div>   
                             </div>
                         </div>
@@ -153,8 +175,7 @@
             </div>
             </div>
         </div>
-    </div>
-
+    </div> 
 </body>
 <script src="{{ asset('/js/products.js') }}"></script>
 <script>
