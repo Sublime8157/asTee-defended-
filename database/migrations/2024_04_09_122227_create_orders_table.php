@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('userId');
-            $table->integer('productId');
+            $table->unsignedBigInteger('userId');
+            $table->unsignedBigInteger('productId');
             $table->string('address');
-            $table->integer('contact');
+            $table->bigInt('contact');
             $table->enum('mop', ['cash_on_delivery','online_payment'])->default('online_payment');
             $table->timestamps();
             
-            $able->foreign('userId')->references('id')->on('customer');
+            $table->foreign('userId')->references('id')->on('customers');
             $table->foreign('productId')->references('id')->on('product_on_process');
         });
     }

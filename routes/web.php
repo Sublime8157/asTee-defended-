@@ -46,8 +46,8 @@ Route::get('/DIY',  [UserController::class, 'DIY']);
 // These routes was for updating the user Profile
 Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
 Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
-Route::post('/checkout',[UserController::class, 'checkout'])->name('checkout.process');
-Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 'toPay']);
+Route::get('/checkout',[UserController::class, 'checkout'])->name('checkout.process');
+Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 'toPay'])->name('myPurchase');
 Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'productStatus'])->name('product.status');
 Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
 Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
@@ -72,6 +72,7 @@ Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHan
 Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
 Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
 // sort on hands product table 
+
 Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
 
 // For processing tab
@@ -138,3 +139,4 @@ Route::post('/storeCart', [UserController::class, 'store'])
 Route::get('/cart/{userId}', [UserController::class, 'cart']);
 Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
 Route::delete('/removeAll',[UserController::class, 'removeAll'])->name('remove.All');
+Route::post('/confirmCheckout',[Usercontroller::class, 'confirmCheckout'])->name('confirmCheckout');

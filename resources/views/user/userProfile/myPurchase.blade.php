@@ -6,6 +6,7 @@
    @if($errors->any()) 
     {{ $errors->first() }}
    @endif
+  
 </div>
     <div class="bg-white p-5 min-h-full   md:w-8/12 w-full">
         <h3 class="font-bold text-orange-800">My Purchase</h3>
@@ -193,7 +194,7 @@
                                 {{-- form for processing the cancel  --}}
                             </div>
                             {{-- order recieved button with dialog --}}
-                            <div class="self-end my-2 {{ Route::currentRouteName() == 'product.status' && request()->status != 3 ? 'hidden' : 'block'}}">
+                            <div class="self-end my-2 {{ Route::currentRouteName() == 'product.status' && request()->status == 3 ? 'block' : 'hidden'}}">
                                 <a  onclick="showConfirmationDialog({{$item->id}})" class=" py-1 md:py-2 px-2 md:px-4 text-xs md:text-sm bg-orange-500 cursor-pointer text-white rounded hover:opacity-70">
                                     Order Recieved
                                 </a>

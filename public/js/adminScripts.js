@@ -381,7 +381,6 @@ function moveProductOption(prodId) {
     prodIdInput.style.display =  'none';
    }
 }
-
 // sort product in on hand table 
 $(document).ready(function(){
     $('.sortProd').on('change', () => {

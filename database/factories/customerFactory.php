@@ -23,7 +23,7 @@ class customerFactory extends Factory
             'lname' => fake()->lastName(),
            
             'email' => fake()->unique()->safeEmail(),
-            'age' => fake()->numberBetween($min = 18, $max = 60),
+            'birthday' => $date($format = 'Y-m-d', $max = 'now') ,
             'username' => fake()->unique()->userName(),
 
             'email_verified_at' => now(),

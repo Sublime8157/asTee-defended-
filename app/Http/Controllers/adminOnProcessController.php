@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\orders;
 
 class adminOnProcessController extends Controller
 {
@@ -209,7 +209,7 @@ class adminOnProcessController extends Controller
 
         return redirect()->back();
     }
-
+    // remove a product then submit to canel or return 
     public function submitToCancel(Request $request, $id) {
         $validated = $request->validate([
             'userId' => 'required|exists:customers,id',
@@ -238,8 +238,11 @@ class adminOnProcessController extends Controller
             'total' => $validated['total']
         ]);
 
-        $id = Processing::findOrFail($id);
-        $id->delete();
+        $idOrders = orders::where('productId',$id);
+        $idOrders->delete();
+        
+        $idProcessing = Processing::findOrFail($id);
+        $idProcessing->delete();
 
         return redirect()->back()->with('Success','Your Order was Cancelled Successfully');
     }

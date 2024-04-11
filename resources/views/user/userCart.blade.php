@@ -154,7 +154,7 @@
                                     
                                 </h1>
                                 {{-- checkout button --}}
-                                <form action="{{route('checkout.process')}}" method="POST">
+                                <form action="{{route('checkout.process')}}" method="GET">
                                     @csrf
                                     <input type="hidden" value="{{$userId}}" name="userId">
                                     <input type="hidden" value="" id="itemsId" name="items">

@@ -12,10 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\CancelReturn::factory(50)->create();
-        \App\Models\Processing::factory(50)->create();
-        \App\Models\User::factory(50)->create();
-        \App\Models\OnHand::factory(50)->create();
+        \App\Models\CancelReturn::factory(20)->create();
+        \App\Models\Processing::factory(20)->create();
+        \App\Models\User::factory(20)->create();
+        \App\Models\OnHand::factory(20)->create();
 
         
         // \App\Models\User::factory()->create([

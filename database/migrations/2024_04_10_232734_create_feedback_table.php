@@ -24,7 +24,7 @@ return new class extends Migration
 
             
             $table->foreign('userId')->references('id')->on('customers');
-            $table->foreign('productId')->references('id')->on('products');
+            $table->foreign('productId')->references('id')->on('orders');
             
         });
     }

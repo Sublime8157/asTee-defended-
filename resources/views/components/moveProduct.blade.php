@@ -1,4 +1,4 @@
-@props(['route', 'id', 'selectId', 'onchangeFunction', 'inputTypes','option1','option2', 'cancel','onHand'])
+@props(['route', 'id', 'selectId', 'onchangeFunction', 'inputId','inputTypes','option1','option2','cancel'])
 @if($errors->any()) 
     <div class="text-center py-2 px-2 text-xs font-orange-700 font-bold">
         {{$errors->first()}}
@@ -9,14 +9,13 @@
     <select name="moveProduct" id="{{$selectId}}" onchange="{{$onchangeFunction}}" class="mb-1 text-xs text-center cursor-pointer w-full">
         <option value="1">{{$option1}}</option>
         <option value="2" >{{$option2}}</option>
-    </select>
-    @if($onHand)
+    </select> 
+    <div class="items-center  flex-col  {{ request()->is('products/onHand') ? 'flex' : 'hidden' }}">
         <label for="userId">User ID:</label> 
         <input type="text" name="userId" class="w-auto text-xs text-center h-6" value="{{old('userId')}}">     
-    @endif
+    </div>
    @if($cancel)
-        <div id="{{$inputTypes}}" class="hidden text-center">
-                                                  
+        <div id="{{$inputTypes}}" class="hidden text-center">        
             <label for="reason">Reason</label> <br>
             <select name="reason" id="" class="text-xs text-center w-full cursor-pointer">
                 <option value="1">Wrong Product</option>

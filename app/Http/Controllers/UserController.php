@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Models\feedback;
 use App\Models\customers;
-
+use App\Models\Processing;
+use App\Models\orders;
 class UserController extends Controller
 {
     // Function for showing the homepage
@@ -151,7 +152,7 @@ class UserController extends Controller
                 $products[] = $product;
             }
         }
-        $userInfo = User::all()->where('id', $data['userId']);
+        $userInfo = User::find($data['userId']);
         if(count($products) <= 0) {
             return redirect()->back()->with(['error' => 'No selected product']);
         }   
@@ -164,7 +165,68 @@ class UserController extends Controller
                                         "userInfo" => $userInfo]);
     }
     
-    
+    public function confirmCheckout(Request $request) {
+        
+        $prodToInsert = $request->productId; //get the productId from request expecting a list 
+        $validated = $request->validate([ // validate
+            'address' => 'required',
+            'contact' => 'required|min:10',
+            'userId' => 'required|exists:customers,id',
+            'description.*' => 'required', // use .* if you are expecting a list or an array 
+            'variation_id.*' => 'required',
+            'gender.*' => 'required',
+            'size.*' => 'required',
+            'price.*' => 'required|numeric',
+            'quantity.*' => 'required|numeric',
+            'total' => 'required|numeric',
+            'image_path.*' => 'required'
+        ]);
+        if(count($prodToInsert) != 0) { // count the result if it  was not 0 process
+            foreach($validated['price'] as $index => $price){ // iterate through the array so we can insert each user selected 
+                $price = (float)$price; // convert to float so the program will treat it as a number from a text 
+                $quantity = (int)$validated['quantity'][$index]; // same on int 
+                $total =  $price * $quantity; // compute 
+                $processing = Processing::create([ //insert to process 
+                    'image_path' => $request->image_path[$index], // get the index on each of the result of the index 
+                    'userId' => $validated['userId'],
+                    'variation_id' => $validated['variation_id'][$index],
+                    'description' => $validated['description'][$index],
+                    'gender'=> $validated['gender'][$index],
+                    'size' => $validated['size'][$index],
+                    'price'=> (float)$validated['price'][$index],
+                    'productStatus' => 1,
+                    'quantity' => $quantity,
+                    'total' => $total 
+                ]);
+                
+                // remove from the cart 
+                $removeToCart = Cart::whereIn('productId',$prodToInsert)->get();
+                $removeToCart->each->delete();
+                // remove from the onhand this should remove only the quantity if it was equals to 0 then continue removing 
+                $qtyCount = OnHand::where('id', $prodToInsert[$index])->first(); // get the first result from onhand 
+                if ($qtyCount && $qtyCount->quantity >= $quantity) { // if count and count from querie greater than or equal to the quantity in request 
+                    OnHand::where('id', $prodToInsert[$index])->decrement('quantity', $quantity);  // decrement its qty 
+                }
+                else if($qtyCount && $qtyCount->quantity <= 1 ) { //if it was the last item remove from onhand after submitting 
+                    OnHand::where('id',$prodToInsert[$index])->delete();
+                }
+                else {
+                    // Handle the case where the quantity is not enough
+                    return redirect()->route('checkout.process')->with('error', 'Insufficient quantity for product ' . $productId);
+                }   
+
+                $processingId = $processing->id;
+                orders::create([
+                    'userId' => $validated['userId'],
+                    'productId' => $processingId,
+                    'address' => $validated['address'],
+                    'contact' => $validated['contact'],
+                    'mop' => 'cash_on_delivery'
+                ]);
+            }
+        }
+        return redirect()->route('myPurchase',['userId' => $request->userId]);
+    }
 }
     
 

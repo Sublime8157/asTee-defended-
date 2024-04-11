@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('size');
             $table->integer('price');
             $table->integer('quantity');  
-            $tabke->integer('total');
+            $table->integer('total');
             $table->timestamps();
 
 

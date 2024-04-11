@@ -12,6 +12,7 @@ class OnHand extends Model
 
     protected $table = 'product_on_hand';
     protected $fillable  = [
+        'id',
         'image_path',
         'variation_id',
         'description',

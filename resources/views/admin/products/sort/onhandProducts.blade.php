@@ -35,7 +35,8 @@
         </dialog>
         {{-- move product dialog with form  --}}
         <dialog id="moveProductDialog{{$product->id}}" class="rounded">
-            <x-moveProduct  route="move.Product" :id="$product->id" 
+            <x-moveProduct  
+                route="move.Product" :id="$product->id" 
                 selectId="moveProductOption{{$product->id}}"
                 onchangeFunction="moveProductOption({{$product->id}})"
                 inputTypes="prodIdInput{{$product->id}}"
