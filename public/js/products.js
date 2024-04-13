@@ -63,6 +63,7 @@ minusBtn.on('click', () => {
    }
 });
 
+
 // add to cart ajax 
 $(document).ready(function(){
     $('.addToCartForm').submit(function(e){
@@ -74,8 +75,11 @@ $(document).ready(function(){
             data: formData,
             contentType: false,
             processData: false,
-            success: function() {
-                console.log("Success");
+            success: function(){
+                $('#cartResponse').css('display','block');
+                setTimeout(function(){
+                    $('#cartResponse').css('display','none');
+                },1000)
             }
         })
     })

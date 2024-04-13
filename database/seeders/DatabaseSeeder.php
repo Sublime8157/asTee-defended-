@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\CancelReturn::factory(20)->create();
         \App\Models\Processing::factory(20)->create();
-        \App\Models\User::factory(20)->create();
+        // \App\Models\User::factory(20)->create();
         \App\Models\OnHand::factory(20)->create();
 
         

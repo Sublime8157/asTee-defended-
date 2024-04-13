@@ -77,7 +77,6 @@ signupButton.on('click', function(){
     signupButton.css('color', '#e3a008');
     
     setTimeout(() => {
-       
         signupButton.removeClass('submitButton');
         signupButton.css('color', 'black');
     }, 1000);

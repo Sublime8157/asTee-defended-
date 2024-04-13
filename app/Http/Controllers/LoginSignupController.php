@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\User;
@@ -11,6 +11,8 @@ use App\Http\Controllers\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationEmail;
 
 class LoginSignupController extends Controller
 {
@@ -48,9 +50,10 @@ class LoginSignupController extends Controller
       $validated['password'] = bcrypt($validated['password']);
       $validated['profile'] = 'default.png';
       $user = User::create($validated);
-      return $user;
-     
-      auth()->login($user);
+      
+      Mail::to($user->email)->send(new VerificationEmail($user));
+      
+      
    }
    
 
@@ -87,7 +90,7 @@ class LoginSignupController extends Controller
       $request->session()->invalidate();
       $request->session()->regenerateToken();
 
-      return redirect('/home');
+      return redirect('/');
    }
 
 

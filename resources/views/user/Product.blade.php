@@ -3,12 +3,9 @@
 @section('docu', 'Products')
 <x-header />
 <x-navbar />
-@if(session()->has('success'))
-   <div class="text-center text-xs w-full py-1  text-white bg-blue-500">
-    {{ @session()->get('success') }}
-   </div>
-@endif
-
+<div class="text-center py-1 text-sm  bg-blue-700 hidden" id="cartResponse">
+    <h1 class="text-white">Successfully Added to Cart</h1>
+</div>
     <div class="flex justify-evenly md:flex-row flex-col items-start "> 
         {{-- Filtering section  --}}
         <a onclick="" class="p-5 md:hidden  top-0 flex items-center">

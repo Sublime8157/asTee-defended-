@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Sales;
+use App\Models\orders;
 use App\Models\Products;
 use App\Models\Processing;
 use Illuminate\Support\Str;
@@ -175,6 +176,9 @@ class userProfileController extends Controller
             'price' => $validated['price'],
             'quantity' => $validated['quantity']
         ]);
+
+        $deleteFromOrders = orders::where('productId', $request->productId);
+        $deleteFromOrders->delete();
 
         $producToDelete = Processing::findOrFail($request->productId);
         $producToDelete->delete();

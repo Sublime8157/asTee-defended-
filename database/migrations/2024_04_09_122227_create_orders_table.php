@@ -16,10 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('userId');
             $table->unsignedBigInteger('productId');
             $table->string('address');
-            $table->bigInt('contact');
+            $table->bigInteger('contact');
             $table->enum('mop', ['cash_on_delivery','online_payment'])->default('online_payment');
             $table->timestamps();
-            
             $table->foreign('userId')->references('id')->on('customers');
             $table->foreign('productId')->references('id')->on('product_on_process');
         });

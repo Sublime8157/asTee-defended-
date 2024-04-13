@@ -130,7 +130,12 @@ input[type="text"], select, textarea     {
     opacity: 100;
 }
 #thankYouNotif {
-   
+    animation: sucessMessage 500ms;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+#cartResponse{
     animation: sucessMessage 500ms;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;

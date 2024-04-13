@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
+use App\Mail\VerificationEmail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,7 @@ Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
 // Default rouse that shows the login form 
 Route::get('/', [LoginSignupController::class, 'LoginSignup'])->name('userLogin');
+Auth::routes(['verify' => true]);
 
 // Route for logging in proccess
 Route::post('/login/process', [LoginSignupController::class, 'process'])->name('loginProcess');
@@ -32,7 +35,7 @@ Route::post('/login/process', [LoginSignupController::class, 'process'])->name('
 Route::post('/store', [LoginSignupController::class, 'store']);
 
 // Route for homepage
-Route::get('/home', [UserController::class, 'home']);
+// Route::get('/homepage', [UserController::class, 'home']);
 // Route for about us page
 Route::get('/about-us', [UserController::class, 'about_us']);
 
@@ -135,8 +138,15 @@ Route::get('/productDetails/{id}', [productsController::class, 'details']);
 Route::post('/storeCart', [UserController::class, 'store'])
                                                     ->middleware('cart')
                                                     ->name('cart');
-                                                    
 Route::get('/cart/{userId}', [UserController::class, 'cart']);
 Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
 Route::delete('/removeAll',[UserController::class, 'removeAll'])->name('remove.All');
 Route::post('/confirmCheckout',[Usercontroller::class, 'confirmCheckout'])->name('confirmCheckout');
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/emailSend', function(){
+    $name ="Joven";
+
+    Mail::to(users: 'egalan815715m@gmail.com')->send(new VerificationEmail($name));
+});

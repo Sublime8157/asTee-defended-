@@ -72,20 +72,20 @@
             </form>
             
             {{-- Reveal this when storing is success --}} 
-            <div class="absolute  hidden top-32 w-auto z-50 bg-white shadow-lg" id="successMessage" style="left: 1rem" >
+            <div class="absolute hidden top-32 w-full z-50 bg-white shadow-lg" id="successMessage" style="left: 0.2rem" >
                 <div class="bottom-0  rounded w-90" >
-                  <div class="absolute  overflow-visible right-36" style="top: -30px;">
+                  <div class="absolute  overflow-visible right-40" style="top: -30px;">
                     <ion-icon name="checkmark-circle-outline" class="text-6xl text-white bg-green-400 rounded-full font-extralight"></ion-icon>
                   </div>
                   <div class="text-center font-extralight italic text-sm px-5 pt-10 pb-4">
                       <p>
                       <span class="text-lg"> Congratulations!</span> <br> <br>
-                        You are successfully registered, <br> happy customizing and shopping in A's Tee 
+                        Your 1 step away, <br> Please Verify You Email! Before cotinueing shopping!
                       </p>
                   </div>
                   <div class="flex justify-evenly pb-5">
-                      <a href="/"><button class="px-2 py-2 bg-green-400 text-sm font-extralight rounded text-white hover:bg-green-200" onclick="revealForm()">
-                        Proceed to Login
+                      <a href="https://mail.google.com/mail/u/0/#inbox"><button class="px-2 py-2 bg-green-400 text-sm font-extralight rounded text-white hover:bg-green-200">
+                        Proceed To Inbox
                       </button>
                       </a>
                   </div>
