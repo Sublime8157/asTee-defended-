@@ -1,1 +1,1 @@
-You are verified 
+tanginamo puno

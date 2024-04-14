@@ -13,6 +13,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
 use App\Models\orders;
 
+
 class adminOnProcessController extends Controller
 {
     // controller for inserting data into prodcut processing 
@@ -246,11 +247,16 @@ class adminOnProcessController extends Controller
 
         return redirect()->back()->with('Success','Your Order was Cancelled Successfully');
     }
+    public function removeMultiple(Request $request) {
+        $productTodelete = explode(',', $request->toRemove);
+        $productTodelete = array_map('trim', $productTodelete);
+        $productTodelete = array_map('intVal', $productTodelete);
 
-    //get the updated table 
-    // public function updateTable() {
-    //     $productData = Processing::all();
-        
-    //     return view('admin.products.sort.sortProducts', compact('productData'));
-    // }
+        $productTodeleteOrders = orders::whereIn('productId', $productTodelete);
+        $productTodeleteOrders->delete();
+        $productTodelete = Processing::whereIn('id', $productTodelete);
+        $productTodelete->delete();
+
+        return redirect()->back()->with(['success' => 'Deleted Successfully']);
+    }
 }

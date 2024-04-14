@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Models\Processing;
+use App\Models\CancelReturn;
+use App\Models\orders;
+use App\Models\feedback;
 class accountsController extends Controller
 {
     
@@ -74,9 +77,22 @@ class accountsController extends Controller
     }
 
     // the $id was from the action pass from the html to routes and ends here 
-    // remove a suer 
+    // remove a user and all of its process or orders 
     public function destroy($id)
         {
+            //remove from processsing 
+            $processing = Processing::where('userId', $id);            
+            $processing->delete();
+            // remove from orders
+            $orders = orders::where('userId', $id);
+            $orders->delete();
+            // remove from feedback
+            $feedback = feedback::where('userId', $id);
+            $feedback->delete();
+            // remove from cancel return 
+            $cancelReturn = CancelReturn::where('userId', $id);
+            $cancelReturn->delete();
+            // and finally remove from user 
             $user = User::findOrFail($id);
             $user->delete();
 

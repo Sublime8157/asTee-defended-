@@ -19,11 +19,6 @@ return new class extends Migration
             $table->integer('quantity');
           
             $table->timestamps();
-
-            
-
-            $table->foreign('userId')->references('id')->on('customers');
-           
         });
     }
 

@@ -12,7 +12,8 @@
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
-                            <th class="adminTable">ID</th>
+                            <x-removeMultiple route="{{route('deleteFrom.OnHand')}}"> </x-removeMultiple>
+                            <th class="adminTable   ">ID</th>
                             <th class="adminTable w-20">Image</th>
                             <th class="adminTable">Variation</th>
                             <th class="adminTable">Description</th>
@@ -28,10 +29,12 @@
                         <tr>
                             {{-- Filter products  --}}
                                 <form id="filterOnHandForm"  method="get">
-                                    <td class="w-12">
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                    <td>
                                         {{-- filter by id  --}}
                                             <input type="text" name="id" placeholder="ID" class="w-10 h-8 text-xs ">
-                                        </td>
+                                    </td>
                                     <td class="w-12"></td>
                                     <td class="w-40 ">
                                         {{-- by variation --}}
@@ -69,7 +72,7 @@
                                         {{-- by price --}}
                                     <td class="w-40"><input type="text" name="price" placeholder="Price" class="w-32 h-8 text-xs"></td>                
                                     <td></td>
-                                    <td colspan="3" class=" w-24">
+                                    <td colspan="3" class="text-center w-24">
                                         <button type="submit" class="bg-yellow-500 flex items-center justify-center gap-1 text-xs rounded w-auto py-1 px-2 tracking-wider  hover:opacity-50 text-white cursor-pointer"><ion-icon name="funnel" class="text-white text-md"></ion-icon>FILTER</button></td>
                                 </form>
                         </tr>
@@ -79,8 +82,10 @@
                         {{-- We then loop to the database  and each data in product table these code below will execute  --}}
                         {{-- The  variationType() is a function from model that  convert the number into value--}}
                             @foreach($filterOnHand as $product)
-                            <tr class="text-xs">
-                                <td>{{$product->id}}</td>
+                            <tr class="text-xs py-2">
+                                <td></td>
+                                <td><input type="checkbox" name="" id="" value="{{$product->id}}" class="checkBox"></td>
+                                <td class="text-center">{{$product->id}}</td>
                                 <td class="ps-2">
                                     {{-- pass the productId on revealImage  function --}}
                                     <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="50px" class="cursor-pointer" 
@@ -90,13 +95,13 @@
                                         <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="auto" class="cursor-pointer">
                                     </dialog>
                                 </td> 
-                                <td class="ps-2">{{$product->variationType()}}</td>
-                                <td class="ps-2">{{$product->description}}</td>
-                                <td class="ps-2">{{$product->genderShirt()}}</td>
-                                <td class="ps-2">{{$product->sizeShirt()}}</td>
-                                <td class="ps-2">{{$product->price}}</td>
-                                <td class="ps-2">{{$product->quantity}}</td>       
-                                <td>
+                                <td class=" text-center">{{$product->variationType()}}</td>
+                                <td class="text-center ">{{$product->description}}</td>
+                                <td class="text-center">{{$product->genderShirt()}}</td>
+                                <td class="text-center">{{$product->sizeShirt()}}</td>
+                                <td class="text-center">{{$product->price}}</td>
+                                <td class="text-center">{{$product->quantity}}</td>       
+                                <td class="text-center">
                                     {{-- remove product form --}}
                                     <form action="{{ route('product.remove', $product->id) }}" id="removeProduct{{ $product->id }}" method="POST">
                                         @csrf
@@ -146,7 +151,7 @@
                             </tr>
                             <tr>
                                 {{-- Horizontal line  --}}
-                                 <td colspan="10"><hr class="w-full my-2"></td>
+                                 <td colspan="10"><hr class="w-full"></td>
                             </tr>             
                            
                             @endforeach

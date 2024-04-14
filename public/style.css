@@ -93,7 +93,7 @@ ul li:hover {
 .adminTable {
     font-size: 12px; 
     font-weight: bold;
-    text-align: start;
+    text-align: center;
    
 }
  input[type="text"]:focus, select:focus, textarea:focus {

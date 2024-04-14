@@ -18,7 +18,7 @@
                     {{-- The request() is a function provided by laravel specfically for HTTP request and in this case the request() check if the HTTP is dashbaord then 'sideNavBG will append and if not nothing happen' --}}
                     <a href="/dashboard" class="w-full">
                         <li class="flex items-start justify-between flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('dashboard') ? 'sideNavBG' : ' ' }}">                     
-                                <div class="text-xs text-gray-400 flex items-center flex-row ">
+                            <div class="text-xs text-gray-400 flex items-center flex-row ">
                                     <ion-icon name="analytics-outline" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
                                         <div class="text-gray-400 text-xs">
                                             Dashboard

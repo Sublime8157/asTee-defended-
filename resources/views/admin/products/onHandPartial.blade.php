@@ -1,6 +1,8 @@
 @foreach($filterOnHand as $product)
 <tr class="text-xs">
-    <td>{{$product->id}}</td>
+    <td></td>
+    <td><input type="checkbox" name="" id="" value="{{$product->id}}" class="checkBox"></td>
+    <td class="text-center">{{$product->id}}</td>
     <td class="ps-2">
         {{-- pass the productId on revealImage  function --}}
         <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="50px" class="cursor-pointer" 
@@ -10,13 +12,13 @@
             <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="auto" class="cursor-pointer">
         </dialog>
     </td> 
-    <td class="ps-2">{{$product->variationType()}}</td>
-    <td class="ps-2">{{$product->description}}</td>
-    <td class="ps-2">{{$product->genderShirt()}}</td>
-    <td class="ps-2">{{$product->sizeShirt()}}</td>
-    <td class="ps-2">{{$product->price}}</td>
-    <td class="ps-2">{{$product->quantity}}</td>       
-    <td>
+    <td class=" text-center">{{$product->variationType()}}</td>
+    <td class="text-center ">{{$product->description}}</td>
+    <td class="text-center">{{$product->genderShirt()}}</td>
+    <td class="text-center">{{$product->sizeShirt()}}</td>
+    <td class="text-center">{{$product->price}}</td>
+    <td class="text-center">{{$product->quantity}}</td>       
+    <td class="text-center">
         {{-- remove product form --}}
         <form action="{{ route('product.remove', $product->id) }}" id="removeProduct{{ $product->id }}" method="POST">
             @csrf
@@ -41,6 +43,7 @@
                 inputTypes="prodIdInput{{$product->id}}"
                 option1="Processing"
                 option2="Cancel Return"
+                inputId="block"
                 :cancel="true"
                 > 
             </x-moveProduct>
@@ -66,5 +69,6 @@
 <tr>
     {{-- Horizontal line  --}}
      <td colspan="10"><hr class="w-full my-2"></td>
-</tr>                  
+</tr>             
+
 @endforeach

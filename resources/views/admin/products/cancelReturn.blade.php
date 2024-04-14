@@ -14,15 +14,14 @@
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
            <tr class="">
+                <x-removeMultiple route="{{route('deleteFrom.cancel')}}"> </x-removeMultiple> 
                 <th class="adminTable">ID</th>
                 <th class="adminTable w-20">User Id</th>
                 <th class="adminTable w-20">Image</th>
                 <th class="adminTable">Variation</th>
                 <th class="adminTable">Description</th>   
                 <th class="adminTable">Gender</th>
-                <th class="adminTable">Size</th>
-                <th class="adminTable">Price</th>
-                <th class="adminTable w-24">Quantity</th>        
+                <th class="adminTable">Size</th>      
                 <th class="adminTable w-24">Total</th>
                 <th class="adminTable w-20">Reason</th>                                                               
                 <th class="adminTable w-24">Action</th>
@@ -32,7 +31,8 @@
            </tr>
            <tr>
             <form id="filterReturnCancelForm"  method="get">
-
+                <td></td>
+                <td></td>
                 <td class="w-12">
                     {{-- filter by id  --}}
                         <input type="text" name="id" placeholder="ID" class="w-10 h-8 text-xs ">
@@ -73,7 +73,6 @@
                         </select>
                     </td>
                     {{-- by price --}}
-                <td class="w-40"><input type="text" name="price" placeholder="Price" class="w-32 h-8 text-xs"></td>   
                 <td></td>             
                 <td></td>
                 <td colspan="3" class=" w-24">
@@ -87,11 +86,13 @@
             {{-- We then loop to the database  and each data in product table these code below will execute  --}}
             {{-- The  variationType() is a function from model that  convert the number into value--}}
             @foreach($filterReturnCancel as $product) 
-            <tr class=" text-xs">
-                    <td class="ps-2">{{$product->id}} </td>
-                    <td class="w-10">{{$product->userId}}</td>
+            <tr class=" text-xs px-2">
+                    <td></td>
+                    <td><input type="checkbox" name="" id="" value="{{$product->id}}" class="checkBox"></td>
+                    <td class="text-center ps-2">{{$product->id}} </td>
+                    <td class="text-center w-10">{{$product->userId}}</td>
                     {{-- Get the image path  --}}
-                    <td class="ps-2">
+                    <td class="text-center ps-2">
                         {{-- pass the product id on revealImage  function --}}
                         <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="50px" class="cursor-pointer" 
                         onclick="revealImage('{{ $product->id}}')">
@@ -100,20 +101,18 @@
                             <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="auto" class="cursor-pointer">
                         </dialog>
                     </td>                                 
-                    <td class="ps-2">{{$product->variationType()}}</td>
-                    <td class="ps-2">{{$product->description}}</td>
-                    <td class="ps-2">{{$product->genderShirt()}}</td>
-                    <td class="ps-2">{{$product->sizeShirt()}}</td>
-                    <td class="ps-2">{{$product->price}}</td>
-                    <td class="ps-2">{{$product->quantity}}</td>
-                    <td class="ps-2">{{$product->total}}</td>
+                    <td class="text-center ps-2">{{$product->variationType()}}</td>
+                    <td class="text-center ps-2">{{$product->description}}</td>
+                    <td class="text-center ps-2">{{$product->genderShirt()}}</td>
+                    <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
+                    <td class="text-center ps-2">{{$product->total}}</td>
                     @if ($product->reason == 7)
-                     <td class="ps-2">{{$product->specify}}</td>
+                     <td class="text-center ps-2">{{$product->specify}}</td>
                     @else
-                        <td class="ps-2">{{$product->reason()}}</td>
+                        <td class="text-center ps-2">{{$product->reason()}}</td>
                     @endif
                   
-                    <td>
+                    <td class="text-center">
                         <form action="{{ route('cancelReturn.remove', $product->id) }}" method="POST" id="removeProduct{{ $product->id }}">
                             @csrf
                             @method('DELETE');
@@ -156,7 +155,7 @@
                     </td>
             </tr>          
             <tr>
-                    <td colspan="10"> <hr class="w-full my-2"></td>
+                <td colspan="10"> <hr class="w-full"></td>
             </tr>
             @endforeach
         </tbody>

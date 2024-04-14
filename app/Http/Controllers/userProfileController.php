@@ -169,17 +169,19 @@ class userProfileController extends Controller
             "specify" => $request->specify,
             "featured" => 1
         ]);
+        // insert to table products all the after reviewing 
         Products::create([
             'userId' => $validated['userId'],
+            'productId' => $validated['productId'],
             'image_path' => $validated['image_path'],
             'description' => $validated['description'],
             'price' => $validated['price'],
             'quantity' => $validated['quantity']
         ]);
-
+        // remove from orders 
         $deleteFromOrders = orders::where('productId', $request->productId);
         $deleteFromOrders->delete();
-
+        // remove from processing 
         $producToDelete = Processing::findOrFail($request->productId);
         $producToDelete->delete();
         return redirect()->back()->with('Success', 'Thank you for your feedback');

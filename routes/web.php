@@ -75,9 +75,9 @@ Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHan
 Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
 Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
 // sort on hands product table 
-
 Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
-
+//delte all
+Route::delete('/deleteAll',[adminOnHandsController::class, 'removeAllProduct'])->name('deleteFrom.OnHand');
 // For processing tab
 Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
 Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
@@ -85,18 +85,16 @@ Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'remov
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
 Route::get('/updateTable', [adminOnProcessController::class, 'updateTable'])->name('updateTable');
 Route::post('/submitCancel/{id}', [adminOnProcessController::class, 'submitToCancel'])->name('submitOrder.cancel');
-
 // move a product
 Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
 // sort a product
 Route::get('/sortProcessingProduct', [adminOnProcessController::class, 'sortProduct']);
 // change a product status 
 Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStatus'])->name('update.status');
-
 // filter products in processign tab 
 Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
-
-// for cancel or return tab 
+Route::delete('/removeMultiple', [adminOnProcessController::class, 'removeMultiple'])->name('deleteFrom.Processing');
+// for cancel or return tab
 Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']); //->middleware('admin');
 Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
 Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
@@ -106,7 +104,7 @@ Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCa
 Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, 'removeProduct'])->name('cancelReturn.remove');
 // sort products in cancel or return 
 Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sortProduct']);
-
+Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'removeMultiple'])->name('deleteFrom.cancel');
 
 
 // Route for accounts admin panel tab 

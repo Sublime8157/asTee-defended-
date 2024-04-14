@@ -1,11 +1,13 @@
 @foreach($filterOnProcess as $product) 
 <tr class=" text-xs ">
+     <td></td>
+     <td><input type="checkbox" name="" id="" value="{{$product->id}}" class="checkBox"></td>
  {{-- product Id --}}
-     <td class="ps-2">{{$product->id}} </td>
+     <td class="text-center ps-2">{{$product->id}} </td>
      {{-- User Id --}}
-     <td class="ps-2 w-20">{{$product->userId}} </td>
+     <td class="text-center ps-2 w-20">{{$product->userId}} </td>
      {{-- Get the image path  --}}
-     <td class="ps-2">
+     <td class="text-center ps-2">
          {{-- pass the product id on revealImage  function --}}
          <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="50px" class="cursor-pointer" 
          onclick="revealImage('{{ $product->id}}')">
@@ -14,15 +16,14 @@
              <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="auto" class="cursor-pointer">
          </dialog>
      </td>                
-     <td class="ps-2">{{$product->variationType()}}</td>
-     <td class="ps-2">{{$product->description}}</td>
-     <td class="ps-2">{{$product->genderShirt()}}</td>
-     <td class="ps-2">{{$product->sizeShirt()}}</td>
-     <td class="ps-2">{{$product->price}}</td>
-     <td class="ps-2">{{$product->quantity}}</td>
-     <td class="ps-2">{{$product->total}}</td>
-     <td class="ps-2">{{$product->producStats()}}</td>
-     <td>
+     <td class="text-center ps-2">{{$product->variationType()}}</td>
+     <td class="text-center ps-2">{{$product->description}}</td>
+     <td class="text-center ps-2">{{$product->genderShirt()}}</td>
+     <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
+     <td class="text-center ps-2">{{$product->total}}</td>
+     <td class="text-center ps-2">{{$product->producStats()}}</td>
+     {{-- settings  --}}
+     <td class="text-center">
          <form action="{{ route('productProcess.remove', $product->id) }}" method="POST" id="removeProduct{{$product->id}}">
              @csrf
              @method('DELETE')
@@ -84,6 +85,6 @@
      </td>
 </tr>
 <tr>
-     <td colspan="10"> <hr class="w-full my-2"></td>
+     <td colspan="10"> <hr class="w-full"></td>
 </tr>
 @endforeach

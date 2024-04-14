@@ -195,7 +195,17 @@ class adminCancelReturnController extends Controller
         $productData = $productData->get();
 
         return view('admin.products.sort.sortProducts', compact('productData'));
+    }
 
+    public function removeMultiple(Request $request) {
+        $prodToRemove = explode(',', $request->toRemove);
+        $prodToRemove = array_map('trim',  $prodToRemove);
+        $prodToRemove = array_map('intVal',  $prodToRemove);
+
+
+        $removeProductList = CancelReturn::whereIn('id', $prodToRemove);
+        $removeProductList->delete();
+        return redirect()->back()->with(['success','Deleted Successfully']);
     }
     
 }

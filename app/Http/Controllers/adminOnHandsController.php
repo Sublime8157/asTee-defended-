@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Models\CancelReturn;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Cart;
 
 
 class adminOnHandsController extends Controller
@@ -191,7 +191,6 @@ class adminOnHandsController extends Controller
     // sort products 
 
     public function sortProducts(Request $request) {
-    
         $sortProducts = $request->input('sortProductBy');
         $orderBy = $request->input('orderProductBy');
 
@@ -199,8 +198,22 @@ class adminOnHandsController extends Controller
         $productData->orderBy($sortProducts, $orderBy);
 
         $productData = $productData->paginate(10);
-
         return view('admin.products.sort.onhandProducts', compact('productData'));
-
     }
+
+    // delete all using checkbox 
+    public function removeAllProduct(Request $request) {
+        $idToDelete = explode(',', $request->toRemove); // separate using , 
+        $idToDelete = array_map('trim', $idToDelete); // remove white spaces 
+        $idToDelete = array_map('intVal', $idToDelete); // convert to int 
+        // delete first from cart as the cart reference this 
+        $deletFromCart = Cart::whereIn('productId', $idToDelete);
+        $deletFromCart->delete();
+        // and then delete from the onhand  table 
+        $listToDelete = OnHand::whereIn('id', $idToDelete); // find all from OnHand table 
+        $listToDelete->delete(); // delete 
+
+       
+       return redirect()->back()->with(['success' => 'Successfully Deleted']);
+}
 }
