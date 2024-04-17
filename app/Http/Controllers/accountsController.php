@@ -80,12 +80,12 @@ class accountsController extends Controller
     // remove a user and all of its process or orders 
     public function destroy($id)
         {
-            //remove from processsing 
-            $processing = Processing::where('userId', $id);            
-            $processing->delete();
             // remove from orders
             $orders = orders::where('userId', $id);
             $orders->delete();
+            //remove from processsing 
+            $processing = Processing::where('userId', $id);            
+            $processing->delete();
             // remove from feedback
             $feedback = feedback::where('userId', $id);
             $feedback->delete();

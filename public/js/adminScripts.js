@@ -1,3 +1,5 @@
+
+
 var sideNav = $('#nav');
 var icon = true;
 var addProdCloseBtn = $('#closeBtn');
@@ -474,3 +476,43 @@ function featured(id) {
     
     $('#featureForm' + id).submit();
 }
+$(document).ready(function(){
+    $('[id^="updateStatusBtn"]').click(function(){ // get all the id whose have updateStatusBtn in their id attr 
+        let prodId = $(this).attr('id').replace('updateStatusBtn','');  // in its id remove the updateStatusBtn into empty string so we can only extract the ID 
+        let formData = new FormData($('#updateStatusForm' + prodId)[0]); // get the form assign to formdata so we can access its form 
+        let select = $('#updateStatusSelect' + prodId); 
+        let selectedValue = select.val();
+        let status = $('#status' + prodId);
+
+        $.ajax({
+            url: $('#updateStatusForm' + prodId).attr('action'),
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function() {
+                switch(selectedValue) {
+                    case '1': 
+                        status.text('To Pay');
+                        break;
+                    case '2': 
+                        status.text('To Ship');
+                        break;
+                    case '3': 
+                        status.text('To Recieve');
+                        break;
+                    case '4': 
+                        status.text('To Review');
+                        break;
+                    default: 
+                        alert('Undefined');
+                        
+                }
+                document.getElementById('prodStatus' + prodId).close();
+            },
+            error: function(error) {
+                console.log('error Occured', error);
+            } 
+        })
+    })
+})

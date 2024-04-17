@@ -93,7 +93,6 @@
             </form>
            </tr>
            <tbody id="productTableBody">
-            
            {{-- the variable onHandProducts is from controller and assigned it to a product variable to query in product table  --}}
            {{-- Take note that the words after $product is a table name in product table from database --}}
            {{-- We then loop to the database  and each data in product table these code below will execute  --}}
@@ -121,7 +120,10 @@
                 <td class="text-center ps-2">{{$product->genderShirt()}}</td>
                 <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
                 <td class="text-center ps-2">{{$product->total}}</td>
-                <td class="text-center ps-2">{{$product->producStats()}}</td>
+                <td class="text-center ps-2">
+                    <span id="status{{$product->id}}">{{$product->producStats()}}</span>
+                    <ion-icon name="create-outline" class="font-bold text-sm cursor-pointer" onclick="editStatus({{ $product->id }})"></ion-icon>
+                </td>
                 {{-- settings  --}}
                 <td class="text-center">
                     <form action="{{ route('productProcess.remove', $product->id) }}" method="POST" id="removeProduct{{$product->id}}">
@@ -152,17 +154,17 @@
                     </dialog>
                     {{-- dialog for editing a product status  --}}
                     <dialog id="prodStatus{{$product->id}}" class="p-5">
-                          <form action="{{route('update.status', $product->id)}}" method="POST" class="text-center">
+                          <form id="updateStatusForm{{$product->id}}" action="{{route('update.status', $product->id)}}" method="POST" class="text-center">
                                 @csrf
                                 @method('PATCH')
-                                <select name="productStatus" id="" class="text-xs text-center w-full mb-2">
+                                <select name="productStatus" id="updateStatusSelect{{$product->id}}" class="text-xs text-center w-full mb-2">
                                     <option value="1">To Pay</option>
                                     <option value="2">To Ship</option>
                                     <option value="3">To Recieve</option>
                                     <option value="4">To Review</option>
                                     <option value="5">To Cancel</option>
                                 </select>
-                                <button type="submit" class="text-sm text-white  rounded px-2 py-1 w-full" style="background-color: #ff8906">Update</button>
+                                <button id="updateStatusBtn{{$product->id}}" type="button" class="text-sm text-white  rounded px-2 py-1 w-full" style="background-color: #ff8906">Update</button>
                           </form>
                     </dialog>
                     <button type="button" onclick="showMenus({{ $product->id }})" >
@@ -174,8 +176,6 @@
                               <a onclick="editProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Edit</a>
                                 {{-- move a product  --}}
                               <a onclick="moveProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">MoveTo</a>
-                              {{-- update product status --}}
-                              <a onclick="editStatus({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Status</a>
                               {{-- remove a product --}}
                               <a onclick="removeProduct({{ $product->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
                              

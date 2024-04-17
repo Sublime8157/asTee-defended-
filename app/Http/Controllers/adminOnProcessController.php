@@ -207,8 +207,9 @@ class adminOnProcessController extends Controller
         $product->update([
             'productStatus' => $request->productStatus
         ]);
-
-        return redirect()->back();
+        
+        
+        
     }
     // remove a product then submit to canel or return 
     public function submitToCancel(Request $request, $id) {
