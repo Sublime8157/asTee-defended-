@@ -35,3 +35,23 @@ $('.checkBox').on('click', function(){ // listen to click for all of the tags wi
     }
     $('#toRemove').val(toDeleteArr); // assign the value to input 
 })
+
+function chosenMultiple() {
+    var functionToDo = $('#chooseMultiple').val();
+    switch(functionToDo) {
+        case '1':
+            document.getElementById('confirmDialog').showModal();
+            break;
+        case '2': 
+            var movedValue = $('#toUpdate').val(toDeleteArr);
+            movedValue = parseInt(movedValue.val());
+            document.getElementById('confirmDialogUpdate').showModal();
+            break;
+        case '3':
+            alert('You want to move? ');
+            break;
+        case '4': 
+            alert('Please specify');
+            break;
+    }
+}

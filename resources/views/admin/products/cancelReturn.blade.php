@@ -14,7 +14,7 @@
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
            <tr class="">
-                <x-removeMultiple route="{{route('deleteFrom.cancel')}}"> </x-removeMultiple> 
+                <x-removeMultiple route="{{route('deleteFrom.cancel')}}" status="hidden                                                                                                                                             "> </x-removeMultiple> 
                 <th class="adminTable">ID</th>
                 <th class="adminTable w-20">User Id</th>
                 <th class="adminTable w-20">Image</th>

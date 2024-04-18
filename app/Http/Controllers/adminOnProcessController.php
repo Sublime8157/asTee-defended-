@@ -260,4 +260,17 @@ class adminOnProcessController extends Controller
 
         return redirect()->back()->with(['success' => 'Deleted Successfully']);
     }
+
+    public function multipleUpdate(Request $request) {
+        $productToUpdate = explode(',', $request->toUpdate);
+        $productToUpdate = array_map('trim', $productToUpdate);
+        $productToUpdate = array_map('intVal', $productToUpdate);
+        $status = $request->status;
+        foreach($productToUpdate as $product) {
+            Processing::whereIn('id', $productToUpdate)->update([
+                'productStatus' => $status
+            ]);
+        }
+        return redirect()->back()->with(['success' => 'Updating Success']);
+    }
 }

@@ -85,6 +85,7 @@ Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'remov
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
 Route::get('/updateTable', [adminOnProcessController::class, 'updateTable'])->name('updateTable');
 Route::post('/submitCancel/{id}', [adminOnProcessController::class, 'submitToCancel'])->name('submitOrder.cancel');
+Route::post('/updateMultiple',[adminOnProcessController::class, 'multipleUpdate'])->name('updateMultiple.status');
 // move a product
 Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
 // sort a product
