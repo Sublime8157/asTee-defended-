@@ -188,6 +188,19 @@ class adminOnHandsController extends Controller
                 return redirect()->back();
         }   
     }
+
+    // move multiple products 
+    public function moveMultiple(Request $request) {
+        $productToMove = explode(',',$request->toMove);
+        $productToMove = array_map('trim',$productToMove);
+        $productToMove = array_map('intVal',$productToMove);
+        $productMoveTo = $request->moveTo; 
+
+        dd($productMoveTo, $productToMove);
+        
+        return redirect()->back()->with(['productToMove' => $productToMove]); 
+
+    }
     // sort products 
 
     public function sortProducts(Request $request) {

@@ -74,6 +74,7 @@ Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHan
 // for editing the products in onhand 
 Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
 Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
+Route::post('/moveMultiple', [adminOnHandsController::class, 'moveMultiple'])->name('moveMultiple.onHand');
 // sort on hands product table 
 Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
 //delte all

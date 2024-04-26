@@ -5,14 +5,15 @@
 <x-nav />
 <x-notification />
 <div class="p-3">
-    {{$filterOnHand->links('pagination::simple-tailwind')}}   
+    {{$filterOnHand->links('pagination::simple-tailwind')}} 
+  
 </div>
    <div class="bg-white my-2 mx-4">
         <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd"></x-sortingProducts>
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
-                            <x-removeMultiple route="{{route('deleteFrom.OnHand')}}"> </x-removeMultiple>
+                            <x-removeMultiple route="{{route('deleteFrom.OnHand')}}" status="hidden" toMoveRoute="{{route('moveMultiple.onHand')}}"> </x-removeMultiple>
                             <th class="adminTable   ">ID</th>
                             <th class="adminTable w-20">Image</th>
                             <th class="adminTable">Variation</th>

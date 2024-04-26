@@ -48,7 +48,9 @@ function chosenMultiple() {
             document.getElementById('confirmDialogUpdate').showModal();
             break;
         case '3':
-            alert('You want to move? ');
+            var toMovedValue = $('#toMove').val(toDeleteArr);
+            toMovedValue = parseInt(toMovedValue.val());
+            document.getElementById('confirmationMove').showModal();
             break;
         case '4': 
             alert('Please specify');
