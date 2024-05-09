@@ -211,43 +211,7 @@ class adminOnProcessController extends Controller
         
         
     }
-    // remove a product then submit to canel or return 
-    public function submitToCancel(Request $request, $id) {
-        $validated = $request->validate([
-            'userId' => 'required|exists:customers,id',
-            'image_path' => 'required',
-            'variation_id' => 'required|numeric',
-            'description' => 'required',
-            'reason' => 'required',
-            'gender' => 'required|numeric',
-            'size' => 'required|numeric',
-            'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'total' => 'required|numeric'
-        ]);
-
-        CancelReturn::create([
-            'userId' => $validated['userId'],
-            'image_path' => $validated['image_path'],
-            'variation_id' => $validated['variation_id'],
-            'description' => $validated['description'],
-            'reason' => $validated['reason'],
-            'specify' => $request->specify,
-            'gender' => $validated['gender'],
-            'size' => $validated['size'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
-            'total' => $validated['total']
-        ]);
-
-        $idOrders = orders::where('productId',$id);
-        $idOrders->delete();
-        
-        $idProcessing = Processing::findOrFail($id);
-        $idProcessing->delete();
-
-        return redirect()->back()->with('Success','Your Order was Cancelled Successfully');
-    }
+  
     public function removeMultiple(Request $request) {
         $productTodelete = explode(',', $request->toRemove);
         $productTodelete = array_map('trim', $productTodelete);
@@ -272,5 +236,63 @@ class adminOnProcessController extends Controller
             ]);
         }
         return redirect()->back()->with(['success' => 'Updating Success']);
+    }
+
+    // move multiple products 
+    public function moveMultiple(Request $request) {
+        $productToMove = explode(',',$request->toMove);
+        $productToMove = array_map('trim',$productToMove);
+        $productToMove = array_map('intVal',$productToMove);
+        $productMoveTo = $request->moveTo; 
+         // always check if the array is empty 
+        if($productToMove != 0 ) {
+            switch($productMoveTo) {
+                // move to processing table 
+                case 3: 
+                        foreach($productToMove as $product) {
+                            $onHandProduct = Processing::where('id', $product)->first(); 
+                            OnHand::create([
+                                'image_path' => $onHandProduct['image_path'],
+                                'variation_id'=> $onHandProduct['variation_id'],
+                                'description' =>  $onHandProduct['description'],
+                                'gender' =>  $onHandProduct['gender'],
+                                'size' =>  $onHandProduct['size'],
+                                'price' =>  $onHandProduct['price'],
+                                'quantity' =>  $onHandProduct['quantity'],
+                                'total' => $onHandProduct['price']
+                            ]);
+                            $onHandProduct->delete();
+                        }
+                        return redirect()->back()->with(['success' => 'Moved to On Hand Successfully']);
+                    break;
+                // move to cancel return table 
+                case 2: 
+                        foreach($productToMove as $product) {
+                            $onHandProduct = Processing::where('id', $product)->first(); 
+                            CancelReturn::create([
+                                'image_path' => $onHandProduct->image_path,
+                                'userId' => $onHandProduct->userId,
+                                'variation_id'=> $onHandProduct['variation_id'],
+                                'description' =>  $onHandProduct['description'],
+                                'gender' =>  $onHandProduct['gender'],
+                                'size' =>  $onHandProduct['size'],
+                                'price' =>  $onHandProduct['price'],
+                                'productStatus' =>1,
+                                'quantity' =>  $onHandProduct['quantity'],
+                                'total' => $onHandProduct['price']
+                            ]);
+                            $onHandProduct->delete();
+                        }
+                    return redirect()->back()->with(['success' => 'Moved to Cancel Successfully']);
+                    break;
+                default:
+                    return redirect()->back()->with(['fail' => 'No Selected Table']);
+                    break;
+            }
+    }
+        else {
+            return redirect()->back()->with(['fail' => 'No Selected Item']);
+        }
+            
     }
 }

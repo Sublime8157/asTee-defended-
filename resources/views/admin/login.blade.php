@@ -45,9 +45,12 @@
                                 <input type="password" name="password" class=" runded-md ps-8 py-2 w-64 md:w-96 outline-none border-none shadow-sm">
                         </div>
                         {{-- Forgot Password --}}
-                        <div class="self-start mt-2">
+                        <div class="self-start mt-2 flex justify-between items-center w-full">
                                 <span>
                                     <a href="" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
+                                </span>
+                                <span>
+                                    <a href="{{route('registerAdmin.Account')}}" class="underline text-xs text-gray-400 font-bold">Register an Account?</a>
                                 </span>
                         </div>
                         {{-- Button --}}

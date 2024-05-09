@@ -6,15 +6,64 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\feedback;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class adminIndexController extends Controller
 {
     // display login
     public function login() {
-
         return view('admin.login');
     }
+    public function registerAccount() {
+        return view('admin.registration');
+    }
+    public function managePassword() {
+        return view('admin.managePassword');
+    }
+    public function submitRegistration(Request $request) {
+        $validated = $request->validate([
+            'fname'  => "required|string",
+            'mname' => "required|string",
+            'lname' => "required|string",
+            'age' => "required|numeric",
+            'email' => ['required', 'email', Rule::unique('admin_login', 'email')],
+            'username' => ['required',  Rule::unique('admin_login', 'username')],
+            "password" => ['required','confirmed', 
+            Password::min(8)
+               ->letters()
+               ->mixedCase()
+               ->numbers()
+               ->symbols()
+               ->uncompromised()],
+        ]);
 
+        $validated['password'] = bcrypt($validated['password']);
+        $validated['profile'] = 'adminIcon.png';
+        adminLogin::create($validated);
+        
+        return redirect()->back()->with(['success' => 'Registered Successfully']);
+
+    }
+    // changing password 
+    public function changePassword(Request $request) {
+        $validated = $request->validate([
+            'oldPassword' => 'required',
+            "newPassword" => ['required',
+            Password::min(8)
+                ->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+        ],
+            'confirmPassword' => 'required|same:newPassword'
+        ]);
+
+
+        return redirect()->back()->with(['success' => 'Password Changed Successfully']);
+
+    }
     // login process 
     public function adminLogin(Request $request){   
         $validated = $request->validate([
@@ -25,7 +74,6 @@ class adminIndexController extends Controller
         // auth() specify user in default so you must register the other table in auth
         if (auth()->guard('admin')->attempt($validated)) {
             // Authentication successful
-
             $request->session()->put('adminLoggedIn', true);
             $request->session()->regenerate();
 
@@ -44,7 +92,7 @@ class adminIndexController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/loginAdmin');
-    }
+    }   
   
     public function feedbacks() {
         $feedbacks = feedback::query()

@@ -1,4 +1,4 @@
-@props(['route','status','toMoveRoute'])
+@props(['route','status','toMoveRoute','processing','cancelReturn','onHand','userId'])
 <th class=""><input type="checkbox" name="" id="checkAll" class="cursor-pointer"></th>
 <th>
     {{-- delete form  --}}
@@ -7,7 +7,7 @@
         <input type="hidden" name="toRemove" id="toRemove" value="">
         @method('DELETE')
         {{-- <button type="button" onclick="" class="font-normal px-1 text-xs text-orange-600">Remove</button> --}}
-        <select name="" id="chooseMultiple"  class="text-xs text-left font-normal border-none w-20 py-1 px-1 " onchange="chosenMultiple()" style="font-size: 10px">
+        <select name="" id="chooseMultiple"  class="text-xs text-left font-normal border-none w-20 py-1 cursor-pointer px-1 " onchange="chosenMultiple()" style="font-size: 10px">
             <option value="0">Action</option>
             <option value="1">Remove</option>
             <option value="2" class="{{$status}}">Status</option>
@@ -67,10 +67,15 @@
             <form action="{{$toMoveRoute}}" method="POST" id="confirmedMove">
                 @csrf
                 <input type="hidden" name="toMove" id="toMove" value="">
-                <select name="moveTo" id="" class="cursor-pointer text-xs w-full font-normal mb-3">
-                    <option value="1">Processing</option>
-                    <option value="2">Cancel Return</option>
+                <select name="moveTo" id="" class="cursor-pointer text-xs w-full font-normal mb-3" >
+                    <option value="1" {{$processing}}>Processing</option>
+                    <option value="2" {{$cancelReturn}}>Cancel Return</option>
+                    <option value="3" {{$onHand}}>On Hand</option>
                 </select>
+                <div class="{{$userId}}">
+                    <label for="" class="font-normal text-sm ">User Id: </label>
+                    <input type="text" name="userId" class="text-xs w-full font-normal mb-3" autocomplete="off">
+                </div>
             </form>   
             <div class="flex justify-between items-center flex-row ">
                 <div class="w-40   hover:opacity-70 border-r">

@@ -161,21 +161,23 @@
                         <img src="{{ asset('images/adminIcon.jpg') }}" id="adminSettingsBtn" alt="admin Icon" width="40px" class="cursor-pointer rounded-full ">       
                      
                         <div class="hidden" id="adminSettingsProfile">
-                            <div class="absolute  flex flex-col  rounded items-center right-5 shadow-xl z-40 text-sm  bg-white  w-40">
+                            <div class="absolute p-2  rounded  right-5 shadow-xl z-40 text-sm  bg-white w-48">
                                 {{-- profile settings  --}}
-                                <a href="" class="hover:bg-gray-400 rounded py-1 w-full ">
-                                    <div class="flex flex-row items-center justify-center w-full gap-2">
-                                            <ion-icon name="settings-outline" class="text-sm"></ion-icon>
-                                            Profile
-                                    </div>
-                                </a>
-                                {{-- logout settings  --}}
-                                <a onclick="adminLogoutBtn()" class="cursor-pointer py-1 rounded hover:bg-gray-400 w-full" id="">
-                                    <div class="flex flex-row  items-center justify-center w-full gap-2">
-                                        <ion-icon name="exit-outline" class="text-lg"></ion-icon> 
-                                        Logout
-                                    </div>
-                                </a>
+                                <div class="flex flex-col">
+                                    <a href="/managePassword" class="hover:bg-gray-400 rounded  w-full ">
+                                        <div class="flex flex-row items-center p-1 w-full gap-2">
+                                                <ion-icon name="settings-outline" class="text-sm"></ion-icon>
+                                                Manage Password
+                                        </div>
+                                    </a>
+                                    {{-- logout settings  --}}
+                                    <a onclick="adminLogoutBtn()" class="self-start cursor-pointer rounded hover:bg-gray-400 w-full" id="">
+                                        <div class="flex flex-row  items-center p-1 w-full gap-2">
+                                            <ion-icon name="exit-outline" class="text-lg"></ion-icon> 
+                                                Logout
+                                        </div>
+                                    </a>
+                                </div>
                                 <form action="/adminLogout" method="POST" id="adminLogOut" class="hidden">
                                     @csrf
                                    <button type="submit"></button>

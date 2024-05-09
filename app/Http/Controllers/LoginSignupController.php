@@ -26,6 +26,7 @@ class LoginSignupController extends Controller
    
 // Store the data into the database 
    public function store(Request $request){
+      // validate the user inputs 
       $validated = $request->validate([
          "fname" => 'required',
          "lname" => 'required',
@@ -46,13 +47,14 @@ class LoginSignupController extends Controller
             ->uncompromised()
       ]
       ]);
-
+      // bycrpt the user password or hash to protect the user password  
       $validated['password'] = bcrypt($validated['password']);
       $validated['profile'] = 'default.png';
+      // inser the information when validating is success 
       $user = User::create($validated);
       
+      // verify the email 
       Mail::to($user->email)->send(new VerificationEmail($user));
-      
       
    }
    

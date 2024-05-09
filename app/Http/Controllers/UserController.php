@@ -53,6 +53,7 @@ class UserController extends Controller
             return redirect()->to('\home');
        }
     }
+
     public function userPurchase() {
         return view('user.userProfile.myPurchase');
      }
@@ -62,7 +63,8 @@ class UserController extends Controller
 
 
 
-// store added product 
+
+     // store added product 
     public function store(Request $request) {
         // validate the user and product id 
         $validate = $request->validate([
@@ -88,7 +90,7 @@ class UserController extends Controller
     }
 
 
-// display the user added to cart
+    // display the user added to cart
     public function cart($userId) {
         // find the user id from cart assign to userCart
         $userCart = Cart::where('userId', $userId)->get();
@@ -166,7 +168,6 @@ class UserController extends Controller
     }
     
     public function confirmCheckout(Request $request) {
-        
         $prodToInsert = $request->productId; //get the productId from request expecting a list 
         $validated = $request->validate([ // validate
             'address' => 'required',

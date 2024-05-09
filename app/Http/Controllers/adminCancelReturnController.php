@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\OnHand;
 use App\Models\Processing;
 
+
 class adminCancelReturnController extends Controller
 {
     // cancel/return products here 
@@ -206,6 +207,62 @@ class adminCancelReturnController extends Controller
         $removeProductList = CancelReturn::whereIn('id', $prodToRemove);
         $removeProductList->delete();
         return redirect()->back()->with(['success','Deleted Successfully']);
+    }
+
+    public function moveMultiple(Request $request) {
+        $productToMove = explode(',',$request->toMove);
+        $productToMove = array_map('trim',$productToMove);
+        $productToMove = array_map('intVal',$productToMove);
+        $productMoveTo = $request->moveTo; 
+         // always check if the array is empty 
+        if($productToMove != 0 ) {
+            switch($productMoveTo) {
+                // move to processing table 
+                case 3: 
+                        foreach($productToMove as $product) {
+                            $onHandProduct = CancelReturn::where('id', $product)->first(); 
+                            OnHand::create([
+                                'image_path' => $onHandProduct->image_path,
+                                'variation_id'=> $onHandProduct->variation_id,
+                                'description' =>  $onHandProduct->description,
+                                'gender' =>  $onHandProduct->gender,
+                                'size' =>  $onHandProduct->size,
+                                'price' =>  $onHandProduct->price,
+                                'quantity' =>  $onHandProduct->quantity,
+                            ]);
+                            $onHandProduct->delete();
+                        }
+                        return redirect()->back()->with(['success' => 'Moved to On Hand Successfully']);
+                    break;
+                // move to cancel return table 
+                case 1: 
+                        foreach($productToMove as $product) {
+                            $onHandProduct = CancelReturn::where('id', $product)->first(); 
+                            Processing::create([
+                                'image_path' => $onHandProduct->image_path,
+                                'userId' => $onHandProduct->userId,
+                                'variation_id'=> $onHandProduct->variation_id,
+                                'description' =>  $onHandProduct->description,
+                                'gender' =>  $onHandProduct->gender,
+                                'size' =>  $onHandProduct->size,
+                                'price' =>  $onHandProduct->price,
+                                'productStatus' =>1,
+                                'quantity' =>  $onHandProduct['quantity'],
+                                'total' => $onHandProduct['price']
+                            ]);
+                            $onHandProduct->delete();
+                        }
+                    return redirect()->back()->with(['success' => 'Moved to Processing Successfully']);
+                    break;
+                default:
+                    return redirect()->back()->with(['fail' => 'No Selected Table']);
+                    break;
+            }
+    }
+        else {
+            return redirect()->back()->with(['fail' => 'No Selected Item']);
+        }
+            
     }
     
 }

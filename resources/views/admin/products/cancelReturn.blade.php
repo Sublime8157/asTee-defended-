@@ -14,7 +14,8 @@
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
            <tr class="">
-                <x-removeMultiple route="{{route('deleteFrom.cancel')}}" status="hidden                                                                                                                                             "> </x-removeMultiple> 
+                <x-removeMultiple route="{{route('deleteFrom.cancel')}}" status="hidden" 
+                toMoveRoute="{{route('moveMultipleFrom.cancel')}}" processing="enabled" cancelReturn="disabled" onHand="enabled" userId="hidden"> </x-removeMultiple>                         
                 <th class="adminTable">ID</th>
                 <th class="adminTable w-20">User Id</th>
                 <th class="adminTable w-20">Image</th>
@@ -102,7 +103,7 @@
                         </dialog>
                     </td>                                 
                     <td class="text-center ps-2">{{$product->variationType()}}</td>
-                    <td class="text-center ps-2">{{$product->description}}</td>
+                    <td class="text-center ps-2 w-60 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
                     <td class="text-center ps-2">{{$product->genderShirt()}}</td>
                     <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
                     <td class="text-center ps-2">{{$product->total}}</td>

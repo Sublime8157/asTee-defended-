@@ -98,6 +98,7 @@
                                 <div class="flex flex-row absolute left-0 bottom-0">
                                     {{-- cart icon  --}}
                                     @if(session('isLoggedin'))
+                                      {{-- add to cart form --}}
                                     <form class="addToCartForm"  method="POST" id="addToCartForm{{$table->id}}">
                                         @csrf
                                         <input type="hidden" name="prodId" value="{{$table->id}}">
@@ -111,8 +112,6 @@
                                         </ion-icon>
                                     </a>
                                     @endif
-                                    {{-- add to cart form --}}
-                                    
                                     {{-- share link icon  --}}
                                     <a href="">
                                         <ion-icon name="share-social" class="text-green-600 text-xl"></ion-icon>

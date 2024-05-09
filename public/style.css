@@ -141,6 +141,16 @@ input[type="text"], select, textarea     {
     animation-fill-mode: forwards;
 }
 
+textarea::-webkit-scrollbar {
+    width: 5px;
+}
+textarea::-webkit-scrollbar-track {
+    background: #cae5f5; /* Color of the scrollbar track */
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #c7c5c5; /* Color of the scrollbar thumb */
+}
 @keyframes fade-out {
     0% {
         opacity: 1;

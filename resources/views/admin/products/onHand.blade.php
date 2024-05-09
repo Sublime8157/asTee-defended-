@@ -6,14 +6,25 @@
 <x-notification />
 <div class="p-3">
     {{$filterOnHand->links('pagination::simple-tailwind')}} 
-  
 </div>
+@if($errors->any()) 
+    <div class="text-center py-2 px-2 text-xs font-orange-700 font-bold">
+        {{$errors->first()}}
+    </div>
+@endif
    <div class="bg-white my-2 mx-4">
         <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd"></x-sortingProducts>
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
-                            <x-removeMultiple route="{{route('deleteFrom.OnHand')}}" status="hidden" toMoveRoute="{{route('moveMultiple.onHand')}}"> </x-removeMultiple>
+                            <x-removeMultiple route="{{route('deleteFrom.OnHand')}}" status="hidden" 
+                            toMoveRoute="{{route('moveMultipleFrom.onHand')}}"
+                            processing="enabled"
+                            cancelReturn="enabled"
+                            onHand="disabled"
+                            userId="block"
+                            > 
+                            </x-removeMultiple>
                             <th class="adminTable   ">ID</th>
                             <th class="adminTable w-20">Image</th>
                             <th class="adminTable">Variation</th>
@@ -97,7 +108,7 @@
                                     </dialog>
                                 </td> 
                                 <td class=" text-center">{{$product->variationType()}}</td>
-                                <td class="text-center ">{{$product->description}}</td>
+                                <td class="text-center ps-2 w-60 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
                                 <td class="text-center">{{$product->genderShirt()}}</td>
                                 <td class="text-center">{{$product->sizeShirt()}}</td>
                                 <td class="text-center">{{$product->price}}</td>

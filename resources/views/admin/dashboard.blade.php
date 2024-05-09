@@ -5,7 +5,6 @@
 <x-header />
 <x-nav />
         <div>
-       
             <div class="flex  flex-col items-start my-5 mx-5  gap-2 bg-gray-100">
                 {{-- products section  --}}
                 <h1 class="text-sm opacity-70 ps-5 w-full bg-gray-300 rounded  shadow-lg py-2">PRODUCTS</h1>

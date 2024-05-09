@@ -35,25 +35,39 @@ $('.checkBox').on('click', function(){ // listen to click for all of the tags wi
     }
     $('#toRemove').val(toDeleteArr); // assign the value to input 
 })
-
 function chosenMultiple() {
     var functionToDo = $('#chooseMultiple').val();
-    switch(functionToDo) {
-        case '1':
-            document.getElementById('confirmDialog').showModal();
-            break;
-        case '2': 
-            var movedValue = $('#toUpdate').val(toDeleteArr);
-            movedValue = parseInt(movedValue.val());
-            document.getElementById('confirmDialogUpdate').showModal();
-            break;
-        case '3':
-            var toMovedValue = $('#toMove').val(toDeleteArr);
-            toMovedValue = parseInt(toMovedValue.val());
-            document.getElementById('confirmationMove').showModal();
-            break;
-        case '4': 
-            alert('Please specify');
-            break;
+
+    if ($('#chooseMultiple').is(':focus')) {
+        switch (functionToDo) {
+            case '1':
+                document.getElementById('confirmDialog').showModal();
+                break;
+            case '2':
+                var movedValue = parseInt($('#toUpdate').val());
+                document.getElementById('confirmDialogUpdate').showModal();
+                break;
+            case '3':
+                var toMovedValue = parseInt($('#toMove').val());
+                document.getElementById('confirmationMove').showModal();
+                break;
+            case '4':
+                alert('Please specify');
+                break;
+        }
+        $('#chooseMultiple').val('0');
     }
 }
+$('.revealPassword').on('click', function(){
+    var password = $(this).closest('.form-group').find('.password');
+    var icon = $(this);
+
+    if(password.prop('type') === 'password') {
+        password.prop('type', 'text');
+        icon.attr('name','eye-outline');
+    }
+    else {
+        password.prop('type', 'password');
+        icon.attr('name', 'eye-off-outline');
+    }
+})

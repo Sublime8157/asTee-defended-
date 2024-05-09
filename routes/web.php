@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\Mail;
 
 Route::post('/loggingIn', [adminIndexController::class, 'adminLogin']);
 Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
+Route::get('/managePassword', [adminIndexController::class, 'managePassword']);
+Route::post('/changePassword',[adminIndexController::class, 'changePassword'])->name('changeAdmin.password');
+Route::get('/regsiterAccount', [adminIndexController::class, 'registerAccount']);
+Route::post('/submitRegistration', [adminIndexController::class, 'submitRegistration'])->name('registerAdmin.Account');
 // Route for logging out 
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
 // Default rouse that shows the login form 
@@ -50,12 +54,8 @@ Route::get('/DIY',  [UserController::class, 'DIY']);
 Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
 Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
 Route::get('/checkout',[UserController::class, 'checkout'])->name('checkout.process');
-Route::get('/userProfile/myPurchase/{userId}', [userProfileController::class, 'toPay'])->name('myPurchase');
-Route::get('userProfile/myPurchase//{status}',[userProfileController::class, 'productStatus'])->name('product.status');
 Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
 Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
-Route::post('/orderRecieved', [userProfileController::class, 'orderRecieved'])->name('order.recieved');
-Route::post('/submitReview', [userProfileController::class, 'submitReview'])->name('submitReview');
 
 // All these routes are responsible for admin panel
 Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
@@ -74,7 +74,7 @@ Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHan
 // for editing the products in onhand 
 Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
 Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
-Route::post('/moveMultiple', [adminOnHandsController::class, 'moveMultiple'])->name('moveMultiple.onHand');
+Route::post('/moveMultipleOnHand', [adminOnHandsController::class, 'moveMultiple'])->name('moveMultipleFrom.onHand');
 // sort on hands product table 
 Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
 //delte all
@@ -85,8 +85,8 @@ Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcess
 Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
 Route::get('/updateTable', [adminOnProcessController::class, 'updateTable'])->name('updateTable');
-Route::post('/submitCancel/{id}', [adminOnProcessController::class, 'submitToCancel'])->name('submitOrder.cancel');
 Route::post('/updateMultiple',[adminOnProcessController::class, 'multipleUpdate'])->name('updateMultiple.status');
+Route::post('/moveMultipleProcessing',[adminOnProcessController::class, 'moveMultiple'])->name('moveMutipleFrom.Processing');
 // move a product
 Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
 // sort a product
@@ -107,7 +107,7 @@ Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, '
 // sort products in cancel or return 
 Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sortProduct']);
 Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'removeMultiple'])->name('deleteFrom.cancel');
-
+Route::post('/moveMultiple.cancel',[adminCancelReturnController::class, 'moveMultiple'])->name('moveMultipleFrom.cancel');
 
 // Route for accounts admin panel tab 
 Route::get('/accounts/active', [accountsController::class, 'displayUsers']); //->middleware('admin');
@@ -131,9 +131,7 @@ Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
 
 
 // product details 
-
 Route::get('/productDetails/{id}', [productsController::class, 'details']);
-
 // user cart 
 Route::post('/storeCart', [UserController::class, 'store'])
                                                     ->middleware('cart')
@@ -143,6 +141,14 @@ Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])-
 Route::delete('/removeAll',[UserController::class, 'removeAll'])->name('remove.All');
 Route::post('/confirmCheckout',[Usercontroller::class, 'confirmCheckout'])->name('confirmCheckout');
 Auth::routes();
+
+// for mypurchase controller 
+Route::post('/submitCancel/{id}', [UserPurchaseController::class, 'submitToCancel'])->name('submitOrder.cancel');
+Route::get('/userProfile/myPurchase/{userId}', [UserPurchaseController::class, 'toPay'])->name('myPurchase');
+Route::get('userProfile/myPurchase//{status}',[UserPurchaseController::class, 'productStatus'])->name('product.status');
+Route::post('/orderRecieved', [UserPurchaseController::class, 'orderRecieved'])->name('order.recieved');
+Route::post('/submitReview', [UserPurchaseController::class, 'submitReview'])->name('submitReview');
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/emailSend', function(){

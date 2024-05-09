@@ -92,7 +92,7 @@ class adminOnHandsController extends Controller
     }
 
 
-    // remove a product controller 
+    // remove a product function 
     public function removeProduct($id) {
         $product = OnHand::findOrFail($id); 
         $product->delete();
@@ -101,7 +101,7 @@ class adminOnHandsController extends Controller
      }
 
 
-    //  edit product controller 
+    //  edit product function 
      public function editProduct(Request $request, $id){
         // validate the user inputs before editing 
         $request->validate([
@@ -195,14 +195,64 @@ class adminOnHandsController extends Controller
         $productToMove = array_map('trim',$productToMove);
         $productToMove = array_map('intVal',$productToMove);
         $productMoveTo = $request->moveTo; 
-
-        dd($productMoveTo, $productToMove);
-        
-        return redirect()->back()->with(['productToMove' => $productToMove]); 
-
+        $userId = $request->userId;
+        $validated = $request->validate([
+            'userId' =>  "required|exists:Customers,id"
+        ]);
+        // always check if the array is empty 
+        if($productToMove != 0 ) {
+            switch($productMoveTo) {
+                // move to processing table 
+                case 1: 
+                        foreach($productToMove as $product) {
+                            $onHandProduct = OnHand::where('id', $product)->first(); 
+                            Processing::create([
+                                'image_path' => $onHandProduct['image_path'],
+                                'userId' => $validated['userId'],
+                                'variation_id'=> $onHandProduct['variation_id'],
+                                'description' =>  $onHandProduct['description'],
+                                'gender' =>  $onHandProduct['gender'],
+                                'size' =>  $onHandProduct['size'],
+                                'price' =>  $onHandProduct['price'],
+                                'productStatus' =>1,
+                                'quantity' =>  $onHandProduct['quantity'],
+                                'total' => $onHandProduct['price']
+                            ]);
+                            $onHandProduct->delete();
+                        }
+                        return redirect()->back()->with(['success' => 'Moved to Processing Successfully']);
+                    break;
+                // move to cancel return table 
+                case 2: 
+                        foreach($productToMove as $product) {
+                            $onHandProduct = OnHand::where('id', $product)->first(); 
+                            Processing::create([
+                                'image_path' => $onHandProduct->image_path,
+                                'userId' => $validated['userId'],
+                                'variation_id'=> $onHandProduct['variation_id'],
+                                'description' =>  $onHandProduct['description'],
+                                'gender' =>  $onHandProduct['gender'],
+                                'size' =>  $onHandProduct['size'],
+                                'price' =>  $onHandProduct['price'],
+                                'productStatus' =>1,
+                                'quantity' =>  $onHandProduct['quantity'],
+                                'total' => $onHandProduct['price']
+                            ]);
+                            $onHandProduct->delete();
+                        }
+                    return redirect()->back()->with(['success' => 'Moved to Cancel Successfully']);
+                    break;
+                default:
+                    return redirect()->back()->with(['fail' => 'No Selected Table']);
+                    break;
+            }
+    }
+        else {
+            return redirect()->back()->with(['fail' => 'No Selected Item']);
+        }
+            
     }
     // sort products 
-
     public function sortProducts(Request $request) {
         $sortProducts = $request->input('sortProductBy');
         $orderBy = $request->input('orderProductBy');
@@ -216,17 +266,20 @@ class adminOnHandsController extends Controller
 
     // delete all using checkbox 
     public function removeAllProduct(Request $request) {
-        $idToDelete = explode(',', $request->toRemove); // separate using , 
-        $idToDelete = array_map('trim', $idToDelete); // remove white spaces 
-        $idToDelete = array_map('intVal', $idToDelete); // convert to int 
-        // delete first from cart as the cart reference this 
-        $deletFromCart = Cart::whereIn('productId', $idToDelete);
-        $deletFromCart->delete();
-        // and then delete from the onhand  table 
-        $listToDelete = OnHand::whereIn('id', $idToDelete); // find all from OnHand table 
-        $listToDelete->delete(); // delete 
-
-       
+        if($request->toRemove != 0){
+            $idToDelete = explode(',', $request->toRemove); // separate using , 
+            $idToDelete = array_map('trim', $idToDelete); // remove white spaces 
+            $idToDelete = array_map('intVal', $idToDelete); // convert to int 
+            // delete first from cart as the cart reference this 
+            $deletFromCart = Cart::whereIn('productId', $idToDelete);
+            $deletFromCart->delete();
+            // and then delete from the onhand  table 
+            $listToDelete = OnHand::whereIn('id', $idToDelete); // find all from OnHand table 
+            $listToDelete->delete(); // delete 
+        }
+        else {
+            return redirect()->back()->with(['fail' => 'No Selected Item']);
+        }
        return redirect()->back()->with(['success' => 'Successfully Deleted']);
-}
+    }
 }

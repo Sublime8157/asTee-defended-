@@ -8,6 +8,11 @@
 <div class="p-3">
     {{ $filterOnProcess->links('pagination::simple-tailwind') }}
 </div>
+@if($errors->any()) 
+    <div class="text-center py-2 px-2 text-xs font-orange-700 font-bold">
+        {{$errors->first()}}
+    </div>
+@endif
 <div class="bg-white my-5 mx-4">
     <div class="">
         <x-sortingProducts sortProduct="sortProcessingProduct" orderProduct="sortProcessingProduct"></x-sortingProducts>
@@ -15,7 +20,11 @@
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
            <tr class="text-center">
-                <x-removeMultiple route="{{route('deleteFrom.Processing')}}" status="block"> </x-removeMultiple>
+                <x-removeMultiple route="{{route('deleteFrom.Processing')}}" status="block" toMoveRoute="{{route('moveMutipleFrom.Processing')}}"
+                processing="disabled"
+                cancelReturn="enabled"
+                onHand="enabled"
+                userId="hidden"> </x-removeMultiple>
                 <th class="adminTable w-20 ">ID</th>
                 <th class="adminTable w-20 ">User Id</th>
                 <th class="adminTable w-20">Image</th>
@@ -116,7 +125,7 @@
                     </dialog>
                 </td>                
                 <td class="text-center ps-2">{{$product->variationType()}}</td>
-                <td class="text-center ps-2">{{$product->description}}</td>
+                <td class="text-center ps-2 w-60 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
                 <td class="text-center ps-2">{{$product->genderShirt()}}</td>
                 <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
                 <td class="text-center ps-2">{{$product->total}}</td>

@@ -10,8 +10,7 @@ use Illuminate\Support\Str;
 
 class productsController extends Controller
 {
- 
-
+//  filtering products 
    public function filterProducts(Request $request){
       // Create a variable that holds the products model with variation, gender, and size table 
       $data = OnHand::query();
@@ -37,22 +36,23 @@ class productsController extends Controller
   
       return view('user.productResult', ['filteredData' => $filteredData]);
   }
-//   display on hands product
+
+    //display on hands product
    public function displayOnHandsProducts(){
-    // get the  session username and id   
+    // get the  user id from session for adding to cart purposes 
         $user = [
-            'username' =>  session('username'),
             'id' => session('id'),
         ];
          $data = OnHand::all();  
-        
+         // limit the prouct description into 10 words 
          foreach($data as $product) {
             $product->displayDescription = Str::words($product->description, 10);
          }
-         
+         // display the items in view 
         return view('user.Product', compact('data','user'));
    }
    
+   // product more details 
    public function details(Request $request, $id) {
         $user = [
             'id' => session('id'),
@@ -64,7 +64,4 @@ class productsController extends Controller
       $productDet = $productDetails->get();
       return view('user.productDetails', compact('productDet', 'user'));
    }
-
-   
-   
 }
