@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\VerificationEmail;
 use Illuminate\Support\Facades\Mail;
-
+use App\Models\User;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,12 +21,12 @@ use Illuminate\Support\Facades\Mail;
 // Route::get('/', function(){
 //     return view('welcome');
 // });
-
+Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
 Route::post('/loggingIn', [adminIndexController::class, 'adminLogin']);
 Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
-Route::get('/managePassword', [adminIndexController::class, 'managePassword']);
-Route::post('/changePassword',[adminIndexController::class, 'changePassword'])->name('changeAdmin.password');
-Route::get('/regsiterAccount', [adminIndexController::class, 'registerAccount']);
+Route::get('/managePassword', [adminIndexController::class, 'managePassword'])->middleware('admin');
+Route::post('/changePassword',[adminIndexController::class, 'changePassword'])->name('changeAdmin.password')->middleware('admin');
+Route::get('/regsiterAccount', [adminIndexController::class, 'registerAccount'])->name('registration');
 Route::post('/submitRegistration', [adminIndexController::class, 'submitRegistration'])->name('registerAdmin.Account');
 // Route for logging out 
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
@@ -58,14 +59,13 @@ Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'
 Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
 
 // All these routes are responsible for admin panel
-Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
-Route::get('/dashboard', [dashboardController::class, 'dashboard']);
-Route::get('/feedbacks', [adminIndexController::class, 'feedbacks']);
+Route::get('/dashboard', [dashboardController::class, 'dashboard'])->middleware('admin');
+Route::get('/feedbacks', [adminIndexController::class, 'feedbacks'])->middleware('admin');
 Route::patch('/featureReview/{id}',[adminIndexController::class, 'toFeature'])->name('featureReview');
 
 // Routes for admin products panel tab 
 // for onhnad products tab 
-Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand']);  // ->middleware('admin');
+Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');
 Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
 // remove product
 Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');
@@ -80,7 +80,7 @@ Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
 //delte all
 Route::delete('/deleteAll',[adminOnHandsController::class, 'removeAllProduct'])->name('deleteFrom.OnHand');
 // For processing tab
-Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
+Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing'])->middleware('admin');
 Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
 Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
 Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
@@ -97,7 +97,7 @@ Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStat
 Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
 Route::delete('/removeMultiple', [adminOnProcessController::class, 'removeMultiple'])->name('deleteFrom.Processing');
 // for cancel or return tab
-Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']); //->middleware('admin');
+Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return'])->middleware('admin');
 Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
 Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
 Route::post('/moveCancelReturn/{id}', [adminCancelReturnController::class, 'moveProduct'])->name('move.cancelReturnProduct');
@@ -110,7 +110,7 @@ Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'rem
 Route::post('/moveMultiple.cancel',[adminCancelReturnController::class, 'moveMultiple'])->name('moveMultipleFrom.cancel');
 
 // Route for accounts admin panel tab 
-Route::get('/accounts/active', [accountsController::class, 'displayUsers']); //->middleware('admin');
+Route::get('/accounts/active', [accountsController::class, 'displayUsers'])->middleware('admin');
 // search a suer 
 Route::get('/searchUser', [accountsController::class, 'searchUsers']);
 // sort user by name, email or id and if descend or ascend 
@@ -122,12 +122,12 @@ Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('use
 Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
 
 
-Route::get('/accounts/blocked', [blockedAccountsController::class, 'display']);
+Route::get('/accounts/blocked', [blockedAccountsController::class, 'display'])->middleware('admin');
 Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
 Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
 Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);
 
-Route::get('/accounts/pending', [adminAccountsController::class, 'pending']);
+Route::get('/accounts/pending', [adminAccountsController::class, 'pending'])->middleware('admin');
 
 
 // product details 
@@ -151,8 +151,40 @@ Route::post('/submitReview', [UserPurchaseController::class, 'submitReview'])->n
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/emailSend', function(){
-    $name ="Joven";
 
-    Mail::to(users: 'egalan815715m@gmail.com')->send(new VerificationEmail($name));
+Route::get('/emailVerification', function(){
+    return view('emails.verification');
 });
+
+// Route::post('/verifyEmail', function(){
+
+    
+// });
+
+// verify Email 
+Route::get('/emailVerified/{email}', function($email){
+    $user = User::where('email', $email)->first();
+
+    if($user) {
+        $user->email_verified_at = now();
+        $user->save();
+    }
+
+    return view('user.verified');
+})->name('verified');
+
+Route::view('/emailSent', 'user.emailSent');
+
+// view for 2nd regsitration 
+Route::get('verifyEmail2', function(){
+    $userEmail = session('email');
+    return view('user.verifyEmail2')->with('email', session('email'));
+});
+// email verification for users that doesnt verify their email on ther registration 
+Route::post('/emailVerification2', function(Request $request){
+    $userEmail = $request->email;
+    
+    Mail::to($userEmail)->send(new VerificationEmail($userEmail));
+
+    return view('user.emailSent');
+})->name('verifyAgain');

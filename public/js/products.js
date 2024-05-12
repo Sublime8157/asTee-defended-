@@ -1,3 +1,5 @@
+const { EventEmitterAsyncResource } = require("combined-stream");
+
 // filter products 
 $(document).ready(function(){
     $('#filterForm').submit(function(e){
@@ -84,4 +86,15 @@ $(document).ready(function(){
         })
     })
 })
+
+function copyLink(event, id) {
+ event.preventDefault();   
+ var linkToCopy = window.location.origin + '/productDetails/'  + id; //get the link to copy 
+ navigator.clipboard.writeText(linkToCopy).then(function(){ // use navigator.clipboard to access the user clipboard pass the link to copy 
+    alert('Link copied to clipboard'); 
+ }).catch(function(error){
+    console.error('Error Occured Failed to Copy' + error);
+ })
+}
+
 

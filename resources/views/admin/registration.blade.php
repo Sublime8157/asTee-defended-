@@ -4,16 +4,24 @@
 @section('page','Registration')
 <x-header />
     <div class="absolute p-5">
-        <h1 class="text-sm cursor-pointer hover:underline ">
-            Return to Login
+        <h1 class="text-sm cursor-pointer hover:opacity-70 ">
+            <a href="{{route('loginAdmin')}}" class="bg-blue-600 py-1 px-2 rounded  flex items-center flex-row">
+                <ion-icon name="caret-back-outline" class="text-lg text-white"></ion-icon> <span class="text-white">Return to Login</span>
+            </a>
         </h1>
     </div> 
    
     <div class="w-full  h-screen flex items-center justify-center ">
-        
         <div class="flex flex-col bg-blue-100 rounded shadow-lg p-5 w-auto">
             <x-notification />
-            <h1 class="text-center text-base mb-5">Admin Registration</h1>
+            <div class="flex flex-row  justify-start gap-2 items-end mb-5">
+                <div class="h-full">
+                    <img src="{{asset('images/registrationIcon.jpg')}}" alt="" class="rounded-full" width="50px">
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold mb-5">Admin Registration</h1>
+                </div>
+            </div>
             <div class="text-center">
                 @if($errors->any()) 
                 <span class="text-sm text-yellow-500 font-bold">
@@ -26,41 +34,41 @@
                 @csrf
                 <div class="flex flex-row items-center gap-4">
                     <div class="flex flex-col">
-                        <label for="" class="text-xs">First Name</label>
-                        <input type="text"  class=" border-none  text-xs" name="fname" value="{{old('fname')}}">
+                        <label for="" class="text-sm">First Name</label>
+                        <input type="text"  class=" border-none  text-sm" name="fname" value="{{old('fname')}}">
                     </div>
                     <div class="flex flex-col">
-                        <label for="" class="text-xs">Middle Name</label>
-                        <input type="text"  class=" border-none  text-xs" name="mname" value="{{old('mname')}}">
+                        <label for="" class="text-sm">Middle Name</label>
+                        <input type="text"  class=" border-none  text-sm" name="mname" value="{{old('mname')}}">
                     </div>
                     <div class="flex flex-col">
-                        <label for="" class="text-xs">Last Name</label>
+                        <label for="" class="text-sm">Last Name</label>
                         <input type="text"  class=" border-none  text-xs" name="lname" value="{{old('lname')}}">
                     </div>
                     <div class="flex flex-col">
-                        <label for="" class="text-xs">Age</label>
-                        <input type="text"  class=" border-none w-20 text-xs" name="age" value="{{old('age')}}">
+                        <label for="" class="text-sm">Age</label>
+                        <input type="text"  class=" border-none w-20 text-sm" name="age" value="{{old('age')}}">
                     </div>
                 </div>
                 <div class="flex flex-row items-center  gap-4">
                     <div class="flex flex-col">
-                        <label for="" class="text-xs">Email</label>
-                        <input type="text"  class=" border-none w-72 w- text-xs" name="email" value="{{old('email')}}">
+                        <label for="" class="text-sm">Email</label>
+                        <input type="text"  class=" border-none w-72 w- text-sm" name="email" value="{{old('email')}}">
                     </div>
                     <div class="flex flex-col">
-                        <label for="" class="text-xs">Username</label>
-                        <input type="text"  class=" border-none  w- text-xs" name="username" value="{{old('username')}}">
+                        <label for="" class="text-sm">Username</label>
+                        <input type="text"  class=" border-none  w- text-sm" name="username" value="{{old('username')}}">
                     </div>
                 </div>
                 <div class="flex flex-row items-center relative form-group gap-4">
                     <div class="flex flex-col relative">
-                        <label for="" class="text-xs">Password</label>
-                        <input type="password"  class="password border-none w-72 w- text-xs" name="password">
+                        <label for="" class="text-sm">Password</label>
+                        <input type="password"  class="password border-none w-72 w- text-sm" name="password">
                         <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-6 cursor-pointer revealPassword text-base"></ion-icon>
                     </div>
                     <div class="flex flex-col relative">
-                        <label for="" class="text-xs">Confirm Password</label>
-                        <input type="password"  class=" border-none password w- text-xs" name="password_confirmation">
+                        <label for="" class="text-sm">Confirm Password</label>
+                        <input type="password"  class=" border-none password w- text-sm" name="password_confirmation">
                         <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-6 cursor-pointer revealPassword text-base"></ion-icon>
                     </div>
                 </div>

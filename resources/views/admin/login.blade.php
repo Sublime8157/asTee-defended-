@@ -7,6 +7,7 @@
     <title>Administrator</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 
     <body>
@@ -39,10 +40,11 @@
                                 <input type="text" name="username" value="{{ old('username') }}" class=" rounded-md  ps-8 py-2  w-64 md:w-96  outline-none border-none shadow-sm">
                         </div> 
                         {{-- Password input --}}
-                        <div>
+                        <div class="relative form-group">
                                 <label for="" class="font-bold text-sm ">Password</label> <br>
                                 <ion-icon name="lock-closed" class="absolute mt-1 p-2 text-lg font-extrabold text-gray-700"></ion-icon>
-                                <input type="password" name="password" class=" runded-md ps-8 py-2 w-64 md:w-96 outline-none border-none shadow-sm">
+                                <input type="password" name="password" class="password runded-md ps-8 py-2 w-64 md:w-96 outline-none border-none shadow-sm">
+                                <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-10 cursor-pointer revealPassword text-lg"></ion-icon>
                         </div>
                         {{-- Forgot Password --}}
                         <div class="self-start mt-2 flex justify-between items-center w-full">
@@ -50,7 +52,7 @@
                                     <a href="" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
                                 </span>
                                 <span>
-                                    <a href="{{route('registerAdmin.Account')}}" class="underline text-xs text-gray-400 font-bold">Register an Account?</a>
+                                    <a href="{{route('registration')}}" class="underline text-xs text-gray-400 font-bold">Register an Account?</a>
                                 </span>
                         </div>
                         {{-- Button --}}
@@ -65,7 +67,19 @@
                 </form>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script>$('.revealPassword').on('click', function(){
+            var password = $(this).closest('.form-group').find('.password');
+            var icon = $(this);
         
+            if(password.prop('type') === 'password') {
+                password.prop('type', 'text');
+                icon.attr('name','eye-outline');
+            }
+            else {
+                password.prop('type', 'password');
+                icon.attr('name', 'eye-off-outline');
+            }
+        })</script>
     </body>  
 
 </html>

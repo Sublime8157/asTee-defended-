@@ -49,7 +49,7 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function() {
-                showMessage();
+                window.location.href='/emailSent';
             },
             error: function(error) {
                 if(error.responseJSON) {
@@ -79,7 +79,7 @@ signupButton.on('click', function(){
     setTimeout(() => {
         signupButton.removeClass('submitButton');
         signupButton.css('color', 'black');
-    }, 1000);
+    }, 5000);
 
 })
 

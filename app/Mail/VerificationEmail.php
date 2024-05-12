@@ -11,38 +11,16 @@ use Illuminate\Queue\SerializesModels;
 
 class VerificationEmail extends Mailable
 {
+    // we are now recieving the email that registration pass which is the user email 
+    public $userEmail; 
     use Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      */
-    public function __construct(private $name)
+    public function __construct($userEmail)
     {
-        //
+        $this->userEmail = $userEmail;
     }
-
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Verification Email',
-            
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'mail.mailTemplate',
-            with: ['name' => $this->name],
-        );
-    }
-
     /**
      * Get the attachments for the message.
      *
@@ -51,5 +29,13 @@ class VerificationEmail extends Mailable
     public function attachments(): array
     {
         return [];
+    }
+
+    public function build()
+    {
+      return $this
+        ->subject('Emai Verification')
+        ->markdown('emails.verification')
+        ->with(['email' => $this->userEmail]);
     }
 }

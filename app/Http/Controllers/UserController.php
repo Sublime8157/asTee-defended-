@@ -228,6 +228,8 @@ class UserController extends Controller
         }
         return redirect()->route('myPurchase',['userId' => $request->userId]);
     }
+
+   
 }
     
 

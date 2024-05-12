@@ -113,7 +113,7 @@
                                     </a>
                                     @endif
                                     {{-- share link icon  --}}
-                                    <a href="">
+                                    <a href="/productDetails/{{$table->id}}"  onclick="copyLink(event, {{$table->id}})">
                                         <ion-icon name="share-social" class="text-green-600 text-xl"></ion-icon>
                                     </a>
                                 </div>

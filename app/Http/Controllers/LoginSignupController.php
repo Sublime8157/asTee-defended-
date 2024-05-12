@@ -53,9 +53,11 @@ class LoginSignupController extends Controller
       // inser the information when validating is success 
       $user = User::create($validated);
       
-      // verify the email 
-      Mail::to($user->email)->send(new VerificationEmail($user));
-      
+
+      // verify the email we are passing the user email inputs to the VerificationEmail.php 
+      Mail::to($user->email)->send(new VerificationEmail($user->email));
+
+      return view('user.emailSent');
    }
    
 
@@ -67,19 +69,25 @@ class LoginSignupController extends Controller
       ]);
      
       if(auth()->attempt($validated)) {
-         
+         // authenticate the user 
          $user = auth()->user();        
-         $request->session()->put('isLoggedin', true);
-         $request->session()->put('username', $user->username);
-         $request->session()->put('id', $user->id);
-         $request->session()->put('profile', $user->profile);
-
-         $request->session()->regenerate();
-         
-         return redirect('/home');
-        
+         $verifyEmail = User::whereNotNull('email_verified_at') // find the email_verified_at column that is not null or empty 
+                              ->where('email', $user->email) // compare to the user input 
+                              ->count(); // count 
+                                       
+         if($verifyEmail > 0 ) { // if greater than 0 
+            $request->session()->put('isLoggedin', true);
+            $request->session()->put('username', $user->username);
+            $request->session()->put('id', $user->id);
+            $request->session()->put('profile', $user->profile);
+            $request->session()->regenerate();
+            return redirect('/home');
+         }
+         else {
+            return redirect('/verifyEmail2')->with('email', $user->email);
+         }
       }
-
+      
       return back()->withErrors(['username' => 'Invalid Credentials'])->withInput();
      
    }
