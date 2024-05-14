@@ -9,12 +9,20 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
-
     <body>
         {{-- Container  --}}
-                <div class="flex items-center justify-center w-screen h-screen">
+        <div class="absolute w-full mt-5 text-center">
+            <div class="w-full items-center "> 
+                @if(session()->has('success'))
+                    <span class="text-yellow-500 text-sm "> 
+                        {{@session()->get('success')}} 
+                    </span>
+                @endif
+            </div>
+        </div>
+             <div class="flex items-center flex-col  justify-center w-screen h-screen">
+                  
                     {{-- Form Starts Here --}}
-                    
                     <form action="/loggingIn" class="relative flex items-center justify-center bg-blue-100 p-10   rounded-lg flex-col shadow-2xl" method="POST">
                         
                         @csrf
@@ -49,7 +57,7 @@
                         {{-- Forgot Password --}}
                         <div class="self-start mt-2 flex justify-between items-center w-full">
                                 <span>
-                                    <a href="" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
+                                    <a href="/forgotPassword" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
                                 </span>
                                 <span>
                                     <a href="{{route('registration')}}" class="underline text-xs text-gray-400 font-bold">Register an Account?</a>
@@ -61,10 +69,6 @@
                         </div>
                     </form>
                 </div>
-                <form action="/hash-passwords">
-                    @csrf
-                    <button type="submit">Hash</button>
-                </form>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         <script>$('.revealPassword').on('click', function(){

@@ -96,7 +96,8 @@ ul li:hover {
     text-align: center;
    
 }
- input[type="text"]:focus, select:focus, textarea:focus {
+ input[type="text"]:focus, select:focus, textarea:focus, 
+ input[type="email"]:focus, input[type="password"]:focus {
     outline: none;
     outline-offset: 0;
     --tw-ring-color: rgb(181, 179, 179);

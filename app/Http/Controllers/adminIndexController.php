@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Auth;
 use App\Models\adminLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -8,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\feedback;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
+
 
 class adminIndexController extends Controller
 {
@@ -49,17 +52,25 @@ class adminIndexController extends Controller
     public function changePassword(Request $request) {
         $validated = $request->validate([
             'oldPassword' => 'required',
+            'confirmPassword' => 'required|same:newPassword',
             "newPassword" => ['required',
             Password::min(8)
                 ->letters()
                 ->mixedCase()
                 ->numbers()
                 ->symbols()
-                ->uncompromised()
-        ],
-            'confirmPassword' => 'required|same:newPassword'
+                ->uncompromised()]
         ]);
+        $admin = Auth::guard('admin')->user();
 
+        
+
+        if(!Hash::check($request->oldPassword, $admin->password)) {
+            return back()->withErrors(['oldPassword' => "Password Incorrect"]);
+        }
+
+        $admin->password = Hash::make($request->newPassword);
+        $admin->save();
 
         return redirect()->back()->with(['success' => 'Password Changed Successfully']);
 

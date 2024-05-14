@@ -51,7 +51,7 @@
                                     <td class="w-40 ">
                                         {{-- by variation --}}
                                             <select name="variation_id" id="" class="w-32 h-8 text-xs  cursor-pointer">    
-                                                    <option value=" "></option>                        
+                                                    <option value="0"></option>                        
                                                     <option value="1">Couple Shirt</option>
                                                     <option value="2">Solo Shirt</option>
                                                     <option value="3">Family Shirt</option>
@@ -62,7 +62,7 @@
                                     <td class="w-20">
                                         {{-- by gender --}}
                                             <select name="gender" id="" class="w-16 h-8 text-xs  cursor-pointer">
-                                                <option value=" "></option>  
+                                                <option value="0"</option>  
                                                 <option value="1">Male</option>
                                                 <option value="2">Female</option>
                                                 <option value="3">Unisex</option>

@@ -170,6 +170,7 @@
                                                 Manage Password
                                         </div>
                                     </a>
+                                    <hr class="my-1">
                                     {{-- logout settings  --}}
                                     <a onclick="adminLogoutBtn()" class="self-start cursor-pointer rounded hover:bg-gray-400 w-full" id="">
                                         <div class="flex flex-row  items-center p-1 w-full gap-2">

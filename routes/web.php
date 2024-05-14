@@ -7,6 +7,9 @@ use App\Mail\VerificationEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\CustomizeForgotPasswordController;
+use App\Http\Controllers\Auth\CustomizeResetPasswordController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -156,10 +159,9 @@ Route::get('/emailVerification', function(){
     return view('emails.verification');
 });
 
-// Route::post('/verifyEmail', function(){
-
-    
-// });
+Route::view('/forgotPassword', 'forgotPassword');
+Route::post('password/email', [CustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('password/reset', [CustomizeResetPasswordController::class, 'reset'])->name('password.update');
 
 // verify Email 
 Route::get('/emailVerified/{email}', function($email){

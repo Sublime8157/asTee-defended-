@@ -8,7 +8,7 @@
         @method('DELETE')
         {{-- <button type="button" onclick="" class="font-normal px-1 text-xs text-orange-600">Remove</button> --}}
         <select name="" id="chooseMultiple"  class="text-xs text-left font-normal border-none w-20 py-1 cursor-pointer px-1 " onchange="chosenMultiple()" style="font-size: 10px">
-            <option value="0">Action</option>
+            <option value="0" disabled selected>Action</option>
             <option value="1">Remove</option>
             <option value="2" class="{{$status}}">Status</option>
             <option value="3">Move</option>

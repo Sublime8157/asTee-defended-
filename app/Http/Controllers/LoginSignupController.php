@@ -14,6 +14,7 @@ use App\Models\Cart;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationEmail;
 
+
 class LoginSignupController extends Controller
 {
    // Show the login form 

@@ -11,10 +11,15 @@
         <h1 class="text-center text-base ">Manage Password</h1>
         <div class="text-center">
             @if($errors->any()) 
-            <span class="text-sm text-yellow-500 font-bold">
+            <span class="text-sm text-red-500 font-bold">
                 {{$errors->first()}}
             </span>
+            @elseif(session()->has('success')) 
+               <span class="text-sm text-yellow-500 font-bold"> 
+                {{@session()->get('success')}}</span>
             @endif
+            
+
         </div>
         <form action="{{route('changeAdmin.password')}}" class="flex flex-col gap-4" method="POST">
             @csrf
@@ -32,6 +37,7 @@
                 <label for="" class="text-sm">Confirm Password</label>
                 <input type="password" class="password border-none text-sm"  name="confirmPassword">
                 <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-8 cursor-pointer revealPassword text-base"></ion-icon>
+                <a href="" class="mt-2 text-xs cursor-pointer hover:underline font-light text-gray-400">Forgot Password?</a>
             </div>
             <div class="w-full">
                 <button class="bg-blue-700 w-full rounded shadow py-2 text-white ">Confirm</button>
