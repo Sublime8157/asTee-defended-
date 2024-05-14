@@ -12,7 +12,7 @@
 <body class="bg-gray-50">
     <div class="flex flex-col mt-20 items-center justify-center  h-96 w-full">
         <h1 class="text-center   font-bold text-5xl  text-blue-400">AsTee</h1>
-        <form action="{{route('password.email')}}" class="mt-5 flex flex-col items-start gap-2 bg-white justify-center rounded-md shadow p-5  w-6/12" method="POST">
+        <form action="{{route('admin.password.email')}}" class="mt-5 flex flex-col items-start gap-2 bg-white justify-center rounded-md shadow p-5  w-6/12" method="POST">
             @csrf
            <h1 class="text-lg font-bold text-gray-800 ">Reset Password</h1>
            <div class="w-full">
@@ -22,7 +22,7 @@
                 <blockquote><p class="text-sm text-gray-500">To reset your password, please enter your account email address, and a reset form will be sent to your inbox.
                     @if(session()->has('success'))
                         <span class="text-xs text-blue-700">
-                            {{@session()->get('success')}}
+                            {{session()->get('success')}}
                         </span>
                     @endif
                 </p></blockquote>

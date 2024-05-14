@@ -7,16 +7,20 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
-class CustomizeForgotPasswordController extends Controller
+class AdminCustomizeForgotPasswordController extends Controller
 {
     use SendsPasswordResetEmails;
-
+    
+    protected function broker() {
+        return Password::broker('admins');
+    }
     /**
      * Send a reset link to the given user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
+
     public function sendResetLinkEmail(Request $request)
     {
         $this->validateEmail($request);
@@ -24,7 +28,7 @@ class CustomizeForgotPasswordController extends Controller
         $response = $this->broker()->sendResetLink(
             $request->only('email')
         );
-
+        
         return $response == Password::RESET_LINK_SENT
                     ? $this->sendResetLinkResponse($request, $response)
                     : $this->sendResetLinkFailedResponse($request, $response);
@@ -56,7 +60,5 @@ class CustomizeForgotPasswordController extends Controller
             ['email' => trans($response)]
         );
     }
-    protected function broker() {
-        return Password::broker('admins');
-    }
+    
 }

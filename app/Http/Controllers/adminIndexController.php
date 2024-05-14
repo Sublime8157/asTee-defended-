@@ -97,7 +97,7 @@ class adminIndexController extends Controller
     // logout process 
 
     public function adminLogout(Request $request) {
-        auth()->logout();
+        auth()->guard('admin')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

@@ -7,8 +7,8 @@ use App\Mail\VerificationEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Auth\CustomizeForgotPasswordController;
-use App\Http\Controllers\Auth\CustomizeResetPasswordController;
+use App\Http\Controllers\Auth\AdminCustomizeResetPasswordController;
+use App\Http\Controllers\Auth\AdminCustomizeForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,9 +159,11 @@ Route::get('/emailVerification', function(){
     return view('emails.verification');
 });
 
-Route::view('/forgotPassword', 'forgotPassword');
-Route::post('password/email', [CustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::post('password/reset', [CustomizeResetPasswordController::class, 'reset'])->name('password.update');
+// always checks the middleware :) 
+Route::view('/adminforgotPassword', 'adminForgotPassword');
+Route::post('admin/password/email', [AdminCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
+Route::get('password/reset/{token}', [AdminCustomizeResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [AdminCustomizeResetPasswordController::class, 'reset'])->name('password.update');
 
 // verify Email 
 Route::get('/emailVerified/{email}', function($email){

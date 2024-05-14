@@ -8,17 +8,9 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class CustomizeResetPasswordController extends Controller
+class AdminCustomizeResetPasswordController extends Controller
 {
     use ResetsPasswords;
-
-    /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/loginAdmin';
-
     /**
      * Create a new controller instance.
      *
@@ -63,15 +55,11 @@ class CustomizeResetPasswordController extends Controller
         );
     }
 
-    protected function sendResetResponse(Request $request, $response) {
+    protected function sendResetResponse(Request $request, $response)
+    {
+
             return redirect()->route('loginAdmin')
                              ->with('status', trans($response))
                              ->with('success', 'Password Successfully Changed!');
     }
-
-    public function redirectPath()
-    {
-        return '/loginAdmin';
-    }
-
 }

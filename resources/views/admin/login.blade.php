@@ -15,7 +15,7 @@
             <div class="w-full items-center "> 
                 @if(session()->has('success'))
                     <span class="text-yellow-500 text-sm "> 
-                        {{@session()->get('success')}} 
+                        {{session()->get('success')}} 
                     </span>
                 @endif
             </div>
@@ -57,7 +57,7 @@
                         {{-- Forgot Password --}}
                         <div class="self-start mt-2 flex justify-between items-center w-full">
                                 <span>
-                                    <a href="/forgotPassword" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
+                                    <a href="/adminforgotPassword" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
                                 </span>
                                 <span>
                                     <a href="{{route('registration')}}" class="underline text-xs text-gray-400 font-bold">Register an Account?</a>
