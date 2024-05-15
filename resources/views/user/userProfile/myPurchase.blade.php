@@ -1,7 +1,7 @@
 <x-userHeader /> 
 <div class="absolute  top-0 bg-blue-700   text-center w-full" id="thankYouNotif">
     @if(session()->has('Success'))
-        <p class="py-2 text-white text-sm" id="successMessage">{{ @session()->get('Success') }}</p>
+        <p class="py-2 text-white text-sm" id="successMessage">{{ session()->get('Success') }}</p>
     @endif
    @if($errors->any()) 
     {{ $errors->first() }}

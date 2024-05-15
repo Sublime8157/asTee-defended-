@@ -2,7 +2,7 @@
 <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
     <ion-icon name="checkmark-circle-outline" class=" text-yellow-400 text-lg pe-1"></ion-icon>
     <span class="text-yellow-400 ">
-        {{ @session()->get('moveSuccess') }}
+        {{ session()->get('moveSuccess') }}
     </span>
 </div>
 @endif
@@ -10,7 +10,7 @@
 <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
     <ion-icon name="checkmark-circle-outline" class=" text-yellow-400 text-lg pe-1"></ion-icon>
     <span class="text-yellow-400 ">
-        {{ @session()->get('updatingSuccess') }}
+        {{ session()->get('updatingSuccess') }}
     </span>
 </div>
 @endif
@@ -18,7 +18,7 @@
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
         <span class="text-red-800 ">
-            {{ @session()->get('removedSucess') }}
+            {{ session()->get('removedSucess') }}
         </span>
     </div>
 @endif
@@ -26,7 +26,7 @@
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
         <span class="text-orange-500 ">
-            {{ @session()->get('success') }}
+            {{ session()->get('success') }}
         </span>
     </div>
 @endif
@@ -34,7 +34,7 @@
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
         <span class="text-red-800 ">
-            {{ @session()->get('fail') }}
+            {{ session()->get('fail') }}
         </span>
     </div>
 @endif

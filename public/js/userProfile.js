@@ -199,4 +199,19 @@ function closeConfirmationModal(id) {
     document.getElementById('cancelConfirmation' + id).close();
 }
 
+$('.revealPassword').on('click', function(){
+    var password = $(this).closest('.form-group').find('.password');
+    var icon = $(this);
+
+    if(password.prop('type') === 'password') {
+        password.prop('type', 'text');
+        icon.attr('name','eye-outline');
+    }
+    else {
+        password.prop('type', 'password');
+        icon.attr('name', 'eye-off-outline');
+    }
+})
+
+
 

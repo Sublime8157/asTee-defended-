@@ -4,7 +4,7 @@
         <h6 class="font-light text-gray-500 text-sm">Manage your Account</h6>
         <div class="text-center text-sm text-yellow-500">
                 @if(session()->has('success'))
-                {{@session()->get('success')}}
+                {{session()->get('success')}}
         @endif
         </div>
          {{-- Show the result of updating   --}}

@@ -7,7 +7,7 @@
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
         <span class="text-red-800 ">
-            {{ @session()->get('success') }}
+            {{ session()->get('success') }}
         </span>
     </div>
 @endif
@@ -15,7 +15,7 @@
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class=" text-red-800 text-lg pe-1"></ion-icon>
         <span class="text-red-800 ">
-            {{ @session()->get('blocked') }}
+            {{ session()->get('blocked') }}
         </span>
     </div>
 @endif

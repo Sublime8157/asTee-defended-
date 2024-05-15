@@ -50,6 +50,7 @@ class adminIndexController extends Controller
     }
     // changing password 
     public function changePassword(Request $request) {
+        // validated the user inputs 
         $validated = $request->validate([
             'oldPassword' => 'required',
             'confirmPassword' => 'required|same:newPassword',
@@ -61,15 +62,18 @@ class adminIndexController extends Controller
                 ->symbols()
                 ->uncompromised()]
         ]);
+        // authenticate the user so we can retrieve its data using admin guard 
         $admin = Auth::guard('admin')->user();
 
         
-
+        // check the user input and its password if they are the same 
         if(!Hash::check($request->oldPassword, $admin->password)) {
             return back()->withErrors(['oldPassword' => "Password Incorrect"]);
         }
 
+        // hash the input 
         $admin->password = Hash::make($request->newPassword);
+        // change the password 
         $admin->save();
 
         return redirect()->back()->with(['success' => 'Password Changed Successfully']);

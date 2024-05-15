@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Logo.ico')}}" type="image/x-icon">
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body class="bg-gray-50">
     <div class="flex flex-col mt-20 items-center justify-center  h-96 w-full">
@@ -21,8 +22,10 @@
            <div>
                 <blockquote><p class="text-sm text-gray-500">To reset your password, please enter your account email address, and a reset form will be sent to your inbox.
                     @if(session()->has('success'))
-                        <span class="text-xs text-blue-700">
-                            {{session()->get('success')}}
+                        <span class="text-sm text-blue-700">
+                           <a href="https://mail.google.com/mail/u/0/#inbox">
+                                {{session()->get('success')}}
+                           </a>
                         </span>
                     @endif
                 </p></blockquote>
@@ -38,7 +41,7 @@
            </div>
            <div class="self-end flex flex-row gap-2 ">
                 <button type="button" onclick="window.location.href='{{ route('loginAdmin') }}'" class="hover:opacity-70 text-gray-400 border border-gray-400 rounded py-1 px-2 ">Cancel</button>
-                <button type="submit" class="hover:opacity-70 py-1 px-2 rounded bg-blue-600 text-white">Submit</button>
+                <button type="submit" class="hover:opacity-70 py-1 px-2 rounded bg-blue-600 text-white" id="submitBtn">Submit</button>
            </div>
         </form>
     </div>

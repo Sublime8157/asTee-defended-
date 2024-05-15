@@ -192,3 +192,6 @@ Route::post('/emailVerification2', function(Request $request){
 
     return view('user.emailSent');
 })->name('verifyAgain');
+
+
+Route::post('userChangePassword', [UserProfileController::class, 'changePassword'])->name('userChange.Password');

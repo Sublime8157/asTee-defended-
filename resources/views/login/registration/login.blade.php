@@ -27,7 +27,7 @@
                   <br> <label for="password" class="text-sm">Password:</label> <br>
                   <div class="relative">
                   <input type="password" name="password" placeholder="******" value="{{ old('password') }}" class=" password w-full rounded focus:outline-0 focus:outline-blue-300 border-b-gray-300 border-x-0 border-t-0 text-sm" autocomplete="off">
-                  <ion-icon name="eye-off-outline" class="absolute cursor-pointer right-5 bottom-3 font-bold revealPassword"></ion-icon>
+                  <ion-icon name="eye-off-outline" class="absolute cursor-pointer right-5 bottom-2 font-bold revealPassword"></ion-icon>
                   </div>                  
                   <br>
                   <button type="submit" class="bg-yellow-400 w-full p-1 rounded text-black mt-5  hover:bg-yellow-300 text-sm">Submit</button>

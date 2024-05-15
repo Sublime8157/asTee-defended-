@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\feedback;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
+
 
 class userProfileController extends Controller
 {
@@ -66,6 +69,32 @@ class userProfileController extends Controller
         ]);
         // return 
         return redirect()->back()->with('success', 'Profile Updated, Your Updated Profile Will Show On Your Next Login!');
+    }
+
+    // change password
+    public function changePassword(Request $request) {
+        $validated = $request->validate([
+            "oldPassword" => 'required',
+            "newPassword" => ["required", 
+            Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->uncompromised()
+                    ->symbols()],
+            "confirmPassword" => 'required|same:newPassword'
+        ]);
+
+        $user = Auth::user();
+
+        if(!Hash::check($request->oldPassword, $user->password)) {
+            return redirect()->back()->with(["Fail" => "Wrong Password!"]);
+        }
+
+        $user->password = $request->newPassword; 
+        $user->save();
+
+        return redirect()->back()->with(["success" => "Password Change Successfully!"]);
     }
  
 }
