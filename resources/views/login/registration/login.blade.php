@@ -19,6 +19,7 @@
           </div>
         @endif
         {{-- Login Form --}}
+        @if(session()->has('success')) <p class="text-center text-xs font-bold text-yellow-400 ">{{session()->get('success')}} </p> @endif
         <h1 class="text-lg font-bold mb-2">Login</h1>
           <form action="{{route('loginProcess')}}" class="ms-2" method="POST">
                 @csrf
@@ -28,7 +29,8 @@
                   <div class="relative">
                   <input type="password" name="password" placeholder="******" value="{{ old('password') }}" class=" password w-full rounded focus:outline-0 focus:outline-blue-300 border-b-gray-300 border-x-0 border-t-0 text-sm" autocomplete="off">
                   <ion-icon name="eye-off-outline" class="absolute cursor-pointer right-5 bottom-2 font-bold revealPassword"></ion-icon>
-                  </div>                  
+                  </div>      
+                  <a href="{{route('findUser')}}" class="text-xs font-thin text-gray-500 hover:underline">Forgot Password?</a>
                   <br>
                   <button type="submit" class="bg-yellow-400 w-full p-1 rounded text-black mt-5  hover:bg-yellow-300 text-sm">Submit</button>
                   <h6 class="font-thin text-gray-400 text-center mt-3 text-xs">Dont have an account yet? <span class="underline cursor-pointer text-blue-600 hover:tracking-wide hover:text-blue-900" id="signup" onclick="revealForm()">Signup</span></h6>

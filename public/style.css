@@ -103,7 +103,7 @@ ul li:hover {
     --tw-ring-color: rgb(181, 179, 179);
     border-color: rgb(181, 179, 179);
 }
-input[type="text"], select, textarea     {
+input[type="text"], select, textarea, input[type="password"]     {
     border-color: #c1c3c5;
 }
 .modal[open] {

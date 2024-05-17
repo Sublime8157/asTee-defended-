@@ -16,10 +16,8 @@
             </span>
             @elseif(session()->has('success')) 
                <span class="text-sm text-yellow-500 font-bold"> 
-                {{@session()->get('success')}}</span>
+                {{session()->get('success')}}</span>
             @endif
-            
-
         </div>
         <form action="{{route('changeAdmin.password')}}" class="flex flex-col gap-4" method="POST">
             @csrf

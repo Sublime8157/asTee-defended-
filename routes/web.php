@@ -9,7 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AdminCustomizeResetPasswordController;
 use App\Http\Controllers\Auth\AdminCustomizeForgotPasswordController;
-
+use App\Http\Controllers\Auth\UserCustomizeForgotPasswordController;
+use App\Http\Controllers\Auth\UserCustomizeResetPasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,7 +39,7 @@ Route::get('/', [LoginSignupController::class, 'LoginSignup'])->name('userLogin'
 Auth::routes(['verify' => true]);
 
 // Route for logging in proccess
-Route::post('/login/process', [LoginSignupController::class, 'process'])->name('loginProcess');
+Route::post('/login/process', [LoginSignupController::class, 'process'])->name('loginProcess')->middleware('throttle:5,1');
 // Route for registering a user 
 Route::post('/store', [LoginSignupController::class, 'store']);
 
@@ -177,9 +178,10 @@ Route::get('/emailVerified/{email}', function($email){
     return view('user.verified');
 })->name('verified');
 
+// view for email 
 Route::view('/emailSent', 'user.emailSent');
 
-// view for 2nd regsitration 
+// view for sending email when user did not verify on their first registration  
 Route::get('verifyEmail2', function(){
     $userEmail = session('email');
     return view('user.verifyEmail2')->with('email', session('email'));
@@ -192,6 +194,15 @@ Route::post('/emailVerification2', function(Request $request){
 
     return view('user.emailSent');
 })->name('verifyAgain');
-
-
+// route for user changing password 
 Route::post('userChangePassword', [UserProfileController::class, 'changePassword'])->name('userChange.Password');
+// view for finding user 
+Route::view('/findUser', 'user.findUser')->name('findUser');
+Route::post('/searchedUser', [LoginSignupController::class, 'searchUser'])->name('submit.search');
+// reset password 
+Route::view('/userFound', 'user.foundUser')->name('foundUser');
+Route::post('user/password/email', [UserCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('user.password.email');
+Route::view('/userEmailSent', 'user.sentEmail')->name('userSent.Email');
+Route::get('password/reset/{token}', [UserCustomizeResetPasswordController::class, 'showResetForm'])->name('userPassword.reset');
+Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'reset'])->name('userPassword.update');
+Route::view('passwordResetEmail', 'emails.customPasswordReset');

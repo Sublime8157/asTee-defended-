@@ -104,5 +104,23 @@ class LoginSignupController extends Controller
       return redirect('/');
    }
 
-
+   // search user function 
+   public function searchUser(Request $request) {
+      $findUser = $request->search; 
+      $validated = $request->validate([
+         'search' => 'required'
+      ]);
+      $userData = User::query(); 
+      if($findUser) {
+         $userData = $userData->where(function($query) use ($findUser) {
+            $query->where('username', 'LIKE' ,"%{$findUser}%")
+                  ->orWhere('email','LIKE',"%{$findUser}%");
+         });
+      }
+      $userData = $userData->get();
+      if($userData->isEmpty()) {
+         return redirect()->back()->with(['noResult' => 'No user found, make sure to input the correct username or email']);
+      }
+      return redirect()->route('foundUser')->with('userData', $userData);
+   }
 }

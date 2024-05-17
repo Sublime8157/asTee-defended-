@@ -17,12 +17,13 @@ class accountsController extends Controller
         $userData = User::query();
 
         // check if the input field for search id is not empty if it is not empty run the search 
+        // take note that the $query callback function use to group all the where 
         if ($searchById) {
             $userData = $userData->where(function($query) use ($searchById) {
                 $query->where('fname', 'LIKE', "%{$searchById}%")
                       ->orWhere('email', 'LIKE', "%{$searchById}%")
                       ->orWhere('id', $searchById);
-            })->where('userStatus', '=', '1');
+            });
         }
         
 
