@@ -81,6 +81,7 @@ class LoginSignupController extends Controller
             $request->session()->put('username', $user->username);
             $request->session()->put('id', $user->id);
             $request->session()->put('profile', $user->profile);
+            $request->session()->put('verification', $user->verification);
             $request->session()->regenerate();
             return redirect('/home');
          }

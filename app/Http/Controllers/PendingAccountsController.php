@@ -1,81 +1,57 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
 use App\Models\User;
+use Illuminate\Http\Request;
 
-class blockedAccountsController extends Controller
+
+class PendingAccountsController extends Controller
 {
-
+    public function displayUsers() {
+        $userData = User::query();
+        $userData->whereNull('email_verified_at');
+        $userData = $userData->paginate(10);
+        return view('admin.accounts.pending', compact('userData'));
+    }
     // sort blocked users 
-    public function sortBlockUsers(Request $request) {
+    public function sortPendingUsers(Request $request) {
         // get the sortBy input 
-        $sortUsers = $request->input('sortBlockUserBy');
+        $sortUsers = $request->input('sortPendingUsersBy');
         // get the orderBy input 
-        $orderBy = $request->input('orderBlockUserBy');
-
+        $orderBy = $request->input('orderPendingUsersBy');
         // starts a building query 
         $userData = User::query();
         // order the users data based on the value of sort users with orderby
         $userData->orderBy($sortUsers, $orderBy);
         // get the result 
-        $userData->where('userStatus', '=', '2');
+        $userData->whereNull('email_verified_at');
         $userData = $userData->get();
-
-        
         return view('admin.accounts.searchActives.blockedAccountsResult', compact('userData'));
     }
 
-    // unblock a user 
-    public function unblock($id) {
-        $user = User::findOrFail($id);
-        $user->update([
-            'userStatus' => 1,
-        ]);
-        return redirect()->back()->with('success', 'User successfully unblocked');
-    }
-
-
-    // search users by id. name or gmail 
-
-
-    public function searchBlockedUsers(Request $request) {
+    
+    public function searchPendingUsers(Request $request) {
         // get the value of input field with name attribute of searchById
-        $searchById = $request->input('searchAllBlockedUsers');
+        $searchById = $request->input('searchPendingUsers');
         // use the query() when you will build a data before displaying 
         $userData = User::query();
-
         // check if the input field for search id is not empty if it is not empty run the search 
         if ($searchById) {
             $userData = $userData->where(function($query) use ($searchById) {
                 $query->where('fname', 'LIKE', "%{$searchById}%")
                       ->orWhere('email', 'LIKE', "%{$searchById}%")
                       ->orWhere('id', $searchById);
-            })->where('userStatus', '=', '2');
+            });
         }
         
 
         // assign the builded data to userData variable 
-        $userData->where('userStatus', '=', '2');
+        $userData->whereNull('email_verified_at');
         $userData = $userData->get();
 
         // display the result in idSearchResult a result in ajax 
         return view('admin.accounts.searchActives.blockedAccountsResult', compact('userData'));
     }
-
-
     
-
-    // display blocked user by default 
-    public function display(){
-        $userData = User::query();
-        
-        $userData->where('userStatus', '=', '2');
-        $userData = $userData->paginate(10);
-
-
-
-        return view('admin.accounts.blocked', compact('userData'));
-    }
 }

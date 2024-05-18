@@ -326,9 +326,6 @@ $(document).ready(function(){
         });
     });
 });
-
-
-
 // search blocked users 
 $(document).ready(function(){
     $('#searchBlockedUser').on('keyup', function(){
@@ -338,6 +335,44 @@ $(document).ready(function(){
        };
        $.ajax({
         url: '/searchBlockedUsers',
+        type: 'GET',
+        data: formData,
+        success: function(response) {
+            $('#userLists').html(response);
+        }
+       });
+    });
+});
+
+
+// sort for blocked users 
+$(document).ready(function(){
+    $('.sortPendingUsersBy').on('change', function(){
+        var sortPendingUsersBy = $('#sortPendingUsersBy').val();
+        var orderPendingUsersBy = $('#orderPendingUsersBy').val();
+        var formData = {
+            sortPendingUsersBy: sortPendingUsersBy,
+            orderPendingUsersBy: orderPendingUsersBy
+        };
+        $.ajax({
+            url: '/sortPendingUsers',
+            type: 'GET',
+            data: formData,
+            success: function(response) {
+                $('#userLists').html(response);
+            }
+        });
+    });
+});
+
+// search blocked users 
+$(document).ready(function(){
+    $('#searchPendingUsers').on('keyup', function(){
+       var formData ={
+        searchPendingUsers: $(this).val()
+       };
+       $.ajax({
+        url: '/searchPendingUsers',
         type: 'GET',
         data: formData,
         success: function(response) {

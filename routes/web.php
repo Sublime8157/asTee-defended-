@@ -57,6 +57,7 @@ Route::get('/DIY',  [UserController::class, 'DIY']);
 
 // These routes was for updating the user Profile
 Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
+Route::post('/uploadID',[userProfileController::class,'uploadID'])->name('upload.validID');
 Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
 Route::get('/checkout',[UserController::class, 'checkout'])->name('checkout.process');
 Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
@@ -124,15 +125,16 @@ Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('use
 
 // remove a user 
 Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
-
+Route::patch('/userVerifyID/{id}',[accountsController::class,'verifyID'])->name('users.verifyID');
 
 Route::get('/accounts/blocked', [blockedAccountsController::class, 'display'])->middleware('admin');
 Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
 Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
 Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);
 
-Route::get('/accounts/pending', [adminAccountsController::class, 'pending'])->middleware('admin');
-
+Route::get('/accounts/pending', [PendingAccountsController::class, 'displayUsers'])->middleware('admin');
+Route::get('/sortPendingUsers',[PendingAccountsController::Class, 'sortPendingUsers']);
+Route::get('/searchPendingUsers',[PendingAccountsController::Class, 'searchPendingUsers']);
 
 // product details 
 Route::get('/productDetails/{id}', [productsController::class, 'details']);

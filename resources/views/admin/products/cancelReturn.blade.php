@@ -1,6 +1,6 @@
 @extends('components.header')
-@section('docu', 'Products')
-@section('page','RETURN / CANCEL ')
+@section('docu', 'Return & Cancel Products')
+@section('page','RETURN & CANCEL ')
 <x-header />
 <x-nav />
 <x-notification />

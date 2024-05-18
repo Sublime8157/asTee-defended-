@@ -62,6 +62,7 @@ class adminOnHandsController extends Controller
     public function filterOnHandProducts(Request $request) {
         $storeOnHand = OnHand::query();
         // check if value is present
+        
         if($request->filled(['variation_id'])) {
             $storeOnHand->where('variation_id', $request->input('variation_id'));
         }
@@ -82,6 +83,7 @@ class adminOnHandsController extends Controller
             $storeOnHand->where('price', $request->input('price'));
         }
         $filterOnHand = $storeOnHand->get();
+        
         return view('admin.products.onHandPartial', ['filterOnHand' => $filterOnHand])->render();
     }
 

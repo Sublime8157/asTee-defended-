@@ -1,5 +1,5 @@
 @extends('components.header')
-@section('docu', 'Dashboard')
+@section('docu', 'Processing Products')
 @section('page','ON-PROCCESS PRODUCTS')
 <x-header />
 <x-nav />

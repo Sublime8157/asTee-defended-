@@ -17,7 +17,7 @@
          </dialog>
      </td>                
      <td class="text-center ps-2">{{$product->variationType()}}</td>
-     <td class="text-center ps-2">{{$product->description}}</td>
+     <td class="text-center ps-2 w-60 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
      <td class="text-center ps-2">{{$product->genderShirt()}}</td>
      <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
      <td class="text-center ps-2">{{$product->total}}</td>

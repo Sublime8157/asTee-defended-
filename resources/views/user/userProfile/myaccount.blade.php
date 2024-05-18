@@ -51,8 +51,8 @@
                 </div>
                  @endif
                 <div class="relative">
-                    <img src="{{ asset('storage/images/' . $user->profile )}} "  class="rounded-full  max-h-20" style="width: 80px">
-                    <img src="#" alt="" id="imagePreview" class="absolute rounded-full top-0 hidden" width="100px" height="100px" style="width: 80px">
+                    <img src="{{ asset('storage/images/' . $user->profile )}} "  class="rounded-full  h-20 w-20">
+                    <img src="#" alt="" id="imagePreview" class="w-20 h-20 absolute rounded-full top-0 hidden">
                 </div>
                 
                 <p class="text-xs text-gray-500">File size: maximum 2 MB <br>

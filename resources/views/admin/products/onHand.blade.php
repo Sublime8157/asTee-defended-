@@ -1,5 +1,5 @@
 @extends('components.header')
-@section('docu', 'Products')
+@section('docu', 'On-Hand Products')
 @section('page','ON-HAND PRODUCTS')
 <x-header />
 <x-nav />
@@ -25,7 +25,7 @@
                             userId="block"
                             > 
                             </x-removeMultiple>
-                            <th class="adminTable   ">ID</th>
+                            <th class="adminTable">ID</th>
                             <th class="adminTable w-20">Image</th>
                             <th class="adminTable">Variation</th>
                             <th class="adminTable">Description</th>
@@ -40,7 +40,8 @@
                         </tr>
                         <tr>
                             {{-- Filter products  --}}
-                                <form id="filterOnHandForm"  method="get">
+                                <form  method="get" id="filterOnHandForm">
+                                    @csrf
                                     <td></td>
                                     <td class="text-center"></td>
                                     <td>
@@ -51,18 +52,18 @@
                                     <td class="w-40 ">
                                         {{-- by variation --}}
                                             <select name="variation_id" id="" class="w-32 h-8 text-xs  cursor-pointer">    
-                                                    <option value="0"></option>                        
+                                                    <option value=""></option>                        
                                                     <option value="1">Couple Shirt</option>
                                                     <option value="2">Solo Shirt</option>
                                                     <option value="3">Family Shirt</option>
                                                     <option value="4">Kids Wear</option>                              
                                             </select>
-                                        </td>
+                                    </td>
                                     <td class="w-32"></td>
                                     <td class="w-20">
                                         {{-- by gender --}}
                                             <select name="gender" id="" class="w-16 h-8 text-xs  cursor-pointer">
-                                                <option value="0"</option>  
+                                                <option value=""> </option>  
                                                 <option value="1">Male</option>
                                                 <option value="2">Female</option>
                                                 <option value="3">Unisex</option>
@@ -71,7 +72,7 @@
                                     <td class="w-40">
                                         {{-- by size --}}
                                             <select name="size" class="w-32  h-8 text-xs cursor-pointer" id="">
-                                                <option value=" "></option>  
+                                                <option value=""></option>  
                                                 <option value="1">XS</option>
                                                 <option value="2">Small</option>
                                                 <option value="3">Medium</option>

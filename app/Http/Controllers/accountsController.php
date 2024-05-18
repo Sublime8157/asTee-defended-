@@ -60,9 +60,6 @@ class accountsController extends Controller
     public function displayUsers() {
         $userData = User::query();
         $userData->where('userStatus', '=', '1');
-
-        
-       
         $userData = $userData->paginate(10);
         return view('admin.accounts.active', compact('userData'));
     }
@@ -76,6 +73,16 @@ class accountsController extends Controller
 
         return redirect()->back()->with('blocked', 'User successfully blocked');
     }
+
+    public function verifyID($id) {
+        $user = User::findOrFail($id);
+        $user->update([
+            'verification' => 'verified',
+        ]);
+
+        return redirect()->back()->with('success', 'User Has been Verified ');
+    }
+
 
     // the $id was from the action pass from the html to routes and ends here 
     // remove a user and all of its process or orders 

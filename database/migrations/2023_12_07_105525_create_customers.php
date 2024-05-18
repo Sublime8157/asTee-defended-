@@ -26,6 +26,8 @@ return new class extends Migration
             $table->unsignedBigInteger('userStatus');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password'); 
+            $table->enum('verification', ['not_verified','verified'])->default('not_verified');
+            $table->unsignedBigInteger('verified');
             $table->rememberToken();
             $table->timestamps();
             // address, birthdate not age 

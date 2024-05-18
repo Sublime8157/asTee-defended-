@@ -53,6 +53,26 @@ function imagePreview(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// show the image preview before saving 
+function imagePreviewID(input) {
+    // check if there are files 
+    if(input.files && input.files[0]) {
+        // create filereader object 
+        var reader = new FileReader();
+        // load the file 
+        reader.onload = function(e) {
+            // change the file src
+            $('#imagePreviewID').attr('src', e.target.result);
+            // display 
+            $('#imagePreviewID').css('display', 'block');
+        }
+        // read file 
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
 // show the dialog 
 function showConfirmationDialog(id) {
      document.getElementById('confirmationDialog' + id).showModal();

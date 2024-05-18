@@ -96,5 +96,27 @@ class userProfileController extends Controller
 
         return redirect()->back()->with(["success" => "Password Change Successfully!"]);
     }
+
+     //Update the user profile
+   public function uploadID(Request $request) {
+    // validate the user uploaded image 
+    $validated = $request->validate([
+        "validID" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+    ]);
+    // get the original file name 
+    $filename = $validated['validID']->getClientOriginalName();
+    // upload the image to storage/public/images
+    $validated['validID']->storeAs('public/images', $filename); 
+    // get the user id  
+    $id = session()->get('id');
+    // find in customers(User) table 
+    $userId = User::findOrFail($id);
+    // update the user profile into the user uploaded image 
+    $userId->update([
+        'validID' => $filename
+    ]);
+    // return 
+    return redirect()->back()->with('success', 'Thank you! for submitting your ID your account will be verified within 24h');
+}
  
 }
