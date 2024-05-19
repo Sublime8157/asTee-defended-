@@ -15,6 +15,8 @@ use App\Models\feedback;
 use App\Models\customers;
 use App\Models\Processing;
 use App\Models\orders;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvoicePaymentMail;
 class UserController extends Controller
 {
     // Function for showing the homepage
@@ -175,12 +177,13 @@ class UserController extends Controller
             'userId' => 'required|exists:customers,id',
             'description.*' => 'required', // use .* if you are expecting a list or an array 
             'variation_id.*' => 'required',
+            'email' => 'required',
             'gender.*' => 'required',
             'size.*' => 'required',
             'price.*' => 'required|numeric',
             'quantity.*' => 'required|numeric',
             'total' => 'required|numeric',
-            'image_path.*' => 'required'
+            'image_path.*' => 'required',
         ]);
         if(count($prodToInsert) != 0) { // count the result if it  was not 0 process
             foreach($validated['price'] as $index => $price){ // iterate through the array so we can insert each user selected 
@@ -215,18 +218,31 @@ class UserController extends Controller
                     // Handle the case where the quantity is not enough
                     return redirect()->route('checkout.process')->with('error', 'Insufficient quantity for product ' . $productId);
                 }   
-
                 $processingId = $processing->id;
-                orders::create([
+                $orders = orders::create([
                     'userId' => $validated['userId'],
                     'productId' => $processingId,
                     'address' => $validated['address'],
                     'contact' => $validated['contact'],
-                    'mop' => 'cash_on_delivery'
+                    'mop' => $request->mop
                 ]);
+                $orderId = $orders->id;
+                $invoiceData = [
+                    "userId" => $validated['userId'],
+                    "orderNo" => $orderId,
+                    "address" => $validated['address'],
+                    "contact" => $validated['contact'],
+                    "mop" => $request->mop,
+                    "total" => $total,
+                    "orderDate" => now()->format('Y-m-d')
+                ];
+               
             }
         }
-        return redirect()->route('myPurchase',['userId' => $request->userId]);
+        Mail::to($validated['email'])->send(new InvoicePaymentMail($invoiceData));
+      
+        
+        return redirect()->route('myPurchase',['userId' => $request->userId])->with('Success','Order has been made successfully, an order invoice has been sent to you emal please check your inbox or spam. Thank you!');
     }
 
    

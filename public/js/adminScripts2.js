@@ -18,6 +18,8 @@ $('#checkAll').on('click', function(){
         });
     }
     $('#toRemove').val(toDeleteArr); // pass the array to hidden input 
+    $('#toUpdate').val(toDeleteArr);
+    $('#toMove').val(toDeleteArr);
 })
 // remove specific using checkbox
 $('.checkBox').on('click', function(){ // listen to click for all of the tags with chekBox classes 
@@ -34,6 +36,8 @@ $('.checkBox').on('click', function(){ // listen to click for all of the tags wi
         }
     }
     $('#toRemove').val(toDeleteArr); // assign the value to input 
+    $('#toUpdate').val(toDeleteArr);
+    $('#toMove').val(toDeleteArr);
 })
 function chosenMultiple() {
     var functionToDo = $('#chooseMultiple').val();

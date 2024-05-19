@@ -208,3 +208,4 @@ Route::view('/userEmailSent', 'user.sentEmail')->name('userSent.Email');
 Route::get('password/reset/{token}', [UserCustomizeResetPasswordController::class, 'showResetForm'])->name('userPassword.reset');
 Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'reset'])->name('userPassword.update');
 Route::view('passwordResetEmail', 'emails.customPasswordReset');
+Route::view('/invoice','mail.mailTemplate');

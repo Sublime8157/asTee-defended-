@@ -26,11 +26,12 @@ class UserPurchaseController extends Controller
     // get the user id 
     $userId = session('id');
     // get the product from processing based on user id 
-        $product = Processing::
-                              where('userId', $userId)
-                            ->where('productStatus', 1)
+        $product = Processing::join('orders','orders.productId','=','product_on_process.ID')
+                            ->where('product_on_process.userId', $userId)   
+                            ->where('product_on_process.productStatus', 1)
+                            ->select('product_on_process.*','orders.address',)
                             ->get();
-    // iterate through all the description table to limit to 7 wrods assign to displayDescription variable 
+        // iterate through all the description table to limit to 7 wrods assign to displayDescription variable 
         foreach($product as $item) {
             $item->displayDescription = Str::words($item->description, 7);
         }
@@ -51,8 +52,10 @@ class UserPurchaseController extends Controller
     //filter the products 
     public function productStatus($status) {
         $userId = session('id');
-        $product = Processing::where('userId', $userId)
+        $product = Processing::join('orders','orders.ProductID', '=', 'product_on_process.ID')
+                                ->where('product_on_process.userId', $userId)
                                 ->where('productStatus', $status)
+                                ->select('product_on_process.*','orders.address','orders.mop')
                                 ->get();
         foreach($product as $item) {
             $item->displayDescription = Str::words($item->description, 6);

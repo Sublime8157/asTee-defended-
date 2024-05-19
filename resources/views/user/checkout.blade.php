@@ -1,25 +1,27 @@
 <x-header />
-<div class="text-center mt-2 ">
 @if($errors->any())
    @foreach ($errors->all() as $error )
        {{$error}}
    @endforeach
 @endif
 </div>
-    <div class="flex flex-col min-h-screen w-full bg-gray-100 py-4 justify-center items-center">
+    <div class="flex flex-col min-h-screen w-full py-4 justify-start items-center">
           <div class="bg-white h-auto shadow-md rounded w-11/12 md:w-6/12 p-4">
             <form action="{{ route('confirmCheckout') }}" class="flex flex-col gap-4" method="POST">
                 @csrf
-                        <h1 class="text-black text-base">Billing Information:</h1>
+                        <h1 class="text-black text-base">Billing Information:</h1> 
+                        <hr class="w-full bg-gray-100">
                     <div class="flex-row flex gap-4 text-sm">
                             <div class="flex text-xs flex-col text-gray-500">
                                 <h1>Address</h1>
-                                <h1>Full name:</h1>
                                 <h1>Contact:</h1>
+                                <h1>Email</h1>
+                                <h1>Full name:</h1>
                             </div>
                         <div class="flex flex-col">
                                 <input type="text" class="text-xs text-gray-400 border-none text-left p-0 w-80" name="address" value="{{$userInfo->address}}">
                                 <input type="text" class="text-xs text-gray-400 border-none text-left p-0 w-auto" name="contact" value="{{$userInfo->contact}}">
+                                <input type="text" class="text-xs text-gray-400 border-none text-left p-0 w-auto" name="email" value="{{$userInfo->email}}">
                                 <span class="text-gray-400 text-xs"> {{$userInfo->fname}} {{$userInfo->mname}} {{$userInfo->lname}}</span> 
                         </div>
                     </div>
@@ -73,9 +75,19 @@
                 </div>
                 <hr class="w-full ">
             @endforeach
-            <div class="flex me-4 justify-end items-center flex-row gap-4">
+            <div class="flex w-full me-4 justify-end items-end flex-col gap-1">
                 <div class=" text-orange-600">
                     Total: ₱<input type="text" class=" w-6 border-none  p-0" name="total" id="" value="{{ $data['total'] }}"><span class="text-orange-600">.00</span>
+                </div>
+                <div class="w-full">
+                    <label for="">Mode of Payment </label>
+                    <p class="text-xs text-red-500 py-1"><ion-icon name="alert-circle" class=" text-red-500"></ion-icon>Please take note that only users with <a href="/userProfile/myAccount" class="underline text-blue-900 ">verified</a> account are eligible for other <b> Payment Method. </b> </a> If you are already verified disregard this message.</p>
+                    <select name="mop" id="" class="w-full border-none rounded">
+                        @if($userInfo->verification == 'verified')
+                            <option value="cash_on_delivery">Cash On Delivery (COD)</option>
+                        @endif
+                        <option value="online_payment">Online Payment </option>
+                    </select>
                 </div>
             </div>
             <div>

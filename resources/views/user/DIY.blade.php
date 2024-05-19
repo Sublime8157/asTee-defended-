@@ -283,18 +283,89 @@
         </div>
     </div>
     {{-- Guide on mock up t shirt  --}}
-       <section id="guide">
+       <section id="guide" class="mx-4 flex flex-col gap-2">
             <h1 class="text-center text-4xl italic mt-5">Guide</h1>
-            <div class="flex justify-evenly flex-row items-center">
+            <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row items-center">
                 <div>
-                    <img src="{{ asset('images/logo.png') }}" alt="" width="250px">
+                    <img src="{{ asset('images/designStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
                 </div>
-                <div class="w-4/12">
-                    <p class="indent-10">
+                <div class="w-11/12 md:w-6/12 flex flex-col ">
+                    <h1 class="font-bold text-lg">Step 1 </h1>
+                    <p class="indent-10 md:text-base text-xs">
                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
                     </p>
                 </div>
             </div>    
+            <div class="w-full flex justify-center items-center  h-auto">
+                <img src="{{asset('images/arrowImage.png')}}" alt="" class="w-10/12 h-10 md:h-20">
+            </div>
+            <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row-reverse items-center">
+                <div>
+                    <img src="{{ asset('images/sendStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                </div>
+                <div class="w-11/12 md:w-6/12 flex flex-col ">
+                    <h1 class="font-bold text-lg">Step 2 </h1>
+                    <p class="indent-10 md:text-base text-xs">
+                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                    </p>
+                </div>
+            </div>    
+            <div class="w-full flex justify-center items-center  h-auto">
+                <img src="{{asset('images/arrowImageBlue.png')}}" alt="" class="w-10/12 h-10 md:h-20">
+            </div>
+            <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row items-center">
+                <div>
+                    <img src="{{ asset('images/pricingStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                </div>
+                <div class="w-11/12 md:w-6/12 flex flex-col ">
+                    <h1 class="font-bold text-lg">Step 3 </h1>
+                    <p class="indent-10 md:text-base text-xs">
+                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                    </p>
+                </div>
+            </div>    
+            <div class="w-full flex justify-center items-center  h-auto">
+                <img src="{{asset('images/arrowImage.png')}}" alt="" class="w-10/12 h-10 md:h-20">
+            </div>
+            <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row-reverse items-center">
+                <div>
+                    <img src="{{ asset('images/creatingStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                </div>
+                <div class="w-11/12 md:w-6/12 flex flex-col ">
+                    <h1 class="font-bold text-lg">Step 4 </h1>
+                    <p class="indent-10 md:text-base text-xs">
+                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                    </p>
+                </div>
+            </div>     
+            <div class="w-full flex justify-center items-center  h-auto">
+                <img src="{{asset('images/arrowImageBlue.png')}}" alt="" class="w-10/12 h-10 md:h-20">
+            </div> 
+            <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row items-center">
+                <div>
+                    <img src="{{ asset('images/paymentStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                </div>
+                <div class="w-11/12 md:w-6/12 flex flex-col ">
+                    <h1 class="font-bold text-lg">Step 5 </h1>
+                    <p class="indent-10 md:text-base text-xs">
+                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                    </p>
+                </div>
+            </div>  
+            <div class="w-full flex justify-center items-center  h-auto">
+                <img src="{{asset('images/arrowImage.png')}}" alt="" class="w-10/12 h-10 md:h-20">
+            </div> 
+            <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row-reverse items-center">
+                <div>
+                    <img src="{{ asset('images/shipStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                </div>
+                <div class="w-11/12 md:w-6/12 flex flex-col ">
+                    <h1 class="font-bold text-lg">Step 6 </h1>
+                    <p class="indent-10 md:text-base text-xs">
+                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                    </p>
+                </div>
+            </div>  
         </section>   
 </div>
 

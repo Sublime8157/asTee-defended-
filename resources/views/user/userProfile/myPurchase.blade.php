@@ -6,7 +6,7 @@
    @if($errors->any()) 
     {{ $errors->first() }}
    @endif
-  
+   
 </div>
     <div class="bg-white p-5 min-h-full   md:w-8/12 w-full">
         <h3 class="font-bold text-orange-800">My Purchase</h3>
@@ -77,9 +77,10 @@
                                 {{-- details --}}
                                     <p>{{$item->displayDescription}} </p>
                                     <p>{{$item->sizeShirt()}} | {{$item->variationType()}} | {{$item->genderShirt()}}</p>
-                                    <p id="price{{$item->id}}">{{$item->price}}</p>
-                                    <p>Qty: <span id="quantity{{$item->id}}">{{$item->quantity}}</span></p>
-
+                                    <p id="price{{$item->id}}"><b>Price: </b>{{$item->price}}</p>
+                                    <p><b>Qty:</b> <span id="quantity{{$item->id}}">{{$item->quantity}}</span></p> 
+                                    <b>Address: </b>{{$item->address}} <br>
+                                    <b>MOP: </b>{{$item->mop}}
                             </div>
                         </div>
                         <div class="self-end md:text-base text-xs text-orange-700 pe-4">

@@ -136,14 +136,14 @@ class adminOnProcessController extends Controller
      public function moveProduct(Request $request, $id) {
         // find the product id 
         $product = processing::findOrFail($id);
+        $orders = orders::where('productId',$id);
         // get the move option value 
         $moveTo = $request->input('moveProduct');
         // check the move to inpout value  
-      
         switch($moveTo) {
             // if option 1 is selected...
             case 1: 
-                  // move to processing table 
+                  // move to on hand  table 
                 OnHand::create([
                     'image_path' => $product->image_path,
                     'status' => $product->status,
@@ -154,7 +154,9 @@ class adminOnProcessController extends Controller
                     'price' => $product->price,
                     'quantity' => $product->quantity,                   
                 ]);
-                // delete from the onhand table 
+                // delete from order table as well 
+                $orders->delete();
+                // delete from the processing table 
                 $product->delete();
                 // redirect to the cancel return tab 
                 return redirect()->back()->with('moveSuccess', 'Product Successfully moved to On Hand table');
@@ -235,6 +237,7 @@ class adminOnProcessController extends Controller
                 'productStatus' => $status
             ]);
         }
+     
         return redirect()->back()->with(['success' => 'Updating Success']);
     }
 
@@ -251,6 +254,7 @@ class adminOnProcessController extends Controller
                 case 3: 
                         foreach($productToMove as $product) {
                             $onHandProduct = Processing::where('id', $product)->first(); 
+                            $orders = orders::where('productId',$product)->first();
                             OnHand::create([
                                 'image_path' => $onHandProduct['image_path'],
                                 'variation_id'=> $onHandProduct['variation_id'],
@@ -261,6 +265,7 @@ class adminOnProcessController extends Controller
                                 'quantity' =>  $onHandProduct['quantity'],
                                 'total' => $onHandProduct['price']
                             ]);
+                            $orders->delete();
                             $onHandProduct->delete();
                         }
                         return redirect()->back()->with(['success' => 'Moved to On Hand Successfully']);
