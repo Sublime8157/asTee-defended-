@@ -59,7 +59,8 @@
                                 <a href="/DIY" class="{{ request()->is('DIY') ? 'underline font-semibold' : ' ' }}">D.I.Y</a></li>
                             <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
                                 <a href="/Product" class="{{ request()->is('Product') ? 'underline font-semibold' : '' }}">Product</a></li>
-                            <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20"><a href="">Contact Us</a></li>
+                            <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
+                                <a href="/contact-us" class="{{ request()->is('contact-us') ? 'underline font-semibold' : '' }}">Contact Us</a></li>
                         </ul>
                     </div>
                     {{-- Separating horizontal line --}}

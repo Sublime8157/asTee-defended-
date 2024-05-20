@@ -292,7 +292,7 @@
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 1 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                     <b> Design </b> using our DIY (Do it yours) you can customize your own t shirt, you can insert an image or different styles of text. After designing kindly please download the image, please take note that you have to download <b>both front and back</b> view of the t-shirt.  
                     </p>
                 </div>
             </div>    
@@ -306,7 +306,7 @@
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 2 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                        After downloading you can then <b>send</b> it to one of our admin using our chat feature, this plays an important role as this would confirm the design and the cost of creating your custom designs.
                     </p>
                 </div>
             </div>    
@@ -320,8 +320,7 @@
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 3 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
-                    </p>
+                     When the designed was confirmed, you will then proceed to <b>pricing</b> this includes on how much quantity and what are the sizes of your custom design, in this process we will finalize the design, quantity and sized of the product. and lastly on how long would it take to finish your product.</p>
                 </div>
             </div>    
             <div class="w-full flex justify-center items-center  h-auto">
@@ -329,12 +328,12 @@
             </div>
             <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row-reverse items-center">
                 <div>
-                    <img src="{{ asset('images/creatingStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                    <img src="{{ asset('images/paymentStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
                 </div>
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 4 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                        To ensure everything is set and finalized, we will proceed to the <b>payment</b> process. At <i>AsTee</i>, before we start creating your product, a <b>50% down payment</b> is required, as outlined in step 4. This protects both parties. The remaining 50% payment will be due upon delivery.
                     </p>
                 </div>
             </div>     
@@ -343,13 +342,12 @@
             </div> 
             <div class=" py-2 px-2 gap-4  rounded-lg  flex justify-evenly flex-row items-center">
                 <div>
-                    <img src="{{ asset('images/paymentStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
+                    <img src="{{ asset('images/creatingStep.jpg') }}" alt="" class="w-20 h-20 md:w-60 md:h-60">
                 </div>
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 5 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
-                    </p>
+                        Now it all set we will then proceed to <b>creating</b> your custom design on the given time, we always make sure to meet our given time on creating your product. </p>
                 </div>
             </div>  
             <div class="w-full flex justify-center items-center  h-auto">
@@ -362,15 +360,13 @@
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 6 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vitae voluptas minus quia illo repellat obcaecati soluta earum alias provident.
+                        In the <b>shipping</b> process, the company uses different types of shipping based on your location. If your location is within Metro Manila, <i>AsTee</i> offers same-day delivery. However, if you are outside Metro Manila, a different shipping company is used, and it takes at least three days for delivery.
                     </p>
                 </div>
             </div>  
         </section>   
-</div>
-
+    </div>
 {{-- Javascript --}}
-  
     <x-footer />
     <script src="{{asset('/js/diy.js')}}"></script>
     <x-scripts />

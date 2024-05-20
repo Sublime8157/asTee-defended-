@@ -116,7 +116,7 @@ class userProfileController extends Controller
         'validID' => $filename
     ]);
     // return 
-    return redirect()->back()->with('success', 'Thank you! for submitting your ID your account will be verified within 24h');
+    return redirect()->back()->with('submitSuccess', 'Thank you! for submitting your ID, your account will be verified within 24h');
 }
  
 }

@@ -1,20 +1,28 @@
 <x-header />
+
+
 @if(session('verification') == 'not_verified')
-<div class="w-full bg-red-200    border border-red-700  py-1  rounded absolute top-0">
-    <p class="text-xs md:text-sm text-center">
-        To use other mode of payment and other more features please <a onclick="document.getElementById('verifyIDmodal').showModal();" class="cursor-pointer underline text-blue-800 ">Verify Account</a>
-    </p>
-</div>      
+    @if(session()->has('submitSuccess'))
+    <div class="w-full bg-blue-700  border  py-1  rounded absolute top-0">
+        <p class="text-xs md:text-sm text-white text-center">
+            {{session()->get('submitSuccess')}}
+        </p>
+    </div> 
+    @else
+    <div class="w-full bg-red-200    border border-red-700  py-1 rounded absolute top-0">
+        <p class="text-xs md:text-sm text-center">
+            To use other mode of payment and other more features please <a onclick="document.getElementById('verifyIDmodal').showModal();" class="cursor-pointer underline text-blue-800 ">Verify Account,</a> please disregard this message if you already submitted your valid ID.
+        </p>
+    </div>   
+    @endif
 @endif
 <div class=" w-full min-h-screen  md:p-10 bg-white md:bg-gray-100 " >
-    
     <div class="flex justify-betweeen  md:justify-evenly  h-full w-full  items-center md:items-start">
         <div class=" flex-col self-start  md:relative top-0 left-0  items-start gap-2 md:w-48 w-16 flex border-r border-gray-100 mt-5 ">
            <div class="flex-row hidden md:flex items-center gap-2">
                 <img src="{{asset('storage/images/' . session('profile') )}}" alt="" class="rounded-full max-h-20" style="width: 80px">
                 <p class=" font-bold ">{{session('username')}}</p>
            </div>
-
            <div class="ps-2 pt-2">
                 <ul class="text-sm flex gap-4 flex-col font-bold">
                     <a href="/userProfile/myAccount">
@@ -56,8 +64,8 @@
         </div>
         <div class="md:px-10 px-5 md:w-72 w-48 flex justify-center items-center flex-col h-full bg-gray-50">
             <div class="relative">
-                <img src=""  class="h-32 w-24 bg-white">
-                <img src="#" alt="" id="imagePreviewID" class="h-32 w-24 border bg-white rounded absolute  top-0 hidden">
+                <img src=""  class="h-32 w-48 bg-white">
+                <img src="#" alt="" id="imagePreviewID" class="h-32 w-48 border bg-white rounded absolute  top-0 hidden">
             </div>
             <p class="text-xs text-gray-500">File size: maximum 2 MB <br>
                 File extension: .JPEG, .PNG</p>

@@ -47,11 +47,11 @@ Route::post('/store', [LoginSignupController::class, 'store']);
 // Route::get('/homepage', [UserController::class, 'home']);
 // Route for about us page
 Route::get('/about-us', [UserController::class, 'about_us']);
-
 // Route for product tab
 Route::get('/filterProducts', [productsController::class, 'filterProducts']);
 Route::get('/Product', [productsController::class, 'displayOnHandsProducts']);
-
+// for contact us 
+Route::view('/contact-us','user.contact_us');
 // Route for DIY page
 Route::get('/DIY',  [UserController::class, 'DIY']);
 
@@ -208,4 +208,5 @@ Route::view('/userEmailSent', 'user.sentEmail')->name('userSent.Email');
 Route::get('password/reset/{token}', [UserCustomizeResetPasswordController::class, 'showResetForm'])->name('userPassword.reset');
 Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'reset'])->name('userPassword.update');
 Route::view('passwordResetEmail', 'emails.customPasswordReset');
+// invoice mail 
 Route::view('/invoice','mail.mailTemplate');
