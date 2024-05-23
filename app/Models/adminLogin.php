@@ -39,6 +39,4 @@ CanResetPasswordContract
         {
             $this->notify(new ResetPassword($token));
         }
-
-
 }

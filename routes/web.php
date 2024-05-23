@@ -165,7 +165,7 @@ Route::get('/emailVerification', function(){
 // always checks the middleware :) 
 Route::view('/adminforgotPassword', 'adminForgotPassword');
 Route::post('admin/password/email', [AdminCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
-Route::get('password/reset/{token}', [AdminCustomizeResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::get('/admin/password/reset/{token}', [AdminCustomizeResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [AdminCustomizeResetPasswordController::class, 'reset'])->name('password.update');
 
 // verify Email 
@@ -210,3 +210,4 @@ Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'res
 Route::view('passwordResetEmail', 'emails.customPasswordReset');
 // invoice mail 
 Route::view('/invoice','mail.mailTemplate');
+

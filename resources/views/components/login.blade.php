@@ -19,6 +19,7 @@
                         <div>
                             <button class="py-1 px-2 rounded bg-yellow-500 text-white w-24">Submit</button>
                         </div>
+                        
                 </form>
             </nav>
         </header>   
