@@ -20,8 +20,8 @@ class LoginSignupController extends Controller
    // Show the login form 
    
    public  function LoginSignup() {
-
-    return view('login\registration.login');
+      // incorrect symbol 
+    return view('login.registration.login');
 
    }
    
