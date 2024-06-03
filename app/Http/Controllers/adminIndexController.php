@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\feedback;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 
 class adminIndexController extends Controller
@@ -40,7 +41,7 @@ class adminIndexController extends Controller
                ->symbols()
                ->uncompromised()],
         ]);
-
+        
         $validated['password'] = bcrypt($validated['password']);
         $validated['profile'] = 'adminIcon.png';
         adminLogin::create($validated);
@@ -110,7 +111,10 @@ class adminIndexController extends Controller
     }   
   
     public function feedbacks() {
-        $feedbacks = feedback::query()
+        $feedbacks = DB::table('customers')
+                    ->join('feedback', 'customers.id', '=', 'feedback.userId')
+                    ->join('products', 'products.id', '=', 'feedback.productId')
+                    ->select('customers.username', 'customers.profile','feedback.*','products.price','products.quantity','products.image_path')
                     ->orderBy('id','desc')
                     ->get();
         return view('admin.feedbacks', compact('feedbacks'));

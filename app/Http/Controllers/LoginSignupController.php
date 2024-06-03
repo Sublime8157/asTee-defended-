@@ -75,8 +75,10 @@ class LoginSignupController extends Controller
          $verifyEmail = User::whereNotNull('email_verified_at') // find the email_verified_at column that is not null or empty 
                               ->where('email', $user->email) // compare to the user input 
                               ->count(); // count 
-                                       
-         if($verifyEmail > 0 ) { // if greater than 0 
+         if ($user->userStatus == 2) {
+            return redirect()->back()->with(['fail' => 'This user has been blocked by admin, please contact us for more clarification, thank you!']);
+         }                   
+         else if($verifyEmail > 0 ) { // if greater than 0 
             $request->session()->put('isLoggedin', true);
             $request->session()->put('username', $user->username);
             $request->session()->put('id', $user->id);

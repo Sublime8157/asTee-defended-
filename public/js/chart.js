@@ -36,7 +36,6 @@ new Chart(ctx2, {
       datasets: [{
         label: 'Sales',
         data: totalAmount,
-        
         borderWidth: 2
        
       }]
@@ -54,7 +53,7 @@ const productReturn = document.getElementById('returnCancel');
 new Chart(returnCancel, {
     type: 'doughnut',
     data: {
-      labels: ['Wrong Product','Different Colors', 'Wrong design', 'Reason 1','Reason 2','Reason 3','Reason 4'],
+      labels: ['Wrong Product','Different Colors', 'Wrong design', 'Change my mind','Order Details','Change order','Other reasons'],
       datasets: [{
         data: returnProdData,
         borderWidth: 1

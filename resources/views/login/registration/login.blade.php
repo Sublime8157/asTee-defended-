@@ -21,6 +21,13 @@
         {{-- Login Form --}}
         @if(session()->has('success')) <p class="text-center text-xs font-bold text-yellow-400 ">{{session()->get('success')}} </p> @endif
         <h1 class="text-lg font-bold mb-2">Login</h1>
+        @if(session()->has('fail'))
+        <div class="p-2 border-red-400 border rounded bg-red-100">
+          <p class="text-xs ">
+            {{session()->get('fail')}}
+          </p>
+        </div>
+        @endif
           <form action="{{route('loginProcess')}}" class="ms-2" method="POST">
                 @csrf
                   <label for="username" class="text-sm">Username:</label>

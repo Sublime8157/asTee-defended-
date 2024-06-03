@@ -51,16 +51,21 @@
                     <div>
                         <ul class="md:flex md:flex-row flex-col md:mt-0 font-normal"> 
                            <li><img src="{{asset('images/logo.png')}}" alt="Logo" class="block md:hidden"></li>
+                           <a href="/home" class="{{ request()->is('/home') ? 'underline font-semibold' : ' ' }}">
                            <li class="mr-6 md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
-                                <a href="/home" class="{{ request()->is('home') ? 'underline font-semibold' : ' ' }}">Home</a></li>
+                               Home</li></a>
+                            <a href="/about-us" class="{{ request()->is('about-us') ? 'underline font-semibold' : '' }}">
                             <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
-                                <a href="/about-us" class="{{ request()->is('about-us') ? 'underline font-semibold' : '' }}">About Us</a></li>
+                                About Us</li></a>
+                            <a href="/DIY" class="{{ request()->is('DIY') ? 'underline font-semibold' : ' ' }}">
                              <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
-                                <a href="/DIY" class="{{ request()->is('DIY') ? 'underline font-semibold' : ' ' }}">D.I.Y</a></li>
+                                D.I.Y</li></a>
+                            <a href="/Product" class="{{ request()->is('Product') ? 'underline font-semibold' : '' }}">
                             <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
-                                <a href="/Product" class="{{ request()->is('Product') ? 'underline font-semibold' : '' }}">Product</a></li>
+                                Product</li></a>
+                            <a href="/contact-us" class="{{ request()->is('contact-us') ? 'underline font-semibold' : '' }}">
                             <li class="mr-6  md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
-                                <a href="/contact-us" class="{{ request()->is('contact-us') ? 'underline font-semibold' : '' }}">Contact Us</a></li>
+                                Contact Us</li></a>
                         </ul>
                     </div>
                     {{-- Separating horizontal line --}}
@@ -74,7 +79,7 @@
                             @if(session('isLoggedin')) 
                             <a href="/userProfile/myAccount"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
                             @else 
-                            <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
+                            <a href="/" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                                 <span class="hover:underline text-sm mx-1">Login</span>
                             </a>
                             @endif
@@ -126,7 +131,7 @@
 
                                 @else 
                                 {{-- redirect back to login when not logged in  --}}
-                                <a href="\" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
+                                <a href="/" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                                     <span class="hover:underline text-sm mx-1">Login</span>
                                 </a>
                                 @endif

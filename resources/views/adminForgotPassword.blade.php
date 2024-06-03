@@ -14,6 +14,7 @@
     <div class="flex flex-col mt-20 items-center justify-center  h-96 w-full">
         <h1 class="text-center   font-bold text-5xl  text-blue-400">AsTee</h1>
         <form action="{{route('admin.password.email')}}" class="mt-5 flex flex-col items-start gap-2 bg-white justify-center rounded-md shadow p-5  w-6/12" method="POST">
+            <a href="{{ url()->previous() }}"><ion-icon name="arrow-back-outline" class="text-lg font-bold hover:-translate-x-0.5"></ion-icon></a>
             @csrf
            <h1 class="text-lg font-bold text-gray-800 ">Reset Password</h1>
            <div class="w-full">
@@ -45,5 +46,6 @@
            </div>
         </form>
     </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </body>
 </html>

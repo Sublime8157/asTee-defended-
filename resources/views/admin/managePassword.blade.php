@@ -35,7 +35,7 @@
                 <label for="" class="text-sm">Confirm Password</label>
                 <input type="password" class="password border-none text-sm"  name="confirmPassword">
                 <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-8 cursor-pointer revealPassword text-base"></ion-icon>
-                <a href="" class="mt-2 text-xs cursor-pointer hover:underline font-light text-gray-400">Forgot Password?</a>
+                <a href="/adminforgotPassword" class="mt-2 text-xs cursor-pointer hover:underline font-light text-gray-400">Forgot Password?</a>
             </div>
             <div class="w-full">
                 <button class="bg-blue-700 w-full rounded shadow py-2 text-white ">Confirm</button>

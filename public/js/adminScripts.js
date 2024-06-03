@@ -226,7 +226,6 @@ $(document).ready(function(){
     $('#searchUser').on('keyup', function(){
        var formData ={
         searchAll: $(this).val()
-
        };
        $.ajax({
         url: '/searchUser',

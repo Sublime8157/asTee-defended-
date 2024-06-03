@@ -1,6 +1,9 @@
 <x-header />
 <x-navbar />
 <body class="bg-gray-100">
+    <div class="text-center py-1 text-sm  bg-blue-700 hidden" id="cartResponse">
+        <h1 class="text-white">Successfully Added to Cart</h1>
+    </div>
     <div class="bg-gray-100 flex justify-center  items-start   h-auto w-full " >
         {{-- get the product --}}
         @foreach($productDet as $data)
@@ -59,7 +62,7 @@
                        <a href="/">
                         <button class="bg-blue-50 hover:opacity-90 border px-5 md:px-10 text-xs md:text-sm py-2 md:py-4 text-md  flex   items-center gap-2 border-blue-400 rounded"><ion-icon name="cart-outline" class="text-sm md:text-md"></ion-icon>Add to Cart</button></a>
                     @endforelse
-                    <button class="text-xs md:text-sm px-7 md:px-14 py-2 md:py-4 hover:opacity-80 bg-blue-700 text-white  rounded">Buy Now</button>
+                   
                 </div>
             </div>
        </div>

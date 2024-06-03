@@ -34,7 +34,7 @@ class dashboardController extends Controller
 
         // Group the data based on month and assign it to $salesByMonth
         $salesByMonth = $soldData->groupBy(function($data) {
-            return Carbon::parse($data->created_at)->format('M');
+            return Carbon::parse($data->created_at)->format('Y-M');
         });
 
         // Declare arrays
@@ -47,7 +47,7 @@ class dashboardController extends Controller
             $soldMonths[] = $month;
             // Calculate the total amount for the month
             $totalAmount[] = $sales->sum(function($item) {
-                return $item->quantity * $item->amount;
+                return $item->amount;
             });
         }
 
@@ -78,6 +78,11 @@ class dashboardController extends Controller
         $onhandCount = OnHand::count();
         $onProcessCount = Processing::count();
         $oncancelReturnCount = CancelReturn::count();
+
+
+        $sales = Sales::select('amount')->get();
+        $totalSales = $sales->sum('amount');
+
         return view('admin.dashboard', ['userCount' => $userCount, 
                                         'blockedUserCount' => $blockedUserCount,
                                         'onhandCount' => $onhandCount,
@@ -94,8 +99,10 @@ class dashboardController extends Controller
                                         'reason3' => $reason3,
                                         'reason4' => $reason4,
                                         'soldMonths' => $soldMonths,
-                                        'totalAmount' => $totalAmount]);
+                                        'totalAmount' => $totalAmount,
+                                        'totalSales' => $totalSales]);
     }
-    
+
+  
   
 }

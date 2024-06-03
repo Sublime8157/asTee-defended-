@@ -9,11 +9,19 @@ class orders extends Model
 {
     protected $table = 'orders';
     protected $fillable = [
+        'id',
         'userId',
-        'productId',
         'address',
+        'productId',
         'contact',
-        'mop'
+        'mop',
+        'created_at'
     ];
+    protected $casts = [
+        'productId' => 'array',
+    ];
+
     use HasFactory;
+
+    
 }

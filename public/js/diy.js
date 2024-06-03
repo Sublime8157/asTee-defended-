@@ -249,3 +249,14 @@
         $('#downloadCanvas').click(function(){
           downloadCustomDesign();
         })
+
+        // remove object 
+        $(document).on('keyup', function(event){
+          if(event.key === 'Delete' ||  event.key === 'Backspace') {
+            var selectedObject = canvas.getActiveObject(); 
+            if (selectedObject) {
+              canvas.remove(selectedObject);
+              canvas2.remove(selectedObject);
+            }
+          }
+        })

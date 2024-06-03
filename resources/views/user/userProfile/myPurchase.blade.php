@@ -6,7 +6,6 @@
    @if($errors->any()) 
     {{ $errors->first() }}
    @endif
-   
 </div>
     <div class="bg-white p-5 min-h-full   md:w-8/12 w-full">
         <h3 class="font-bold text-orange-800">My Purchase</h3>
@@ -151,14 +150,14 @@
                                                                     <option value="1">Wrong Product</option>
                                                                     <option value="2">Different Color</option>
                                                                     <option value="3">Wrong Design</option>
-                                                                    <option value="4">Reason 1 </option>
-                                                                    <option value="5">Reason 2 </option>
-                                                                    <option value="6">Reason 3 </option>
-                                                                    <option value="7">Reason 4 </option>
+                                                                    <option value="4">Change my mind </option>
+                                                                    <option value="5">Order Details</option>
+                                                                    <option value="6">Change order </option>
+                                                                    <option value="7">Other reasons</option>
                                                                 </select>
                                                             </div>
                                                             <div>
-                                                                <label for="" class="font-bold">Specify(Optional)</label>
+                                                                <label for="" class="font-bold">Specify(Optional)   
                                                                 <textarea name="specify" id="" class="mt-1 w-full h-40 rounded text-sm "></textarea>
                                                             </div>
                                                         </div>
@@ -222,7 +221,7 @@
                               
                             </form> 
                             {{-- dialog for review  --}}
-                            <dialog id="feedBackModal{{$item->id}}" class=" w-screen h-screen" > 
+                            <dialog id="feedBackModal{{$item->id}}" class=" w-screen h-screen"> 
                                 <div class="rounded w-full px-4 gap-4 h-full bg-gray-100 flex flex-col">
                                     {{-- back button --}}
                                     <div class=" w-full p-2 gap-2 flex items-center " onclick="closeReviewDialog({{$item->id}})">
@@ -253,7 +252,7 @@
                                            </div>
                                            {{-- ratings --}}
                                             <div class="flex flex-col">
-                                                    <form action="{{route('submitReview')}}" id="reviewForm{{$item->id}}" method="POST">
+                                                    <form action="{{route('submitReview')}}" id="reviewForm{{$item->id}}" method="POST" enctype="multipart/form-data">
                                                         @csrf
                                                          {{-- over all  --}}
                                                         <x-ratings id="all{{$item->id}}" font="font-bold" title="Overall Ratings" ratingType="overAll" showOtherRatings="showOtherRatings({{$item->id}}" hide="block" input="starCountAll"> </x-ratings>
@@ -270,6 +269,7 @@
                                                         <input type="hidden" name="quantity" value="{{$item->quantity}}">
                                                         <input type="hidden" value="{{$item->userId}}" name="userId" id="userId{{$item->id}}">
                                                         <input type="hidden" value="{{$item->id}}" name="productId" id="productId{{$item->id}}">
+                                                        <input type="file" id="image{{$item->id}}" name="image" value="" class="hidden">
                                                     </form>
                                             </div>
                                         </div>
@@ -278,6 +278,13 @@
                                     <div class="self-center w-full">
                                         <label class="text-xs md:text-sm">Please Specify (Optional)</label>
                                         <textarea id="specify{{$item->id}}" onkeyup="getTheText({{$item->id}})" class="mt-2 text-sm w-full h-40 rounded" placeholder="What do you think of the quality and services?"></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="" class="text-xs">Attach Image (Optional)  </label> <br>
+                                        <input type="file" class="text-xs" onchange="uploadImage({{$item->id}})" id="uploadImage{{$item->id}}">  <br>
+                                        <span class="text-xs">
+                                            File size: maximum 2 MB File extension: .JPEG, .PNG 
+                                        </span>
                                     </div>
                                     {{-- social media accounts --}}
                                     <div class="p-2 flex flex-col gap-2">

@@ -99,7 +99,7 @@
                         <tr>
                             <td>
                                 <p>Dear Customer,</p>
-                                <p>This document serves as an invoice from A's Tee, displaying your order details below. To complete your order, kindly proceed with payment of the total amount using your preferred online payment method and email us the receipt for processing.
+                                <p>This email serves as an invoice from A's Tee, displaying your order details below. To complete your order, kindly proceed with payment of the total amount using your preferred online payment method and email us the receipt for processing.
                                 </p>
                             </td>
                         </tr>
@@ -111,6 +111,7 @@
                     <table>
                         <tr>
                             <td>
+                                <b>Product ID:</b> {{$invoiceData['processing']}} <br>
                                 <b>User ID:</b> {{$invoiceData['userId']}} <br>
                                 <b>Address:</b> {{$invoiceData['address']}} <br>
                                 <b>Contact:</b> {{$invoiceData['contact']}}

@@ -29,7 +29,6 @@
                 </span>
                 @endif
             </div>
-            
             <form action="{{route('registerAdmin.Account')}}" class="flex flex-col gap-4" method="POST">
                 @csrf
                 <div class="flex flex-row items-center gap-4">
@@ -64,12 +63,12 @@
                     <div class="flex flex-col relative">
                         <label for="" class="text-sm">Password</label>
                         <input type="password"  class="password border-none w-72 w- text-sm" name="password">
-                        <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-6 cursor-pointer revealPassword text-base"></ion-icon>
+                        <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-7 cursor-pointer revealPassword text-base"></ion-icon>
                     </div>
                     <div class="flex flex-col relative">
                         <label for="" class="text-sm">Confirm Password</label>
                         <input type="password"  class=" border-none password w- text-sm" name="password_confirmation">
-                        <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-6 cursor-pointer revealPassword text-base"></ion-icon>
+                        <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-7 cursor-pointer revealPassword text-base"></ion-icon>
                     </div>
                 </div>
                 <div class="w-full">

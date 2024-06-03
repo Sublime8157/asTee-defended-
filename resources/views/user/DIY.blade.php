@@ -87,8 +87,8 @@
                         </div>
                     </div>
                 <button class="relative  p-0 md:p-4 rounded m-0 md:m-2 z-20 ">
-                        <ion-icon name="images-outline" class="h-12 text-4xl hover:text-5xl hover:text-black"></ion-icon> <br>Import
-                        <input type="file" class="absolute md:left-10 left-0  top-4 z-0 w-8  h-8 opacity-0" id="imageUpload" onchange="uploadImage()">
+                        <ion-icon name="images-outline"  class="imageIcon h-12 text-4xl hover:text-5xl hover:text-black"></ion-icon> <br>Import
+                        <input type="file" class="absolute md:left-5 left-0  top-2 md:top-7 z-0 w-8  h-8 opacity-0 imageUpload" id="imageUpload" onchange="uploadImage()">
                 </button>
             </div>
         <div>      

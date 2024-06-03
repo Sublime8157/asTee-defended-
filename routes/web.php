@@ -65,9 +65,14 @@ Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
 
 // All these routes are responsible for admin panel
 Route::get('/dashboard', [dashboardController::class, 'dashboard'])->middleware('admin');
-Route::get('/feedbacks', [adminIndexController::class, 'feedbacks'])->middleware('admin');
+Route::get('/products/feedbacks', [adminIndexController::class, 'feedbacks'])->middleware('admin');
 Route::patch('/featureReview/{id}',[adminIndexController::class, 'toFeature'])->name('featureReview');
 
+// route for order history 
+Route::get('/orders', [OrderHistoryController::class, 'showOrderList']);
+Route::get('/searchOrder', [OrderHistoryController::class, 'filterOrders']);
+Route::get('/sortOrders', [OrderHistoryController::class, 'sortOrders']); 
+Route::get('/filterDate', [OrderHistoryController::class, 'filterDate']);
 // Routes for admin products panel tab 
 // for onhnad products tab 
 Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');
@@ -210,4 +215,8 @@ Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'res
 Route::view('passwordResetEmail', 'emails.customPasswordReset');
 // invoice mail 
 Route::view('/invoice','mail.mailTemplate');
+Route::view('/newOrder', 'mail.newOrderMade');
 
+// user feedback 
+Route::post('/userContact', [ContactUsController::class, 'sendToEmail'])->name('sendFeedback');
+Route::view('/feedback', 'mail.newUserFeedback');

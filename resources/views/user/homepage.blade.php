@@ -6,28 +6,28 @@
     {{-- Navigation bar --}}
     <x-navbar />
     {{-- Carousel  --}}
-<div id="default-carousel" class="relative w-full" data-carousel="slide">
+<div id="default-carousel" class="relative   h-full w-full" data-carousel="slide">
     <!-- Carousel wrapper -->
-    <div class="relative h-32 overflow-hidden rounded-lg md:h-96">
+    <div class="relative  overflow-hidden rounded-lg h-96">
          <!-- Item 1 -->
-        <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <img src="{{asset('images/c1.jpg')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        <div class="hidden h-full duration-1000 ease-in-out" data-carousel-item>
+            <img src="{{asset('images/c1.jpg')}}" class="h-full absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 2 -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <img src="{{asset('images/c2.jpg')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{asset('images/c2.jpg')}}" class="h-full absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 3 -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <img src="{{asset('images/c3.jpg')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{asset('images/c3.jpg')}}" class="h-full absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 4 -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <img src="{{asset('images/c1.jpg')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{asset('images/c1.jpg')}}" class="h-full absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 5 -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <img src="{{asset('images/c2.jpg')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{asset('images/c2.jpg')}}" class="h-full absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
     </div>
     <!-- Slider indicators -->
@@ -243,17 +243,20 @@
         </div>
     <div class="w-full flex justify-center gap-4 flex-wrap flex-row p-10 mt-5">
         @foreach ($feedback as $userFeedback)
-            <div class="font-extralight shadow-2xl p-5 w-80 rounded tracking-wider  flex justify-center items-center flex-col" >
+            <div class="font-extralight shadow-2xl py-2 p-5 w-80 rounded tracking-wider  flex justify-center items-center flex-col" >
                 {{-- social media icons  --}}
-                <div class=" top-0 right-0 p-5 self-end">
-                    <ion-icon name="logo-facebook" class="text-blue-500 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                    <ion-icon name="logo-instagram" class="text-lg cursor-pointer hover:translate-y-1"></ion-icon>
-                    <ion-icon name="logo-twitter" class="text-blue-300 text-lg cursor-pointer hover:translate-y-1"></ion-icon>
+                <div class="sef-start flex flex-col items-center">
+                   <div>
+                        <img src="{{asset('storage/images/' . $userFeedback->image_path)}}" alt="" class="w-40">
+                   </div>
+                   <div>
+                       <p class="text-sm"> Price:₱{{$userFeedback->price}}</p>
+                       <p class="text-sm"> Quantity: {{$userFeedback->quantity}}</p>
+                   </div>
                 </div>
                 {{-- specify textarea  --}}
                     <div class="text-gray-500 w-full h-full text-sm  italic p-4 " style="font-family: Arial, Helvetica, sans-serif">
                         "{{$userFeedback->specify}}"
-                       
                     </div>
                     {{-- star ratings  --}}
                     <div class="flex flex-row items-center gap-2 self-start">
@@ -292,8 +295,8 @@
                         </div>
                         {{-- user first name and date created  --}}
                         <div>
-                            <h1 class="text-black text-sm" style="font-family: Arial, Helvetica, sans-serif">{{$userFeedback->fname}}</h1>
-                            <h1 class="text-xs text-gray-500">{{$userFeedback->created_date}}</h1>
+                            <h1 class="text-black text-sm" style="font-family: Arial, Helvetica, sans-serif">{{$userFeedback->username}}</h1>
+                            <h1 class="text-xs text-gray-500">{{$userFeedback->created_at}}</h1>
                         </div>
                     </div>
                    

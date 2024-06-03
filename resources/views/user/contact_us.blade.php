@@ -2,7 +2,16 @@
 @section('docu', 'Contact us')
 <x-header />
 <x-navbar />
+<div class="absolute  top-0 bg-blue-700   text-center w-full" id="thankYouNotif">
+    @if(session()->has('Success'))
+        <p class="py-2 text-white text-sm" id="successMessage">{{ session()->get('Success') }}</p>
+    @endif
+   @if($errors->any()) 
+    {{ $errors->first() }}
+   @endif
+</div>
     <div class="p-10 flex items-center flex-col gap-10 md:flex-row justify-evenly my-10 h-auto md:h-96 w-full">
+        
         <div class="flex flex-col gap-4 ">
             <h1 class="font-bold text-4xl text-blue-950">GET IN TOUCH</h1>
             <div class="py-4">
@@ -24,10 +33,11 @@
             </div>
         </div>
         <div class="w-96">
-            <form action="" class="w-full flex flex-col gap-4 items-center md:items-start justify-center">
-                <input type="text" name="" id="" class="text-sm h-8 w-96 md:w-full ps-2" placeholder="Name">
-                <input type="text" name="" id="" class="text-sm h-8 w-96 md:w-full ps-2" placeholder="Email">
-                <textarea name="" id=""  rows="5" class="text-sm  w-96 md:w-full ps-2" placeholder=Message></textarea>
+            <form action="{{route('sendFeedback')}}" class="w-full flex flex-col gap-4 items-center md:items-start justify-center" method="POST">
+                @csrf
+                <input type="text" name="name" id="" class="text-sm h-8 w-96 md:w-full ps-2" placeholder="Name">
+                <input type="text" name="email" id="" class="text-sm h-8 w-96 md:w-full ps-2" placeholder="Email">
+                <textarea name="message" id=""  rows="5" class="text-sm  w-96 md:w-full ps-2" placeholder=Message></textarea>
                 <button type="submit" class="w-full bg-orange-500 text-white rounded-sm py-2">Submit</button>
             </form>
         </div>

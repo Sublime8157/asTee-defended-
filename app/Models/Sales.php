@@ -14,7 +14,6 @@ class Sales extends Model
         'userId',
         'amount',
         'quantity',
-      
         'created_at'
     ];
     use HasFactory;

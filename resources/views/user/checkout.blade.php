@@ -7,6 +7,7 @@
 </div>
     <div class="flex flex-col min-h-screen w-full py-4 justify-start items-center">
           <div class="bg-white h-auto shadow-md rounded w-11/12 md:w-6/12 p-4">
+            <a href="{{ url()->previous() }}"><ion-icon name="arrow-back-outline" class="text-lg font-bold hover:-translate-x-0.5"></ion-icon></a>
             <form action="{{ route('confirmCheckout') }}" class="flex flex-col gap-4" method="POST">
                 @csrf
                         <h1 class="text-black text-base">Billing Information:</h1> 
@@ -77,7 +78,23 @@
             @endforeach
             <div class="flex w-full me-4 justify-end items-end flex-col gap-1">
                 <div class=" text-orange-600">
-                    Total: ₱<input type="text" class=" w-6 border-none  p-0" name="total" id="" value="{{ $data['total'] }}"><span class="text-orange-600">.00</span>
+                    <div class="flex flex-row gap-2">
+                        <div class="flex flex-col">
+                            <span class="tex-xs ">Shipping Fee:</span>
+                            <span>Sub Total:</span>
+                        </div>
+                        <div class="flex flex-col">
+                           <div>
+                                ₱<input type="text" value="60" placeholder="60" name="shippingFee" class="w-6 border-none  p-0" id="shippingFee">
+                           </div>
+                            <div>
+                                ₱<input type="text" class=" w-6 border-none  p-0" name="subTotal"  value="{{ $data['total'] }}" id="subTotal">
+                                <span class="text-orange-600"></span>
+                            </div>
+                        </div>
+                    </div>
+                   <br>
+                    Total: ₱<input type="text" class=" w-6 border-none  p-0" name="total" id="total" value=""><span class="text-orange-600">.00</span>
                 </div>
                 <div class="w-full">
                     <label for="">Mode of Payment </label>
@@ -96,4 +113,8 @@
             </form>
           </div>
     </div>
+<script>
+    var total = parseFloat($('#shippingFee').val()) + parseFloat($('#subTotal').val()); 
+    $('#total').val(total);
+</script>
 <x-scripts />

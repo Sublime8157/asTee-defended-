@@ -115,11 +115,11 @@
                 </ul>
                 {{-- UI COMPONENTS --}}
                 <ul class="flex justify-center items-start flex-col">
-                    <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800">
+                    <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800 ">
                         FEEDBACKS
                     </li>
-                    <a href="/feedbacks" class="w-full">
-                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav">
+                    <a href="/products/feedbacks" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('products/feedbacks') ? 'sideNavBG' : ' ' }}">
                             <div class="text-xs text-gray-400 flex items-center flex-row ">
                                 <ion-icon name="chatbubbles-sharp" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
                                     <div class="text-gray-400 text-xs">
@@ -130,21 +130,23 @@
                         </li>     
                     </a>             
                 </ul>      
-                {{-- FORMS --}}
                 <ul class="flex justify-center items-start flex-col">
-                    <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800">
-                        FORMS
+                    <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800 ">
+                        ORDERS
                     </li>
-                    <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav">
-                        <div class="text-xs text-gray-400 flex items-center flex-row ">
-                            <ion-icon name="settings" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
-                                <div class="text-gray-400 text-xs">
-                                Forms
-                                </div>
-                        </div>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
-                    </li>
-                </ul> 
+                    <a href="/orders" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('orders') ? 'sideNavBG' : ' ' }}">
+                            <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                <ion-icon name="timer-outline" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                    <div class="text-gray-400 text-xs">
+                                        Order History
+                                    </div>
+                            </div>
+                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                        </li>     
+                    </a>             
+                </ul>      
+                {{-- FORMS --}}
         </div>
         <div class="w-screen flex flex-col h-screen" style="overflow-y: auto">     
             <div class="bg-gray-50 min-h-12 shadow-md mt-2  rounded  flex justify-between items-center">

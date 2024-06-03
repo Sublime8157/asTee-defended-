@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OnHand;
+use App\Models\Sales;
 use App\Models\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -17,20 +18,21 @@ use App\Models\Processing;
 use App\Models\orders;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoicePaymentMail;
+use App\Mail\NewOrderMadeMail;
 class UserController extends Controller
 {
     // Function for showing the homepage
     public function home(){
-    
-       $feedback  = feedback::query()
-                   ->selectRaw('customers.profile, customers.fname, DATE(feedback.created_at) as created_date, feedback.*')
-                   ->join('customers','customers.id','=','feedback.userId')
+       $feedback  = DB::table('customers')
+                   ->join('feedback','customers.id','=','feedback.userId')
+                   ->join('products','products.Id','=','feedback.productId')
+                   ->select('feedback.*','customers.username','customers.profile','products.image_path','products.price','products.quantity')
                    ->where('featured',2)
                    ->latest('created_at')
                    ->take(3)
                    ->get();
-       
-       return view('user.homepage', compact('feedback'));
+
+       return view('user.homepage', dd($feedback));
     }
     // Function for about us UI
     public function about_us() {
@@ -182,7 +184,7 @@ class UserController extends Controller
             'size.*' => 'required',
             'price.*' => 'required|numeric',
             'quantity.*' => 'required|numeric',
-            'total' => 'required|numeric',
+            'subTotal' => 'required|numeric',
             'image_path.*' => 'required',
         ]);
         if(count($prodToInsert) != 0) { // count the result if it  was not 0 process
@@ -218,29 +220,43 @@ class UserController extends Controller
                     // Handle the case where the quantity is not enough
                     return redirect()->route('checkout.process')->with('error', 'Insufficient quantity for product ' . $productId);
                 }   
-                $processingId = $processing->id;
+               
+                $processingId[] = $processing->id;
+                Sales::create([
+                    'productId' => $processing->id,
+                    'userId' => $validated['userId'],
+                    "amount" => $total,
+                    'quantity' => 1
+                ]);
+
                 $orders = orders::create([
                     'userId' => $validated['userId'],
-                    'productId' => $processingId,
+                    'productId' => json_encode($processingId),
                     'address' => $validated['address'],
                     'contact' => $validated['contact'],
                     'mop' => $request->mop
                 ]);
-                $orderId = $orders->id;
-                $invoiceData = [
-                    "userId" => $validated['userId'],
-                    "orderNo" => $orderId,
-                    "address" => $validated['address'],
-                    "contact" => $validated['contact'],
-                    "mop" => $request->mop,
-                    "total" => $total,
-                    "orderDate" => now()->format('Y-m-d')
-                ];
-               
             }
+          
+           
         }
+      
+        $orderId = $orders->id;
+        $invoiceData = [
+            "userId" => $validated['userId'],
+            "orderNo" => $orderId,
+            "address" => $validated['address'],
+            "contact" => $validated['contact'],
+            "processing" =>  json_encode($processingId),
+            "mop" => $request->mop,
+            "total" =>   $request->total,
+            "orderDate" => now()->format('Y-m-d')
+        ];
+        // email to the user his/her order 
         Mail::to($validated['email'])->send(new InvoicePaymentMail($invoiceData));
-    
+        // send email to admin that new order has been made 
+        Mail::to('astee_orders@astee.store')->send(new NewOrderMadeMail($invoiceData));
+
         return redirect()->route('myPurchase',['userId' => $request->userId])->with('Success','Order has been made successfully, an order invoice has been sent to you emal please check your inbox or spam. Thank you!');
     }
 

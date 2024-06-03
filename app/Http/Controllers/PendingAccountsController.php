@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class PendingAccountsController extends Controller
 {
     public function displayUsers() {
-        $userData = User::query();
-        $userData->whereNull('email_verified_at');
-        $userData = $userData->paginate(10);
-        return view('admin.accounts.pending', compact('userData'));
+        $pendingUserData = User::query();
+        $pendingUserData->whereNull('email_verified_at');
+        $pendingUserData = $pendingUserData->paginate(10);
+        return view('admin.accounts.pending', compact('pendingUserData'));
     }
     // sort blocked users 
     public function sortPendingUsers(Request $request) {

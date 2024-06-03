@@ -15,63 +15,72 @@ use App\Models\orders;
 use Illuminate\Support\Str;
 use App\Models\Sales;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\DB;
 
 
 class UserPurchaseController extends Controller
 {
 
         
-    // show the to pay products of user 
-   public function toPay() {
-    // get the user id 
+//     // show the to pay products of user 
+public function toPay($status) {
+    $productStatus = $status;
     $userId = session('id');
-    // get the product from processing based on user id 
-        $product = Processing::join('orders','orders.productId','=','product_on_process.ID')
-                            ->where('product_on_process.userId', $userId)   
-                            ->where('product_on_process.productStatus', 1)
-                            ->select('product_on_process.*','orders.address',)
-                            ->get();
-        // iterate through all the description table to limit to 7 wrods assign to displayDescription variable 
-        foreach($product as $item) {
-            $item->displayDescription = Str::words($item->description, 7);
-        }
-        // count all the products based on status 
-        $toPayCount = $product->count();
-        $toShipCount = Processing::where('userId',$userId)->where('productStatus', 2)->count(); 
-        $toRecieveCount = Processing::where('userId',$userId)->where('productStatus', 3)->count();
-        $feedBackCount = Processing::where('userId',$userId)->where('productStatus',4)->count();
-        // return variables in view 
-        return view('user.userProfile.myPurchase', 
-        compact('product',
-        'toPayCount',
-        'toShipCount',
-        'toRecieveCount',
-        'feedBackCount'));
-   }
+
+    $product = Processing::where('userId', $userId)
+                            ->where('productStatus', 1)->get();
+    $orderDetails = orders::select('mop','address','contact')
+                            ->where('userId', $userId)->get();
+    
+    $orderDetails = $orderDetails->first();
+    
+    $product->transform(function ($item) use ($orderDetails) {
+        $item->mop = $orderDetails->mop;
+        $item->address = $orderDetails->address;
+        return $item;
+    });
+    foreach ($product as $item) {
+        $item->displayDescription = Str::words($item->description, 6);
+    }
+
+    $toPayCount = Processing::where('userId', $userId)->where('productStatus', 1)->count();
+    $toShipCount = Processing::where('userId', $userId)->where('productStatus', 2)->count();
+    $toRecieveCount = Processing::where('userId', $userId)->where('productStatus', 3)->count();
+    $feedBackCount = Processing::where('userId', $userId)->where('productStatus', 4)->count();
+
+    return view('user.userProfile.myPurchase', compact('orderDetails','product', 'toPayCount', 'toShipCount', 'toRecieveCount', 'feedBackCount'));
+  
+}
 
     //filter the products 
     public function productStatus($status) {
+        $productStatus = $status;
         $userId = session('id');
-        $product = Processing::join('orders','orders.ProductID', '=', 'product_on_process.ID')
-                                ->where('product_on_process.userId', $userId)
-                                ->where('productStatus', $status)
-                                ->select('product_on_process.*','orders.address','orders.mop')
-                                ->get();
-        foreach($product as $item) {
-            $item->displayDescription = Str::words($item->description, 6);
-        }
+        $product = Processing::where('userId', $userId)
+                                ->where('productStatus', $productStatus)->get();
     
-        $toPayCount = Processing::where('userId',$userId)->where('productStatus', 1)->count();
-        $toShipCount = Processing::where('userId',$userId)->where('productStatus',2)->count();
-        $toRecieveCount = Processing::where('userId',$userId)->where('productStatus', 3)->count();
-        $feedBackCount = Processing::where('userId',$userId)->where('productStatus',4)->count();
-        return view('user.userProfile.myPurchase', 
-        compact('product',
-        'toPayCount',
-        'toShipCount',
-        'toRecieveCount',
-        'feedBackCount'));
-       }
+        $toPayCount = Processing::where('userId', $userId)->where('productStatus', 1)->count();
+        $toShipCount = Processing::where('userId', $userId)->where('productStatus', 2)->count();
+        $toRecieveCount  = Processing::where('userId', $userId)->where('productStatus', 3)->count();
+        $feedBackCount = Processing::where('userId', $userId)->where('productStatus', 4)->count();
+    
+        $product->transform(function ($item) use ($userId) {
+            $orderDetails = orders::select('mop', 'address', 'contact')
+                                    ->where('userId', $userId)->first();
+    
+            $item->mop = $orderDetails->mop;
+            $item->address = $orderDetails->address;
+            $item->displayDescription = Str::words($item->description, 6);
+    
+            return $item;
+        });
+    
+        return view('user.userProfile.myPurchase', compact('product', 'toPayCount', 'toShipCount', 'toRecieveCount', 'feedBackCount'));
+    }
+    
+    
+
+    
 
     // remove a product then submit to canel or return 
     public function submitToCancel(Request $request, $id) {
@@ -154,26 +163,33 @@ class UserPurchaseController extends Controller
             "image_path" => 'required',
             "description" => 'required',
             "price" => 'required|integer',
-            "quantity" => 'required|integer'
+            "quantity" => 'required|integer',
+            "image" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+        $filename = $validated['image']->getClientOriginalName();
+        $validated['image']->storeAs('public/images', $filename); 
         // insert into feedback table 
-        feedback::create([
-            "userId" => $validated['userId'],
-            "productId" => $validated['productId'],
-            "starCountAll" => $validated['starCountAll'],
-            "starCountQuality" => $validated['starCountQuality'],
-            "starCountService" => $validated['starCountService'],
-            "specify" => $request->specify,
-            "featured" => 1
-        ]);
+       
         // insert to table products all the after reviewing 
-        Products::create([
+        $storeToProducts = Products::create([
             'userId' => $validated['userId'],
             'productId' => $validated['productId'],
             'image_path' => $validated['image_path'],
             'description' => $validated['description'],
             'price' => $validated['price'],
             'quantity' => $validated['quantity']
+        ]);
+        $storeToProducts->save();
+        $productId = $storeToProducts->id; 
+        feedback::create([
+            "userId" => $validated['userId'],
+            "productId" => $productId,
+            "starCountAll" => $validated['starCountAll'],
+            "starCountQuality" => $validated['starCountQuality'],
+            "starCountService" => $validated['starCountService'],
+            "specify" => $request->specify,
+            "featured" => 1,
+            "image" => $filename,
         ]);
         // remove from orders 
         $deleteFromOrders = orders::where('productId', $request->productId);

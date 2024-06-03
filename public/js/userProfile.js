@@ -233,5 +233,11 @@ $('.revealPassword').on('click', function(){
     }
 })
 
+function uploadImage(id) {
+    const imageInput = document.getElementById('uploadImage' + id);
+    const fileInput = document.getElementById('image' + id);
+    fileInput.files = imageInput.files;
+}
+
 
 

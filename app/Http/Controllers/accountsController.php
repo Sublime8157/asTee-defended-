@@ -7,6 +7,7 @@ use App\Models\Processing;
 use App\Models\CancelReturn;
 use App\Models\orders;
 use App\Models\feedback;
+use App\Models\cart;
 class accountsController extends Controller
 {
     
@@ -59,7 +60,8 @@ class accountsController extends Controller
     // display users that is only active 
     public function displayUsers() {
         $userData = User::query();
-        $userData->where('userStatus', '=', '1');
+        $userData->where('userStatus', '=', '1')
+                ->whereNotNull('email_verified_at');
         $userData = $userData->paginate(10);
         return view('admin.accounts.active', compact('userData'));
     }
@@ -88,6 +90,11 @@ class accountsController extends Controller
     // remove a user and all of its process or orders 
     public function destroy($id)
         {
+
+            // remove from orders
+            $cart = cart::where('userId', $id);
+            $cart->delete();
+
             // remove from orders
             $orders = orders::where('userId', $id);
             $orders->delete();
