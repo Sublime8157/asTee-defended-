@@ -13,7 +13,7 @@
     </div>
 @endif
    <div class="bg-white my-2 mx-4">
-        <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd"></x-sortingProducts>
+        <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd" display="hidden" filterByDate=""></x-sortingProducts>
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">

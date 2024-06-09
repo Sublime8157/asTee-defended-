@@ -300,4 +300,19 @@ class adminOnProcessController extends Controller
         }
             
     }
+
+    public function filterDate(Request $request) {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate'); 
+        if(!empty($startDate) || !empty($endDate)) {
+            $result = Processing::query();
+            $result->whereBetween('created_at', [$startDate, $endDate]);
+            $filterOnProcess = $result->get(); 
+        }
+        else{
+            $filterOnProcess = Processing::all();
+        }
+
+        return view('admin.products.processingPartial', compact('filterOnProcess'));
+    }
 }

@@ -27,7 +27,6 @@ class OrderHistoryController extends Controller
         $data = $result->get();
         return view('admin.orderSearchResult', compact('data'));
     }
-
     public function sortOrders(Request $request) {
         $sortBy = $request->input('sortBy');
         $orderBy = $request->input('orderBy');
@@ -41,15 +40,9 @@ class OrderHistoryController extends Controller
     public function filterDate(Request $request) {
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
-
         $filter = orders::query();
-
-        
             $filter->whereBetween('created_at', [$startDate, $endDate]);
-        
-
         $data = $filter->get();
-
         return view('admin.orderSearchResult', compact('data'));
     }
 }

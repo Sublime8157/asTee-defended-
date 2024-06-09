@@ -15,7 +15,7 @@
 @endif
 <div class="bg-white my-5 mx-4">
     <div class="">
-        <x-sortingProducts sortProduct="sortProcessingProduct" orderProduct="sortProcessingProduct"></x-sortingProducts>
+        <x-sortingProducts sortProduct="sortProcessingProduct" orderProduct="sortProcessingProduct" filterByDate="filterDateProcessing" display="block"></x-sortingProducts>
     </div>
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
@@ -34,6 +34,7 @@
                 <th class="adminTable">Size</th>
                 <th class="adminTable w-24">Total</th>
                  <th class="adminTable w-24">Status</th>
+                 <th class="adminTable w-24">Date</th>
                 <th class="adminTable w-24">Action</th>
            </tr>
            <tr>
@@ -95,6 +96,7 @@
                         <option value="5">To Cancel</option>
                     </select>
                 </td>
+                <td></td>
                 {{-- filter button --}}
                 <td colspan="3" class="flex items-center flex-row justify-center w-24">                  
                     <button type="submit" class="bg-yellow-500 flex items-center justify-center gap-1 text-xs rounded w-auto py-1 px-2 tracking-wider  hover:opacity-50 text-white cursor-pointer"><ion-icon name="funnel" class="text-white text-md"></ion-icon>FILTER</button></td>
@@ -133,6 +135,7 @@
                     <span id="status{{$product->id}}">{{$product->producStats()}}</span>
                     <ion-icon name="create-outline" class="font-bold text-sm cursor-pointer" onclick="editStatus({{ $product->id }})"></ion-icon>
                 </td>
+                <td class="text-center ps-2">{{$product->created_at}}</td>
                 {{-- settings  --}}
                 <td class="text-center">
                     <form action="{{ route('productProcess.remove', $product->id) }}" method="POST" id="removeProduct{{$product->id}}">

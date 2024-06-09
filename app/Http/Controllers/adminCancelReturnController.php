@@ -264,5 +264,19 @@ class adminCancelReturnController extends Controller
         }
             
     }
-    
+
+    public function filterDate(Request $request) {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        if(!empty($startDate) || !empty($endDate) ) {
+            $result = CancelReturn::query(); 
+            $result->whereBetween('created_at', [$startDate, $endDate]);
+            $filterReturnCancel = $result->get();
+        }
+        else {
+            $filterReturnCancel = CancelReturn::all();
+        }
+        return view('admin.products.CancelReturnPartial', compact('filterReturnCancel'));
+    }
 }

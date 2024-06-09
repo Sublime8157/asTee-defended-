@@ -9,7 +9,7 @@
 </div>
 <div class="bg-white my-5 mx-4">
     <div class="">
-        <x-sortingProducts sortProduct="sortCancelReturnProduct" orderProduct="sortCancelReturnProduct"></x-sortingProducts>
+        <x-sortingProducts sortProduct="sortCancelReturnProduct" orderProduct="sortCancelReturnProduct" filterByDate="filterDateCancelReturn" display="block" ></x-sortingProducts>
     </div>
     <div class="mx-10 pb-10 flex justify-center">
         <table class="">
@@ -24,7 +24,8 @@
                 <th class="adminTable">Gender</th>
                 <th class="adminTable">Size</th>      
                 <th class="adminTable w-24">Total</th>
-                <th class="adminTable w-20">Reason</th>                                                               
+                <th class="adminTable w-20">Reason</th>    
+                <th class="adminTable">Date</th>                                                           
                 <th class="adminTable w-24">Action</th>
            </tr>
            <tr>
@@ -76,6 +77,7 @@
                     {{-- by price --}}
                 <td></td>             
                 <td></td>
+                <td></td>
                 <td colspan="3" class=" w-24">
                     <button type="submit" class="bg-yellow-500 flex items-center justify-center gap-1 text-xs rounded w-auto py-1 px-2 tracking-wider  hover:opacity-50 text-white cursor-pointer"><ion-icon name="funnel" class="text-white text-md"></ion-icon>FILTER</button></td>
                 </td>
@@ -103,7 +105,7 @@
                         </dialog>
                     </td>                                 
                     <td class="text-center ps-2">{{$product->variationType()}}</td>
-                    <td class="text-center ps-2 w-60 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
+                    <td class="text-center ps-2 w-32 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
                     <td class="text-center ps-2">{{$product->genderShirt()}}</td>
                     <td class="text-center ps-2">{{$product->sizeShirt()}}</td>
                     <td class="text-center ps-2">{{$product->total}}</td>
@@ -112,7 +114,7 @@
                     @else
                         <td class="text-center ps-2">{{$product->reason()}}</td>
                     @endif
-                  
+                    <td class="text-center">{{$product->created_at}}</td>
                     <td class="text-center">
                         <form action="{{ route('cancelReturn.remove', $product->id) }}" method="POST" id="removeProduct{{ $product->id }}">
                             @csrf

@@ -168,7 +168,6 @@
                                                     If you have anymore concerns please contact us! 
                                                     <div class="flex flex-row items-center gap-2 text-xl   rounded">
                                                         <ion-icon name="logo-facebook"></ion-icon>
-                                                        <ion-icon name="logo-twitter"></ion-icon>
                                                         <ion-icon name="logo-instagram"></ion-icon>
                                                         <ion-icon name="mail-outline"></ion-icon>
                                                     </div>

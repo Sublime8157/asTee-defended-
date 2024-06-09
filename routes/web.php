@@ -117,6 +117,7 @@ Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStat
 // filter products in processign tab 
 Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
 Route::delete('/removeMultiple', [adminOnProcessController::class, 'removeMultiple'])->name('deleteFrom.Processing');
+Route::get('/filterDateProcessing', [adminOnProcessController::class, 'filterDate']);
 // for cancel or return tab
 Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return'])->middleware('admin');
 Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
@@ -129,6 +130,8 @@ Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, '
 Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sortProduct']);
 Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'removeMultiple'])->name('deleteFrom.cancel');
 Route::post('/moveMultiple.cancel',[adminCancelReturnController::class, 'moveMultiple'])->name('moveMultipleFrom.cancel');
+Route::get('/filterReturnedCancelDate', [adminCancelReturnController::class, 'filterDate']); 
+
 
 // Route for accounts admin panel tab 
 Route::get('/accounts/active', [accountsController::class, 'displayUsers'])->middleware('admin');

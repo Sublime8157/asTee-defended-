@@ -24,7 +24,7 @@
                                             Dashboard
                                         </div>
                                 </div>
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                            
                         </li>
                     </a>
                     
@@ -43,7 +43,7 @@
                                     </div>
                             </div>
                         
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                           
                         </li>
                     </a>
                     <a href="/accounts/pending" class="w-full">
@@ -56,7 +56,7 @@
                                         </div>
                                 </div>
                         
-                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                               
                         </li>
                     </a>
                     <a href="/accounts/blocked" class="w-full">
@@ -67,7 +67,7 @@
                                             Blocked User
                                         </div>
                                 </div>                          
-                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                                
                         </li>
                     </a>
                 </ul>
@@ -85,7 +85,7 @@
                                         </div>
                                 </div>
                             
-                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                               
                         </li>
                     </a>
                     <a href="/products/proccessing" class="w-full">
@@ -97,7 +97,7 @@
                                         </div>
                                 </div>
                             
-                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                             
                         </li>
                     </a>
                     <a href="/products/cancelReturn" class="w-full">
@@ -109,7 +109,7 @@
                                         </div>
                                 </div>
                             
-                            <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                           
                         </li>
                     </a>
                 </ul>
@@ -126,7 +126,7 @@
                                         Feedback
                                     </div>
                             </div>
-                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                              
                         </li>     
                     </a>             
                 </ul>      
@@ -142,7 +142,7 @@
                                         Order History
                                     </div>
                             </div>
-                                <ion-icon name="caret-forward" class="text-xs self-center text-gray-400"></ion-icon>
+                               
                         </li>     
                     </a>             
                 </ul>      
