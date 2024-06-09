@@ -28,7 +28,7 @@
         function tshirtBack() {
           var confirmShowBack = confirm('Make sure to download your design before confirming, as it will be lost otherwise.');
           if(confirmShowBack) {
-            fabric.Image.fromURL('images/Back.png', function(img){
+            fabric.Image.fromURL('storage/images/white(back).png', function(img){
                 img.set({
                     left: 0,
                     top: 0,
@@ -37,6 +37,7 @@
                     selectable: false
                 });
                 canvas.clear();
+                canvas2.clear();
                 canvas.add(img);
                 frontShirtTools.css('display', 'none');
                 backShirtTools.css('display', 'block');
@@ -57,6 +58,7 @@
                     selectable: false
                 });
                 canvas.clear();
+                canvas2.clear();
                 canvas.add(img);
                 frontShirtTools.css('display', 'block');
                 backShirtTools.css('display', 'none');
@@ -199,8 +201,8 @@
                         scaleX: canvas.width / img.width,
                         scaleY: canvas.height / img.height
                     });
-                                 
-                    canvas.add(img);     
+                    canvas2.add(img);     
+                    canvas.add(img);
                     currentDesign.push(img);    
                 });
             }
@@ -230,9 +232,30 @@
           colorTshirt(imagePath);
         });
 
-         
-        // Function for downloading the canvas 
+              // Function that handles the color of the shirts 
+        function colorTshirtBack(imagePath) {
+          fabric.Image.fromURL(imagePath, function(img){
+            img.set({
+                left: 0,
+                top:0,
+                scaleX: canvas.width / img.width,
+                scaleY: canvas.height / img.height,
+                selectable: false
+            });
+                canvas2.clear(); 
+                canvas.add(img);
 
+                for(var i = 0; i<currentDesign.length; i++) {
+                    canvas.add(currentDesign[i]);
+                }
+          });
+        }
+        $('.colorButtonBack').click(function(){
+          var imagePath = $(this).data('image');
+          colorTshirtBack(imagePath);
+        });
+
+        // Function for downloading the canvas 
         function downloadCustomDesign() {
          var confirmDownload = confirm("Are you sure you want to download your custom design?");
          if(confirmDownload) {
@@ -244,6 +267,8 @@
             a.click();
             document.body.removeChild(a);
          }
+             canvas.clear();
+            canvas2.clear();
         }
 
         $('#downloadCanvas').click(function(){
@@ -260,3 +285,24 @@
             }
           }
         })
+        $('#removeBtn').on('click', () => {
+          var selectedObject = canvas.getActiveObject(); 
+          if (selectedObject) {
+            canvas.remove(selectedObject);
+            canvas2.remove(selectedObject);
+          }
+        })
+      $('.imageUpload').hover(
+        function(){
+          $('.imageIcon').addClass('text-5xl');
+          $('.imageIcon').addClass('text-black');
+        },
+        function(){
+          $('.imageIcon').removeClass('text-5xl');
+          $('.imageIcon').removeClass('text-black');
+        }
+      )
+      $('#messengerIcon').hover(
+          function(){
+              console.log('hello');
+          })

@@ -152,13 +152,23 @@ textarea::-webkit-scrollbar-track {
 textarea::-webkit-scrollbar-thumb {
     background: #c7c5c5; /* Color of the scrollbar thumb */
 }
-.imageUpload:hover + .imageIcon{
-    font-size: 3rem/* 48px */;
-    line-height: 1;
-    --tw-text-opacity: 1;
-    color: rgb(0 0 0 / var(--tw-text-opacity));
-}
 
+.imageUpload:hover body {
+    background-color: black;
+}
+#showText {
+    animation: showText 1s forwards;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes showText {
+    0% {
+        transform: translateX(-20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
 @keyframes fade-out {
     0% {
         opacity: 1;

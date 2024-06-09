@@ -2,13 +2,13 @@
 @extends('components.header')
 @section('docu', 'Login')
 <x-header />
-<body class="bg-blue-100 overflow-y-hidden">
+<body class="bg-blue-100 ">
   <x-navbar />
   {{-- This is Login Section --}}
   @if(session('isLoggedin') != true)
-    <div class=" flex justify-evenly flex-col  md:flex-row items-center   h-screen w-full">
+    <div class=" flex justify-evenly   flex-col   md:flex-row items-center h-screen w-full">
       <div class="">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" width="350px" height="400px">
+        <img src="{{ asset('images/companyLogo.png') }}" alt="Logo" class="md:w-80 w-72">
       </div>
       <div>
         <div class="bg-white p-5  rounded shadow-lg w-96 h-auto">
@@ -103,6 +103,7 @@
         </div>
       </dialog>
   @endif
+  <x-footer />
   <script src="{{ asset('/js/script1.js') }}">
    
   </script>

@@ -26,6 +26,15 @@ class productsController extends Controller
       if($request->filled('gender')) {
           $data->where('gender', $request->input('gender'));
       }
+
+      if ($request->has('priceFrom') && $request->priceFrom != null) {
+        $data->where('price', '>=', $request->priceFrom);
+    }
+
+    if ($request->has('priceTo') && $request->priceTo != null) {
+        $data->where('price', '<=', $request->priceTo);
+    }
+
       
       $filteredData = $data->get();
   

@@ -156,8 +156,7 @@
                     <h3 class="text-sm font-bold tracking-wide">@yield('page')</h3>
                 </div>
                 <div class="pe-5 flex flex-row items-center">
-                    <ion-icon name="mail-outline" class="text-yellow-700 text-xl pe-5 cursor-pointer"></ion-icon>
-                    <ion-icon name="notifications-outline" class="text-yellow-700 text-xl pe-5 cursor-pointer"></ion-icon>
+                  
                     <span class="text-xs font-bold">ADMINISTRATOR</span>
                     <div class="relative">
                         <img src="{{ asset('images/adminIcon.jpg') }}" id="adminSettingsBtn" alt="admin Icon" width="40px" class="cursor-pointer rounded-full ">       

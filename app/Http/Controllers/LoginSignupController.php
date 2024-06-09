@@ -10,7 +10,7 @@ use App\Http\Controllers\Hash;
 use App\Http\Controllers\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
-use App\Models\Cart;
+use App\Models\cart;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationEmail;
 

@@ -10,7 +10,7 @@
        <div class="flex justify-start md:flex-row  mt-12 flex-col  gap-2  md:gap-8 w-11/12 items-start  bg-white shadow p-5" >
         {{-- prod image  --}}
             <div>
-                <img src="{{asset('storage/images/'. $data->image_path)}}"  alt="" style="width: 1000px">
+                <img src="{{asset('storage/images/'. $data->image_path)}}"  alt="" class="h-96 w-80">
             </div>
             <div class="self-start py-4 justify-center w-auto flex flex-col gap-6">
                 {{-- product description --}}
@@ -19,7 +19,7 @@
                 </div>
                 {{-- product ratings and sold number  --}}
                 <div>
-                    <p class="text-xs md:text-sm opacity-75 ">No Ratings Yet | <span class="font-bold">0</span> Sold</p>
+                    {{-- <p class="text-xs md:text-sm opacity-75 ">No Ratings Yet | <span class="font-bold">0</span> Sold</p> --}}
                 </div>
                 {{-- product variation, size and gender  --}}
                 <div class="flex flex-row gap-2">
@@ -39,12 +39,12 @@
                 </div>
                 {{-- quantity --}}
                 <div class="flex flex-row justify-start gap-4 items-center">
-                    <p class="opacity-75 text-xs md:text-sm ">Quantity</p>
-                    <div class="flex items-center  justify-center border p-0  w-24"">
+                    {{-- <p class="opacity-75 text-xs md:text-sm ">Quantity</p> --}}
+                    {{-- <div class="flex items-center  justify-center border p-0  w-24"">
                         <button class="border-r pe-2" id="minusButton">-</button>
                         <input type="ext" id="quantityValue" value="1" class=" w-10 text-center border-none h-4 text-xs">
                         <button class="border-l ps-2" id="addButton">+</button>
-                    </div>
+                    </div> --}}
                     <p class="self-center text-xs opacity-75">{{$data->quantity}} Products Available</p> 
                 </div> 
                 {{-- add to cart and buy now button  --}}

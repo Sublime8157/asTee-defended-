@@ -76,7 +76,7 @@
                 </div>
                 <hr class="w-full ">
             @endforeach
-            <div class="flex w-full me-4 justify-end items-end flex-col gap-1">
+            <div class="flex w-full me-4  justify-end items-end flex-col gap-1">
                 <div class=" text-orange-600">
                     <div class="flex flex-row gap-2">
                         <div class="flex flex-col">
@@ -85,16 +85,16 @@
                         </div>
                         <div class="flex flex-col">
                            <div>
-                                ₱<input type="text" value="60" placeholder="60" name="shippingFee" class="w-6 border-none  p-0" id="shippingFee">
+                                ₱<input type="text" value="60" placeholder="60" name="shippingFee" class="w-6 text-sm border-none  p-0" id="shippingFee">
                            </div>
                             <div>
-                                ₱<input type="text" class=" w-6 border-none  p-0" name="subTotal"  value="{{ $data['total'] }}" id="subTotal">
+                                ₱<input type="text" class=" w-12 border-none text-sm p-0" name="subTotal"  value="{{ $data['total'] }}" id="subTotal">
                                 <span class="text-orange-600"></span>
                             </div>
                         </div>
                     </div>
                    <br>
-                    Total: ₱<input type="text" class=" w-6 border-none  p-0" name="total" id="total" value=""><span class="text-orange-600">.00</span>
+                    Total: ₱<input type="text" class="text-sm w-6 border-none  p-0" name="total" id="total" value=""><span class="text-orange-600">.00</span>
                 </div>
                 <div class="w-full">
                     <label for="">Mode of Payment </label>

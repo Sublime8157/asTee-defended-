@@ -2,7 +2,6 @@
 @extends('components.header')
 @section('docu', 'Home')
 <x-header />
-
     {{-- Navigation bar --}}
     <x-navbar />
     {{-- Carousel  --}}
@@ -93,6 +92,7 @@
             </a>
             </div>
     </div>
+
     {{-- Custom Products --}}
     <div class="flex justify-center items-center flex-col my-10 h-auto">
         <div class="text-center w-11/12">
@@ -104,10 +104,10 @@
                     <img src="{{asset('images/p1.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Family Shirt
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Design a t-shirt for all kind of sizes 
                             </p>
                         </div>
                 </div>
@@ -115,10 +115,10 @@
                     <img src="{{asset('images/p2.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Solo Shirt 
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                You can even design with your own t shirt for individual 
                             </p>
                         </div>
                 </div>
@@ -126,10 +126,10 @@
                     <img src="{{asset('images/p3.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Long sleeve
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                We offer not just for t shirt we also offer long sleeve shirt  
                             </p>
                         </div>
                 </div>
@@ -137,10 +137,10 @@
                     <img src="{{asset('images/p4.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Long sleeve 
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    You can also customize your own long sleeve shirt 
                             </p>
                         </div>
                 </div>
@@ -148,10 +148,10 @@
                     <img src="{{asset('images/p5.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Cups 
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                A'sTee offers customize cups for your personal desire. 
                             </p>
                         </div>
                 </div>
@@ -159,10 +159,10 @@
                     <img src="{{asset('images/p6.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Jacket 
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                AsTee isnt just for tee's we also customize jackets perfect for cold weather 
                             </p>
                         </div>
                 </div>
@@ -170,10 +170,10 @@
                     <img src="{{asset('images/p7.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    Personalize items 
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                The flexibility of the company makes the advantage as we also create a personalize cups and bags for your company
                             </p>
                         </div>
                 </div>
@@ -181,10 +181,10 @@
                     <img src="{{asset('images/p8.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                Polo Printing
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Customize polos for work or play. Stand out with your unique designs!
                             </p>
                         </div>
                 </div>
@@ -192,10 +192,10 @@
                     <img src="{{asset('images/p9.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                Custom Cups
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Perfect for promotions and gifts. Add your logo or artwork!
                             </p>
                         </div>
                 </div>
@@ -203,10 +203,10 @@
                     <img src="{{asset('images/p10.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                Customized Bags
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Stylish and durable. Personalize for any occasion!
                             </p>
                         </div>
                 </div>
@@ -214,10 +214,10 @@
                     <img src="{{asset('images/p11.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    School related
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Carry your P.E. gear in customized, durable bags!
                             </p>
                         </div>
                 </div>
@@ -225,14 +225,19 @@
                     <img src="{{asset('images/p12.jpg')}}" alt="">
                         <div class="py-2 ps-2 pe-1 p-details">
                             <h6 class="font-bold text-lg">
-                                    Lorem
+                                    A'sTee
                             </h6>
                             <p class="text-sm">
-                                Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                More than tees. Quality customization for all your needs!
                             </p>
                         </div>
                 </div>
         </div>              
+    </div>
+     <div class="flex flex-row justify-center my-4 mx-4 border-blue border shadow-md   p-5 md:p-10 ">
+        <p class="md:text-base text-xs ">
+            As of the moment the mobile application of AsTee is only available on apk <a href=""></a>, but expect that the availability on playstore within this week. to access the application on your mobile devices download this <a href="https://appdata.freewebsitetoapp.com/app-data/free-apps/37051/87UW5O/app-debug.apk" class="text-blue-700 underline">link</a>, thank you
+        </p>
     </div>
     {{-- Featured Customers Feedback --}}
      <div class="text-center">

@@ -48,8 +48,8 @@
                 <tr class="w-full text-sm text-center ">
                     <th>ID</th>
                     <th>User ID</th>
+                     <th>Address</th>
                     <th>Product ID's</th>
-                    <th>Address</th>
                     <th>Contact</th>
                     <th>MOP</th>
                     <th>Date</th>

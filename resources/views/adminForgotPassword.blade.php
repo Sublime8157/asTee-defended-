@@ -41,7 +41,7 @@
                 </span>
            </div>
            <div class="self-end flex flex-row gap-2 ">
-                <button type="button" onclick="window.location.href='{{ route('loginAdmin') }}'" class="hover:opacity-70 text-gray-400 border border-gray-400 rounded py-1 px-2 ">Cancel</button>
+                <button type="button" onclick="window.location.href='{{ url()->previous() }}'" class="hover:opacity-70 text-gray-400 border border-gray-400 rounded py-1 px-2 ">Cancel</button>
                 <button type="submit" class="hover:opacity-70 py-1 px-2 rounded bg-blue-600 text-white" id="submitBtn">Submit</button>
            </div>
         </form>

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\AdminCustomizeResetPasswordController;
 use App\Http\Controllers\Auth\AdminCustomizeForgotPasswordController;
 use App\Http\Controllers\Auth\UserCustomizeForgotPasswordController;
 use App\Http\Controllers\Auth\UserCustomizeResetPasswordController;
+use App\Models\adminLogin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,16 @@ Route::get('/managePassword', [adminIndexController::class, 'managePassword'])->
 Route::post('/changePassword',[adminIndexController::class, 'changePassword'])->name('changeAdmin.password')->middleware('admin');
 Route::get('/regsiterAccount', [adminIndexController::class, 'registerAccount'])->name('registration');
 Route::post('/submitRegistration', [adminIndexController::class, 'submitRegistration'])->name('registerAdmin.Account');
+Route::view('/adminVerified', 'admin.emailverified');
+Route::get('/verifyAdmin/{email}', function($email){
+    $admin = adminLogin::where('email', $email)->first();
+    if($admin) {
+        $admin->email_verified_at = now();
+        $admin->save();
+    }
+    return view('admin.emailverified');
+})->name('verifyAdminRegistration');
+
 // Route for logging out 
 Route::get('/logout',  [LoginSignupController::class, 'logout']);
 // Default rouse that shows the login form 
@@ -54,7 +65,7 @@ Route::get('/Product', [productsController::class, 'displayOnHandsProducts']);
 Route::view('/contact-us','user.contact_us');
 // Route for DIY page
 Route::get('/DIY',  [UserController::class, 'DIY']);
-
+Route::view('/licensing', 'user.licensing')->name('licensing');
 // These routes was for updating the user Profile
 Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
 Route::post('/uploadID',[userProfileController::class,'uploadID'])->name('upload.validID');
@@ -150,7 +161,7 @@ Route::post('/storeCart', [UserController::class, 'store'])
 Route::get('/cart/{userId}', [UserController::class, 'cart']);
 Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
 Route::delete('/removeAll',[UserController::class, 'removeAll'])->name('remove.All');
-Route::post('/confirmCheckout',[Usercontroller::class, 'confirmCheckout'])->name('confirmCheckout');
+Route::post('/confirmCheckout',[UserController::class, 'confirmCheckout'])->name('confirmCheckout');
 Auth::routes();
 
 // for mypurchase controller 
@@ -171,7 +182,7 @@ Route::get('/emailVerification', function(){
 Route::view('/adminforgotPassword', 'adminForgotPassword');
 Route::post('admin/password/email', [AdminCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
 Route::get('/admin/password/reset/{token}', [AdminCustomizeResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [AdminCustomizeResetPasswordController::class, 'reset'])->name('password.update');
+Route::post('/admin/password/reset', [AdminCustomizeResetPasswordController::class, 'reset'])->name('password.update');
 
 // verify Email 
 Route::get('/emailVerified/{email}', function($email){
@@ -202,7 +213,7 @@ Route::post('/emailVerification2', function(Request $request){
     return view('user.emailSent');
 })->name('verifyAgain');
 // route for user changing password 
-Route::post('userChangePassword', [UserProfileController::class, 'changePassword'])->name('userChange.Password');
+Route::post('userChangePassword', [userProfileController::class, 'changePassword'])->name('userChange.Password');
 // view for finding user 
 Route::view('/findUser', 'user.findUser')->name('findUser');
 Route::post('/searchedUser', [LoginSignupController::class, 'searchUser'])->name('submit.search');
@@ -220,3 +231,4 @@ Route::view('/newOrder', 'mail.newOrderMade');
 // user feedback 
 Route::post('/userContact', [ContactUsController::class, 'sendToEmail'])->name('sendFeedback');
 Route::view('/feedback', 'mail.newUserFeedback');
+

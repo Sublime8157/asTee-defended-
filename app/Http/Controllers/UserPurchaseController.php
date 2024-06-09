@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\orders;
 use Illuminate\Support\Str;
 use App\Models\Sales;
-use App\Models\Feedback;
+use App\Models\feedback;
 use Illuminate\Support\Facades\DB;
 
 

@@ -63,14 +63,14 @@
                            <div class="me-4">
                                 <input type="checkbox" name="" onclick="updateCart({{$userCart->id}})" value="{{$userCart->id}}" class="h-4 w-4 cursor-pointer list" id="cart{{$userCart->id}}">
                            </div>
-                            <div class="flex flex-row gap-2">
+                            <div class="flex flex-row items-center  gap-2">
                                 {{-- image --}}
                                 <div>
-                                    <img src="{{ asset('storage/images/'. $userCart->image_path) }}"   class="bg-gray-200  min-w-40 h-auto rounded">
+                                    <img src="{{ asset('storage/images/'. $userCart->image_path) }}"   class="bg-gray-200  w-80 h-96 h-auto rounded">
                                 </div>
                                 {{-- description --}}
                                 <div class="flex flex-col gap-1 w-auto">
-                                        <p class="text-gray-700 text-xs md:text-base lg:text-base mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, deleniti!</p>
+                                        <p class="text-gray-700 text-xs md:text-base lg:text-base mb-1">{{$userCart->description}}</p>
                                         {{-- details  --}}
                                    <div>
                                         <p class="text-gray-500 text-sm flex flex-col">{{$userCart->variationType()}}| {{$userCart->sizeShirt()}} |   {{$userCart->genderShirt()}} </p>
@@ -183,5 +183,4 @@
       localStorage.setItem('count', counts);
 </script>
 <x-footer />
-
 <x-scripts />

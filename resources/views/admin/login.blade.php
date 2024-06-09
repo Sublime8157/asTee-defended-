@@ -23,8 +23,7 @@
              <div class="flex items-center flex-col  justify-center w-screen h-screen">
                   
                     {{-- Form Starts Here --}}
-                    <form action="/loggingIn" class="relative flex items-center justify-center bg-blue-100 p-10   rounded-lg flex-col shadow-2xl" method="POST">
-                        
+                    <form action="/loggingIn" class="w-auto relative flex items-center justify-center bg-blue-100 p-10   rounded-lg flex-col shadow-2xl" method="POST">
                         @csrf
                         {{-- User Icon  --}}
                         <div class="absolute" style="top: -70px">
@@ -37,9 +36,9 @@
                         </div>
                         {{-- errors  --}}
                         @if ($errors->any())
-                        <div class="text-center text-xs text-red-600 font-bold">
-                            {{ $errors->first() }}
-                        </div>
+                            <div class="max-w-full text-xs  p-2 rounded border border-red-400 bg-red-200">
+                                {{ $errors->first() }}
+                            </div>
                         @endif
                         {{-- Username input --}}
                         <div class="mb-5 w-full">

@@ -62,12 +62,12 @@
                 <div class="flex flex-row items-center relative form-group gap-4">
                     <div class="flex flex-col relative">
                         <label for="" class="text-sm">Password</label>
-                        <input type="password"  class="password border-none w-72 w- text-sm" name="password">
+                        <input type="password"  class="password border-none w-72 w- text-sm" name="password"  autocomplete="off">
                         <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-7 cursor-pointer revealPassword text-base"></ion-icon>
                     </div>
                     <div class="flex flex-col relative">
                         <label for="" class="text-sm">Confirm Password</label>
-                        <input type="password"  class=" border-none password w- text-sm" name="password_confirmation">
+                        <input type="password"  class=" border-none password w- text-sm" name="password_confirmation" autocomplete="off"> 
                         <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-7 cursor-pointer revealPassword text-base"></ion-icon>
                     </div>
                 </div>

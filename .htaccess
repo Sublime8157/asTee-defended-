@@ -2,3 +2,11 @@
     RewriteEngine On
     RewriteRule ^(.*)$ public/$1 [L]
   </IfModule>
+
+
+
+# Allow access to storage
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_URI} !^/storage/ [NC]
+    RewriteRule ^storage/(.*)$ storage/app/public/$1 [L]
+</IfModule>

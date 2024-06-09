@@ -1,14 +1,7 @@
 @props(['userData','sortBy', 'orderBy','sortByClass','searchUsersName','searchUsersId'])
 <x-header />
 <x-nav />
-@if(session()->has('success'))
-    <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
-        <ion-icon name="checkmark-done-outline" class=" text-yellow-600 text-lg pe-1"></ion-icon>
-        <span class="text-yellow-600 font-bold">
-            {{ session()->get('success') }}
-        </span>
-    </div>
-@endif
+<x-notification />
 @if(session()->has('blocked'))
     <div class=" text-xs mt-5  font-bold tracking-wider flex items-center justify-center">
         <ion-icon name="alert-circle-outline" class="font-bold text-red-800 text-lg pe-1"></ion-icon>

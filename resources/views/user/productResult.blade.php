@@ -17,7 +17,7 @@
                      </a>
                      {{-- share link icon  --}}
                      <a href="">
-                         <ion-icon name="share-social" class="text-green-600 text-xl"></ion-icon>
+                         <ion-icon name="share-social" class="text-green-600 text-xl" onclick="copyLink(event, {{$table->id}})"></ion-icon>
                      </a>
                  </div>
              

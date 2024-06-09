@@ -180,44 +180,51 @@ function addButton(id) {
     var unitPrice = $('#unitPrice' + id); // input value
     var checkBox = $('#cart' + id); // input checkbox
     var desktopTextTotalPrice = $('#desktopTextPrice' + id);
+    var stock = $('#stockDesktop' + id).val(); 
     // get the value
     unitPriced = parseInt(unitPrice.val());
     val = parseInt(value.val()); // Get the current quantity value and parse it as an integer
     // compute 
-    val++; // Increment the quantity
-    value.val(val);
-    totalPriceMobile = unitPriced * val;
-
-    // Desktop computation
-    var desktopQuantityValue = $('#desktopQuantityValue' + id);
-    dekstopVal = parseInt(desktopQuantityValue.val()); // Get the current quantity value and parse it as an integer
-    dekstopVal++; // Increment the quantity
-    desktopQuantityValue.val(dekstopVal);
-    totalPriceDesktop = unitPriced * dekstopVal;
-
-    // display the value 
-    txtPrice.text(totalPriceMobile);
-    desktopTextTotalPrice.text(totalPriceMobile);
-    // Calculate total amount
-    if (checkBox.prop('checked')) {
-        itemsTotalAmount.push(unitPriced);
-        var totaledPrice = itemsTotalAmount.reduce(function(total, price) {
-            return total + price;
-        })
-        totalAmount.val(totaledPrice);
-        totalAmountTxt.text(totaledPrice);
+    if(stock == val) {
+        alert('Maximum value');
     }
-
-    // Update inputQuantity based on the id
-    var index = inputQuantity.findIndex(item => item.id === id);
-    if (index !== -1) {
-        inputQuantity[index].quantity = dekstopVal;
-    } else {
-        inputQuantity.push({ id: id, quantity: dekstopVal });
+    else {
+        val++; // Increment the quantity
+        value.val(val);
+        totalPriceMobile = unitPriced * val;
+    
+        // Desktop computation
+        var desktopQuantityValue = $('#desktopQuantityValue' + id);
+        dekstopVal = parseInt(desktopQuantityValue.val()); // Get the current quantity value and parse it as an integer
+        dekstopVal++; // Increment the quantity
+        desktopQuantityValue.val(dekstopVal);
+        totalPriceDesktop = unitPriced * dekstopVal;
+    
+        // display the value 
+        txtPrice.text(totalPriceMobile);
+        desktopTextTotalPrice.text(totalPriceMobile);
+        // Calculate total amount
+        if (checkBox.prop('checked')) {
+            itemsTotalAmount.push(unitPriced);
+            var totaledPrice = itemsTotalAmount.reduce(function(total, price) {
+                return total + price;
+            })
+            totalAmount.val(totaledPrice);
+            totalAmountTxt.text(totaledPrice);
+        }
+    
+        // Update inputQuantity based on the id
+        var index = inputQuantity.findIndex(item => item.id === id);
+        if (index !== -1) {
+            inputQuantity[index].quantity = dekstopVal;
+        } else {
+            inputQuantity.push({ id: id, quantity: dekstopVal });
+        }
+        $('#quantitiesInput').val(JSON.stringify(inputQuantity));
+        console.log(inputQuantity);
+        $('#arrayList').val(itemsTotalAmount);
     }
-    $('#quantitiesInput').val(JSON.stringify(inputQuantity));
-    console.log(inputQuantity);
-    $('#arrayList').val(itemsTotalAmount);
+ 
 }
 
 

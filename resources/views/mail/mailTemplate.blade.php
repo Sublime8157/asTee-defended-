@@ -134,6 +134,10 @@
                    Total: {{$invoiceData['total']}} 
                 </td>
             </tr>
+             <tr>
+                <td>GCASH <br> Number: 09154403873 <br> Name: Aira Mae Meran</td>
+                <td>BPI <br> Number: 3809185108 <br> Name: Aira Mae Meran </td>
+            </tr>
         </table>
     </div>
 </body>

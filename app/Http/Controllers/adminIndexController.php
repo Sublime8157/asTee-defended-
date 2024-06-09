@@ -11,7 +11,8 @@ use App\Models\feedback;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminVerificationEmail;
 
 class adminIndexController extends Controller
 {
@@ -45,8 +46,9 @@ class adminIndexController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $validated['profile'] = 'adminIcon.png';
         adminLogin::create($validated);
-        
-        return redirect()->back()->with(['success' => 'Registered Successfully']);
+     
+        Mail::to('manage_accounts@astee.store')->send(new AdminVerificationEmail($validated['email']));
+        return redirect()->back()->with(['success' => 'The verification was sent to the admin, please verify that this registration was aware of admin, thank you.']);
 
     }
     // changing password 
@@ -84,17 +86,22 @@ class adminIndexController extends Controller
     public function adminLogin(Request $request){   
         $validated = $request->validate([
         'username' => 'required',
-        'password' => 'required','current_password'
+        'password' => 'required'
         ]);
         // register the admin in config.php when using separate logins for admins 
         // auth() specify user in default so you must register the other table in auth
         if (auth()->guard('admin')->attempt($validated)) {
-            // Authentication successful
-            $request->session()->put('adminLoggedIn', true);
-            $request->session()->regenerate();
-
-            return redirect('/dashboard');
-        }
+            $admin = auth()->guard('admin')->user();
+              // Authentication successful
+            if($admin->email_verified_at > 0) {
+                $request->session()->put('adminLoggedIn', true);
+                $request->session()->regenerate();
+                return redirect('/dashboard');
+            }
+            else{
+                return back()->withErrors(['fail' => 'This user has not been verified yet, please contact your administrator']);
+            }
+        }   
 
         return back()->withErrors(['username' => 'Invalid Credentials'])->withInput();
     }

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OnHand;
 use App\Models\Sales;
-use App\Models\Cart;
+use App\Models\cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Models\feedback;
@@ -76,11 +76,11 @@ class UserController extends Controller
             "prodId" => 'required|exists:product_on_hand,id',
         ]);
         // check if it was already in the cart 
-        $cartItem = Cart::where('userId', '=', $validate['userId'])->
+        $cartItem = cart::where('userId', '=', $validate['userId'])->
                             where('productId', '=', $validate['prodId'])->count();
         // if it not yet in the cart add
         if($cartItem <= 0 ) {
-            $cart = Cart::create([
+            $cart = cart::create([
                 'userId' =>$validate['userId'],
                 'productId' =>$validate['prodId'],
                 'quantity' => 1
@@ -97,7 +97,7 @@ class UserController extends Controller
     // display the user added to cart
     public function cart($userId) {
         // find the user id from cart assign to userCart
-        $userCart = Cart::where('userId', $userId)->get();
+        $userCart = cart::where('userId', $userId)->get();
         $products = [];
         $prodQty = [];
 
@@ -123,7 +123,7 @@ class UserController extends Controller
         $items = array_map('trim', $items); // Remove whitespace from each element
         $items = array_map('intval', $items); // Convert each element to an integer
        
-        $listOfItems = Cart::whereIn('productId', $items); // use whereIn to remove a set of an array 
+        $listOfItems = cart::whereIn('productId', $items); // use whereIn to remove a set of an array 
         $deleted = $listOfItems->delete();
         // Log the number of deleted items to verify the deletion
     
@@ -131,7 +131,7 @@ class UserController extends Controller
     }
     // remove single item 
     public function remove($id) {
-        $removeItem = Cart::where('productId', $id);
+        $removeItem = cart::where('productId', $id);
         $removeItem->delete();
 
         return redirect()->back();
@@ -206,7 +206,7 @@ class UserController extends Controller
                 ]);
                 
                 // remove from the cart 
-                $removeToCart = Cart::whereIn('productId',$prodToInsert)->get();
+                $removeToCart = cart::whereIn('productId',$prodToInsert)->get();
                 $removeToCart->each->delete();
                 // remove from the onhand this should remove only the quantity if it was equals to 0 then continue removing 
                 $qtyCount = OnHand::where('id', $prodToInsert[$index])->first(); // get the first result from onhand 

@@ -72,13 +72,33 @@
                        @endforeach
                        <a onclick="clearRadio()" class="text-xs text-center cursor-pointer underline text-blue-500 ">Clear Fields</a>
                     </ul>
-                  
+                <div>
+                    <ul class="flex flex-col mb-2">
+                        <li class="font-bold text-xs md:text-left text-center">
+                            <h6>
+                                Price range
+                            </h6>
+                            <hr class="mb-2">
+                            <div class="flex flex-row gap-2">
+                                <div>
+                                    <label for="" class="text-xs">min:</label>
+                                    <input type="number" name="priceFrom" id="" class="w-16 text-xs h-10">
+                               </div>
+                               <div>
+                                    <label for="" class="text-xs">max:</label>
+                                    <input type="number" name="priceTo" id="" class="w-16 text-xs h-10">
+                               </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                     <div class="w-auto flex justify-center items-center">
                          
                         <button type="submit" class="px-2 w-full py-1 bg-red-600 text-white text-sm text-center rounded">Apply</button>
                        
                     </div>
                 </div>
+              
            </form>
         </div>
         {{-- List of available products  --}}
@@ -90,10 +110,10 @@
                </div>
           @else
                 @foreach($data as $table)
-                    <div class="w-60 mt-5  bg-white  flex flex-col border shadow rounded border-gray-100 pb-2 me-2" style="height: 420px">
+                    <div class="w-80  gap-4 bg-white  flex flex-col border shadow rounded mt-2 border-gray-100 pb-2 me-2" >
                             <div class="relative productImage">   
                                 {{-- product image  --}}
-                                <img src="{{ asset('storage/images/' . $table->image_path) }}" alt="" >
+                                <img src="{{ asset('storage/images/' . $table->image_path) }}" alt="" class="w-full h-80">
                             <div class=" showIcons h-auto  ">
                                 <div class="flex flex-row absolute left-0 bottom-0">
                                     {{-- cart icon  --}}

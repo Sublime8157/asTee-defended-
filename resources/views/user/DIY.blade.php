@@ -4,17 +4,25 @@
 <x-header />
 <x-navbar />
 <div class="h-auto ">
+    <div class=" bottom-0 right-0 m-10 rounded-full fixed">
+        <div class="flex flex-row-reverse gap-2 items-center ">
+            <a href="https://www.facebook.com/messages/t/112072543884939" target="_blank">
+                <ion-icon name="chatbubble-ellipses-outline" class="text-4xl bg-blue-600 p-1 cursor-pointer text-white hover:text-4xl rounded-full" id="messengerIcon"></ion-icon>
+            </a>            
+            <p class="bg-blue-100 text-gray-700 text-xs rounded-md py-1 px-2 hidden" id="showText">Message us!</p>
+        </div>
+    </div>
     <div class="flex justify-center   md:justify-around flex-col md:flex-row-reverse  py-8 md:py-16 h-auto" style="background-color: #dddddd"">
         <div class="w-100  flex justify-center flex-col-reverse  items-center md:flex-row">
             {{-- Tools --}}
-            <div class="flex flex-row md:flex-col   py-2 w-full md:w-auto justify-evenly md:justify-center items-center bg-gray-200 h-auto rounded md:mt-0 mt-10">
+            <div class="flex flex-row md:flex-col   py-3 w-full md:w-auto justify-evenly md:justify-center items-center bg-gray-200 h-auto rounded md:mt-0 mt-10">
 
-                <button id="undo"  class="my-0 md:my-5" disabled>
+                <button id="undo"  class="my-0 " disabled>
                     <ion-icon class="h-12 text-4xl hover:text-5xl hover:text-black" name="arrow-undo-circle-outline"></ion-icon> <br>
                     Undo
                 </button>
 
-                <button id="redo" class="mb-0 md:mb-5" disabled>
+                <button id="redo" class="mb-0 " disabled>
                     <ion-icon class="h-12 text-4xl hover:text-5xl hover:text-black" name="arrow-redo-circle-outline"></ion-icon> <br>
                     Redo
                 </button>
@@ -28,7 +36,7 @@
                     {{-- Textbox --}} 
                         <div class="flex flex-col items-center">
                             <span class="text-xs text-black font-extralight self-start">Custom Text</span>                          
-                            <textarea name=""  cols="30" rows="1" id="textToAdd" class="text-center rounded mb-1"></textarea>
+                            <textarea name="" rows="1" id="textToAdd" class="text-center rounded mb-1 w-auto"></textarea>
                                  <button id="addToCanvas" class="rounded w-full bg-blue-500 text-white text-center px-2 py-2 m-0 hover:bg-blue-300">
                                      Add
                                  </button>
@@ -53,7 +61,7 @@
                             </div>
                         </div>
                          {{-- Font Style --}}
-                        <div class="mt-1 flex flex-col ">
+                        <div class=" flex flex-col ">
                             <span class="text-xs text-black font-extralight my-1 self-start">Font Style</span>
                             <div class="flex justify-evenly flex-row">                       
                                     <button class="font-extrabold text-xl tracking-wider hover:text-lg" onclick="fontBold()">
@@ -65,7 +73,7 @@
                             </div>
                         </div>
                         {{-- Font Family --}}
-                        <div class="mt-1 flex flex-col">
+                        <div class=" flex flex-col">
                             <span class="text-xs text-black font-extralight my-1 self-start">Font Family</span>
                             <select onchange="changeFontFamily(this.value)" class="cursor-pointer">
                                 <option value="Arial">Arial</option>
@@ -86,10 +94,13 @@
                             </button>
                         </div>
                     </div>
-                <button class="relative  p-0 md:p-4 rounded m-0 md:m-2 z-20 ">
-                        <ion-icon name="images-outline"  class="imageIcon h-12 text-4xl hover:text-5xl hover:text-black"></ion-icon> <br>Import
-                        <input type="file" class="absolute md:left-5 left-0  top-2 md:top-7 z-0 w-8  h-8 opacity-0 imageUpload" id="imageUpload" onchange="uploadImage()">
-                </button>
+                    <button class="relative  p-0 md:p-4 rounded m-0 mx-2 z-20 ">
+                            <ion-icon name="images-outline"  class="imageIcon h-12 text-4xl "  ></ion-icon> <br>Import
+                            <input type="file" id="imageUpload" class="absolute md:left-5 left-0 opacity-0 top-2 md:top-6 z-0 w-12  h-12  imageUpload"  onchange="uploadImage()">
+                    </button>
+                    <div class="flex flex-col items-center">
+                        <ion-icon name="trash-outline" class=" h-12 text-4xl cursor-pointer hover:text-5xl hover:text-black" id="removeBtn"></ion-icon>Remove
+                    </div>
             </div>
         <div>      
                 <div class="flex flex-col justify-between relative">
@@ -98,18 +109,17 @@
                     </canvas>
                     <div class="absolute hidden" id="canvas2">
                         <canvas id="fabricCanvas2" width="400" height="400" style="border: 1px solid #ccc;">
-
                         </canvas>
                     </div>
                     <div class="absolute top-0 right-0 flex flex-col">
                         {{-- Front view of the T-Shirt --}}
                         <div class="w-10 border h-18 bg-gray-400 me-1 p-1">
-                                <img src="{{ asset('images/whiteColor.png') }}" alt="whiteColor" height="10px" class="cursor-pointer "  onclick="tshirtFront()">
+                                <img src="{{ asset('storage/images/white(front).png') }}" alt="whiteColor" height="10px" class="cursor-pointer "  onclick="tshirtFront()">
                                 <span class="font-xs text-center font-bold" style="font-size: 13px">Front</span>
                         </div>
                         {{-- Back view of the T-Shirt --}}
                         <div class="w-10 border h-18 bg-gray-400 me-1 p-1">
-                            <img src="{{ asset('images/back.png') }}" alt="whiteColor" width="auto" class="cursor-pointer"  onclick="tshirtBack()">
+                            <img src="{{ asset('images/white(back).png') }}" alt="whiteColor" width="auto" class="cursor-pointer"  onclick="tshirtBack()">
                             <span class="font-xs text-center font-bold" style="font-size: 13px">Back</span>
                         </div>
                     </div>
@@ -118,63 +128,63 @@
               <div class="block" id="frontView">            
                 <div class="flex flex-row justify-center items-center" id="frontView">
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/whiteColor.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/white(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/white(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/gray.png') }}" class="colorButton"><img src="{{ asset('images/gray.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/black(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/black(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/blue.png') }}" class="colorButton"><img src="{{ asset('images/blue.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/blue(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/blue(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/purple.png') }}" class="colorButton"><img src="{{ asset('images/purple.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/gray(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/gray(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/black.png') }}" class="colorButton"><img src="{{ asset('images/black.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/green(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/green(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/red.png') }}" class="colorButton"><img src="{{ asset('images/red.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/maroon(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/maroon(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/green.png') }}" class="colorButton"><img src="{{ asset('images/green.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/red(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/red(front).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/maroon.png') }}" class="colorButton"><img src="{{ asset('images/maroon.png') }}" alt=""></button>
-                    </div>
+                        <button data-image="{{ asset('storage/images/violet(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/violet(front).png') }}" alt=""></button>
+                    </div>      
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/yellow.png') }}" class="colorButton"><img src="{{ asset('images/yellow.png') }}" alt=""></button>
-                    </div>                                  
+                        <button data-image="{{ asset('storage/images/yellow(front).png') }}" class="colorButton"><img src="{{ asset('storage/images/yellow(front).png') }}" alt=""></button>
+                    </div>                            
                 </div>
               </div>
               {{-- T-Shirt Colors (Back) --}}
               <div class="hidden" id="backView">
                 <div class="flex flex-row justify-center items-center">
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/whiteColor.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('images/white(back).png') }}" class="colorButtonBack"><img src="{{ asset('images/white(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/gray.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/black(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/black(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/blue.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/blue(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/blue(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/purple.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/gray(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/gray(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/black.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/green(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/green(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/red.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/maroon(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/maroon(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/green.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/red(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/red(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/maroon.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/violet(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/violet(back).png') }}" alt=""></button>
                     </div>
                     <div class="w-10 border h-10 bg-gray-400 me-1 p-1 hover:bg-gray-200">
-                        <button data-image="{{ asset('images/yellow.png') }}" class="colorButton"><img src="{{ asset('images/whiteColor.png') }}" alt=""></button>
+                        <button data-image="{{ asset('storage/images/yellow(back).png') }}" class="colorButtonBack"><img src="{{ asset('storage/images/yellow(back).png') }}" alt=""></button>
                     </div>                                  
                 </div>
                
@@ -306,7 +316,7 @@
                 <div class="w-11/12 md:w-6/12 flex flex-col ">
                     <h1 class="font-bold text-lg">Step 2 </h1>
                     <p class="indent-10 md:text-base text-xs">
-                        After downloading you can then <b>send</b> it to one of our admin using our chat feature, this plays an important role as this would confirm the design and the cost of creating your custom designs.
+                        After downloading you can then <b>send</b> it to one of our contacts (messenger is the best option), this plays an important role as this would confirm the design and the cost of creating your custom designs.
                     </p>
                 </div>
             </div>    

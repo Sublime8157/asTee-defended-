@@ -9,7 +9,7 @@
             <div class="me-5">
                 <span class="">
                     <ion-icon name="call" class="text-white text-xs font-extralight"></ion-icon>
-                <span class="text-white text-xs font-extralight">000-000-00</span>
+                <span class="text-white text-xs font-extralight">993-798-7283</span>
                 </span>
 
             </div>
@@ -42,7 +42,7 @@
             {{-- Company logo      --}}
                 <div class="me-40">
                     <ul class="flex flex-row  justify-between items-center">
-                        <li> <img src="{{ asset('images/logo.png') }}" alt="Logo" width="50px" height="50px" class="md:block hidden me-1 md:ms-10 ms-0"><li>      
+                        <li> <img src="{{ asset('images/companyLogo.png') }}" alt="Logo" width="50px" height="50px" class="md:block hidden me-1 md:ms-10 ms-0"><li>      
                         <li class="italic  md:hidden block"><span class="text-blue-300 font-semibold">A</span>'s <span class="text-blue-300 font-semibold">T</span>ee</li>
                     </ul>
                 </div>  
@@ -50,7 +50,7 @@
                 <div id="navbar-main" class="z-40 md:flex md:bg-blue-50 md:shadow-none shadow-lg left-0 w-48 rounded md:h-auto h-screen bg-white md:p-0 ps-5 pt-5 md:mt-0 mt-24 flex-row justify-evenly mx-auto  md:relative absolute md:w-full top-95">
                     <div>
                         <ul class="md:flex md:flex-row flex-col md:mt-0 font-normal"> 
-                           <li><img src="{{asset('images/logo.png')}}" alt="Logo" class="block md:hidden"></li>
+                           <li><img src="{{asset('images/companyLogo.png')}}" alt="Logo" class="block md:hidden"></li>
                            <a href="/home" class="{{ request()->is('/home') ? 'underline font-semibold' : ' ' }}">
                            <li class="mr-6 md:mb-0 mb-5 self-center hover:bg-blue-50  md:hover:underline left-20">
                                Home</li></a>
