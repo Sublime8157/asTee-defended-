@@ -84,6 +84,15 @@ Route::get('/orders', [OrderHistoryController::class, 'showOrderList']);
 Route::get('/searchOrder', [OrderHistoryController::class, 'filterOrders']);
 Route::get('/sortOrders', [OrderHistoryController::class, 'sortOrders']); 
 Route::get('/filterDate', [OrderHistoryController::class, 'filterDate']);
+
+//route for payments history 
+Route::get('/payments', [PaymentHistoryController::class, 'display']);
+Route::post('/paymentForm', [PaymentHistoryController::class, 'store'])->name('paymentForm');
+Route::get('/filterPayments', [PaymentHistoryController::class, 'sort']);
+Route::get('/filterPaymentsDate', [PaymentHistoryController::class, 'filterDate']); 
+Route::get('/filterbyBank', [PaymentHistoryController::class, 'filterBanks']);
+Route::get('/filterPrice', [PaymentHistoryController::class, 'filterPrice']);
+Route::get('/searchIdPayments', [PaymentHistoryController::class, 'searchById']);
 // Routes for admin products panel tab 
 // for onhnad products tab 
 Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');

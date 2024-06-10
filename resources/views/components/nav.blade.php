@@ -132,7 +132,7 @@
                 </ul>      
                 <ul class="flex justify-center items-start flex-col">
                     <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800 ">
-                        ORDERS
+                        HISTORY
                     </li>
                     <a href="/orders" class="w-full">
                         <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('orders') ? 'sideNavBG' : ' ' }}">
@@ -143,6 +143,16 @@
                                     </div>
                             </div>
                                
+                        </li>     
+                    </a>             
+                    <a href="/payments" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('payments') ? 'sideNavBG' : ' ' }}">
+                            <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                <ion-icon name="card-outline" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                    <div class="text-gray-400 text-xs">
+                                        Payment History
+                                    </div>
+                            </div>      
                         </li>     
                     </a>             
                 </ul>      

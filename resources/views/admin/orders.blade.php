@@ -1,5 +1,5 @@
 @extends('components.header')
-@section('docu', 'Orders')
+@section('docu', 'Order History')
 @section('page','ORDERS')
 <x-header />
 <x-nav />
@@ -52,6 +52,7 @@
                     <th>Product ID's</th>
                     <th>Contact</th>
                     <th>MOP</th>
+                    <th>Payment Status</th>
                     <th>Date</th>
                 </tr>
                 <tbody id="orderTableBody">
@@ -63,6 +64,7 @@
                                 <td class="text-sm">{{$list->productId}}</td>
                                 <td class="text-sm">{{$list->contact}}</td>
                                 <td class="text-sm">{{$list->mop}}</td>
+                                <td class="text-sm">{{$list->paid}}</td>
                                 <td class="text-sm">{{$list->created_at}}</td>
                         </tr>
                         <tr>

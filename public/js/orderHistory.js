@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
     $('#searchOrders').on('keyup', function(){
         var formData = { 
@@ -51,3 +52,4 @@ $(document).ready(() => {
         })
     })
 })
+

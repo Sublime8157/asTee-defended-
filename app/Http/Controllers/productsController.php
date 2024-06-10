@@ -29,7 +29,7 @@ class productsController extends Controller
 
       if ($request->has('priceFrom') && $request->priceFrom != null) {
         $data->where('price', '>=', $request->priceFrom);
-    }
+        }
 
     if ($request->has('priceTo') && $request->priceTo != null) {
         $data->where('price', '<=', $request->priceTo);

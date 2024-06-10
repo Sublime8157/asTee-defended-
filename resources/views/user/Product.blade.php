@@ -11,7 +11,7 @@
         <a onclick="" class="p-5 md:hidden  top-0 flex items-center">
             <ion-icon name="caret-forward-outline" class="me-2 cursor-pointer" onclick="displayFilter(this)"></ion-icon> Filter
         </a>
-        <div class=" justify-center md:block hidden md:w-64  w-screen md:p-8 p-0 me-5" id="filterSettings">
+        <div class="mx-4 justify-center md:block hidden md:w-64 w-screen md:p-8 p-0 me-5" id="filterSettings">
             {{-- Form for filtering products --}}
            <form  method="GET" id="filterForm" class="w-full md:block md:flex-col flex flex-row justify-center">
             @csrf
@@ -72,31 +72,29 @@
                        @endforeach
                        <a onclick="clearRadio()" class="text-xs text-center cursor-pointer underline text-blue-500 ">Clear Fields</a>
                     </ul>
-                <div>
-                    <ul class="flex flex-col mb-2">
+                <div class="w-auto">
+                    <ul class="flex gap-1  w-6/12 flex-col mb-2">
                         <li class="font-bold text-xs md:text-left text-center">
                             <h6>
                                 Price range
                             </h6>
                             <hr class="mb-2">
-                            <div class="flex flex-row gap-2">
+                            <div class="flex flex-row gap-1">
                                 <div>
                                     <label for="" class="text-xs">min:</label>
-                                    <input type="number" name="priceFrom" id="" class="w-16 text-xs h-10">
+                                    <input type="number" name="priceFrom" id="" class="p-1 w-16 text-xs h-6">
                                </div>
                                <div>
                                     <label for="" class="text-xs">max:</label>
-                                    <input type="number" name="priceTo" id="" class="w-16 text-xs h-10">
+                                    <input type="number" name="priceTo" id="" class="p-1 w-16 text-xs h-6">
                                </div>
                             </div>
                         </li>
+                        <li class="w-full">
+                            <button type="submit" class="px-2 w-full py-1 bg-red-600 text-white text-sm text-center rounded">Apply</button>
+                        </li>
                     </ul>
                 </div>
-                    <div class="w-auto flex justify-center items-center">
-                         
-                        <button type="submit" class="px-2 w-full py-1 bg-red-600 text-white text-sm text-center rounded">Apply</button>
-                       
-                    </div>
                 </div>
               
            </form>

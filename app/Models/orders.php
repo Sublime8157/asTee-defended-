@@ -15,6 +15,7 @@ class orders extends Model
         'productId',
         'contact',
         'mop',
+        'paid',
         'created_at'
     ];
     protected $casts = [

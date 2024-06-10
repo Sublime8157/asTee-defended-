@@ -25,6 +25,7 @@
          <span id="status{{$product->id}}">{{$product->producStats()}}</span>
          <ion-icon name="create-outline" class="font-bold text-sm cursor-pointer" onclick="editStatus({{ $product->id }})"></ion-icon>
      </td>
+     <td class="text-center ps-2">{{$product->created_at}}</td>
      {{-- settings  --}}
      <td class="text-center">
          <form action="{{ route('productProcess.remove', $product->id) }}" method="POST" id="removeProduct{{$product->id}}">
@@ -89,4 +90,3 @@
  <td colspan="10"> <hr class="w-full"></td>
 </tr>
 @endforeach
-<script src="{{ asset('js/adminScripts.js') }}"></script>
