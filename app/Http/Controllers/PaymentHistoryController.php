@@ -81,11 +81,15 @@ class PaymentHistoryController extends Controller
         $min = $request->input('min');
         $max = $request->input('max');
 
-        $result = payment_history::query(); 
-        $result->whereBetween('amount', [$min, $max]); 
-        $data = $result->get(); 
-
-
+        if(!empty($min)  || !empty($max)) {
+            $result = payment_history::query(); 
+            $result->whereBetween('amount', [$min, $max]); 
+            $data = $result->get(); 
+        }
+        else {
+            $data = payment_history::paginate('20');
+        }
+    
         return view('admin.results.paymentResult', compact('data')); 
     }
     public function searchById(Request $request) {
@@ -100,5 +104,30 @@ class PaymentHistoryController extends Controller
 
         return view('admin.results.paymentResult', compact('data')); 
 
+    }
+    public function removePaymentsRecords(Request $request) {
+       if(!empty($request->toRemove)) {
+            $toDelete = explode(',', $request->toRemove); 
+            $toDelete = array_map('trim', $toDelete); 
+            $toDelete = array_map('intVal', $toDelete); 
+
+            $deletion = payment_history::whereIn('id', $toDelete)->get(); 
+           
+
+            $ordersId = $deletion->pluck('orders_id')->unique(); 
+            $orderId = orders::whereIn('id', $ordersId)->get(); 
+
+            foreach($orderId  as $orderedID){
+                $orderedID->update([
+                    'paid' => 'not_paid'
+                ]);
+            }
+
+            payment_history::whereIn('id', $toDelete)->delete(); 
+           
+
+            return redirect()->back()->with(['success' => 'Deletion Completed']); 
+       }
+        return redirect()->back()->with(['fail' => 'No Selected Item ']); 
     }
 }

@@ -93,6 +93,7 @@ Route::get('/filterPaymentsDate', [PaymentHistoryController::class, 'filterDate'
 Route::get('/filterbyBank', [PaymentHistoryController::class, 'filterBanks']);
 Route::get('/filterPrice', [PaymentHistoryController::class, 'filterPrice']);
 Route::get('/searchIdPayments', [PaymentHistoryController::class, 'searchById']);
+Route::delete('/removePayments', [PaymentHistoryController::class, 'removePaymentsRecords'])->name('removePayments');
 // Routes for admin products panel tab 
 // for onhnad products tab 
 Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');
