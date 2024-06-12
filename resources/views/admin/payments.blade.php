@@ -64,10 +64,10 @@
                         @csrf
                         <div class="gap-2 flex flex-row">
                             <div class="flex text-sm flex-col">
-                                <label for="">Customer ID*</label>
-                                <input type="text" name="customers_id" >
                                 <label for="">Order ID*</label>
                                 <input type="text" name="orders_id" >
+                                <label for="">Amount*</label>
+                                <input type="text" name="amount" >
                             </div>
                             <div class="flex text-sm flex-col">
                                 <label for="">Bank*</label>
@@ -75,14 +75,9 @@
                                     <option value="Gcash">Gcash</option>
                                     <option value="BPI">BPI</option>
                                 </select>
-                                <label for="">Amount*</label>
-                                <input type="text" name="amount" >
+                                <label for="" class="text-sm ">Attach reciept</label> 
+                                <input type="file" name="proof" id="">
                             </div>
-                            
-                        </div>
-                        <div>
-                            <label for="" class="text-sm ">Attach reciept</label> <br>
-                            <input type="file" name="proof" id="">
                         </div>
                         <div class="w-full">
                             <button type="submit" class="py-2 shadow text-white hover:opacity-70 w-full bg-red-700 ">Add</button>
@@ -142,7 +137,12 @@
                                 </td>
                               
                                 <td class="">{{$paymentData->created_at}}</td>
-                                <td><ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon></td>
+                                <td><ion-icon name="trash-outline" class="text-xl  cursor-pointer" onclick="if(confirm('Are you sure you want to delete this record?')) { document.getElementById('removeRecord').submit() }"></ion-icon></td>
+                                <form action="{{route('deleteRecordPayments')}}" method="POST" id="removeRecord">
+                                    @csrf
+                                    <input type="hidden" name="toDelete" value="{{$paymentData->id}}">
+                                    @method('DELETE')
+                                </form>
                             </tr>
                             <tr>
                                 <td colspan="7">

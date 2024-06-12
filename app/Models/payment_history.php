@@ -11,7 +11,6 @@ class payment_history extends Model
     protected $table = 'payment_history';
     protected $fillable = [ 
         'id',
-        'customers_id',
         'orders_id',
         'bank',
         'amount',

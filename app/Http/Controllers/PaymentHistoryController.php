@@ -15,7 +15,6 @@ class PaymentHistoryController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'customers_id' => 'required|exists:customers,id|integer',
             'orders_id' => 'required|exists:orders,id|integer',
             'bank' => 'required',
             'amount' => 'required|integer',
@@ -129,5 +128,22 @@ class PaymentHistoryController extends Controller
             return redirect()->back()->with(['success' => 'Deletion Completed']); 
        }
         return redirect()->back()->with(['fail' => 'No Selected Item ']); 
+    }
+
+    public function removeRecord(Request $request) {
+        $toDeleteRecord = $request->toDelete;
+
+        $idToDelete = payment_history::where('id', $toDeleteRecord)->first();
+
+        $orderID = $idToDelete->pluck('orders_id')->unique(); 
+        $toUpdateOrder = orders::where('id', $orderID)->first(); 
+
+        $toUpdateOrder->update([
+            'paid' => 'not_paid'
+        ]); 
+
+        $idToDelete->delete(); 
+
+        return redirect()->back()->with(['success' => 'Deletion Completed']); 
     }
 }

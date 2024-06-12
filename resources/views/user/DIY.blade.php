@@ -7,7 +7,7 @@
     <div class=" bottom-0 right-0 m-10 rounded-full fixed">
         <div class="flex flex-row-reverse gap-2 items-center ">
             <a href="https://www.facebook.com/messages/t/112072543884939" target="_blank">
-                <ion-icon name="chatbubble-ellipses-outline" class="text-4xl bg-blue-600 p-1 cursor-pointer text-white hover:text-4xl rounded-full" id="messengerIcon"></ion-icon>
+                <ion-icon name="chatbubble-ellipses-outline" class="text-2xl bg-blue-600 p-1 cursor-pointer text-white hover:text-3xl rounded-full" id="messengerIcon"></ion-icon>
             </a>            
             <p class="bg-blue-100 text-gray-700 text-xs rounded-md py-1 px-2 hidden" id="showText">Message us!</p>
         </div>

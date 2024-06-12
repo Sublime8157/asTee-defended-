@@ -156,6 +156,7 @@ textarea::-webkit-scrollbar-thumb {
 .imageUpload:hover body {
     background-color: black;
 }
+
 #showText {
     animation: showText 1s forwards;
     animation-duration: 0.5s;

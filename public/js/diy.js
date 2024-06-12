@@ -304,5 +304,8 @@
       )
       $('#messengerIcon').hover(
           function(){
-              console.log('hello');
-          })
+              $('#showText').toggle(); 
+          },
+        function(){
+          $('#showText').toggle(); 
+        })
