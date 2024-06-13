@@ -37,6 +37,33 @@ class dashboardController extends Controller
             return Carbon::parse($data->created_at)->format('Y-M');
         });
 
+        $weekStart = Carbon::today()->startOfWeek(); 
+        $weekEnd = Carbon::today()->endOfWeek(); 
+        $yearToday = Carbon::today()->year; 
+
+        
+        
+
+        // sales today 
+        $salesToday = Sales::whereDate('created_at', Carbon::today())->get(); // get the date using carbon 
+        $totalSalesToday = $salesToday->sum(function($sales){ // create a callback function assign to $sales, $sales will holds all the records from $salesToday  
+           return  $sales->amount * $sales->quantity; 
+        });
+     
+        // sales this month  
+        $salesThisWeek = Sales::whereBetween('created_at',[ $weekStart, $weekEnd])->get(); // get the date using carbon 
+        $totalSalesThisWeek = $salesThisWeek->sum(function($sales){ // create a callback function assign to $sales, $sales will holds all the records from $salesToday  
+           return  $sales->amount * $sales->quantity; 
+        });
+
+        // sales this year 
+        $salesThisYear = Sales::whereYear('created_at', $yearToday)->get(); // get the date using carbon 
+        $totalSalesThisYear = $salesThisYear->sum(function($sales){ // create a callback function assign to $sales, $sales will holds all the records from $salesToday  
+           return  $sales->amount * $sales->quantity; 
+        });
+
+        
+
         // Declare arrays
         $soldMonths = [];
         $totalAmount = [];
@@ -80,27 +107,12 @@ class dashboardController extends Controller
         $oncancelReturnCount = CancelReturn::count();
 
 
-        $sales = Sales::select('amount')->get();
-        $totalSales = $sales->sum('amount');
+        $sales = Sales::select('amount','quantity')->get();
+        $totalSales = $sales->sum(function($totaledSales){
+            return $totaledSales->amount * $totaledSales->quantity; 
+        });
 
-        return view('admin.dashboard', ['userCount' => $userCount, 
-                                        'blockedUserCount' => $blockedUserCount,
-                                        'onhandCount' => $onhandCount,
-                                        'onProcessCount' => $onProcessCount,
-                                        'oncancelReturnCount' => $oncancelReturnCount,
-                                        'data' => $data,
-                                        'months' => $months,
-                                        'monthCount' => $monthCount,
-                                        'wrongProduct' => $wrongProduct,
-                                        'differentColors' => $differentColors,
-                                        'wrongDesign' => $wrongDesign,
-                                        'reason1' => $reason1,
-                                        'reason2' => $reason2,
-                                        'reason3' => $reason3,
-                                        'reason4' => $reason4,
-                                        'soldMonths' => $soldMonths,
-                                        'totalAmount' => $totalAmount,
-                                        'totalSales' => $totalSales]);
+        return view('admin.dashboard', compact('userCount','blockedUserCount','onhandCount','onProcessCount','oncancelReturnCount','data','months','monthCount','wrongProduct','differentColors','wrongDesign','reason1','reason2','reason3','reason4','soldMonths','totalAmount','totalSales','totalSalesToday','totalSalesThisWeek','totalSalesThisYear'));
     }
 
   

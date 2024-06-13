@@ -222,12 +222,12 @@ class UserController extends Controller
                 }   
                
                 $processingId[] = $processing->id;
-                Sales::create([
-                    'productId' => $processing->id,
-                    'userId' => $validated['userId'],
-                    "amount" => $total,
-                    'quantity' => 1
-                ]);
+                // Sales::create([
+                //     'productId' => $processing->id,
+                //     'userId' => $validated['userId'],
+                //     "amount" => $total,
+                //     'quantity' => 1
+                // ]);
 
                 $orders = orders::create([
                     'userId' => $validated['userId'],

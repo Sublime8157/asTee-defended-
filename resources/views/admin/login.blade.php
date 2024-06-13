@@ -44,13 +44,13 @@
                         <div class="mb-5 w-full">
                                 <label for="" class="font-bold text-sm ">Username</label> <br>
                                 <ion-icon name="person" class="absolute p-2 mt-1 text-lg font-extrabold text-gray-700"></ion-icon>
-                                <input type="text" name="username" value="{{ old('username') }}" class=" rounded-md  ps-8 py-2  w-64 md:w-96  outline-none border-none shadow-sm">
+                                <input type="text" name="username" value="{{ old('username') }}" class=" rounded-md  ps-8 py-2  w-64 md:w-96  outline-none border-none shadow-sm" >
                         </div> 
                         {{-- Password input --}}
                         <div class="relative form-group">
                                 <label for="" class="font-bold text-sm ">Password</label> <br>
                                 <ion-icon name="lock-closed" class="absolute mt-1 p-2 text-lg font-extrabold text-gray-700"></ion-icon>
-                                <input type="password" name="password" class="password runded-md ps-8 py-2 w-64 md:w-96 outline-none border-none shadow-sm">
+                                <input type="password" name="password" class="password runded-md ps-8 py-2 w-64 md:w-96 outline-none border-none shadow-sm" autocomplete="off">
                                 <ion-icon name="eye-off-outline" class="absolute right-0 pe-4 top-9 cursor-pointer revealPassword text-lg"></ion-icon>
                         </div>
                         {{-- Forgot Password --}}

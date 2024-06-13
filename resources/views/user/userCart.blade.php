@@ -66,7 +66,7 @@
                             <div class="flex flex-row items-center  gap-2">
                                 {{-- image --}}
                                 <div>
-                                    <img src="{{ asset('storage/images/'. $userCart->image_path) }}"   class="bg-gray-200  w-80 h-96 h-auto rounded">
+                                    <img src="{{ asset('storage/images/'. $userCart->image_path) }}"   class="bg-gray-200 w-64 h-48  rounded">
                                 </div>
                                 {{-- description --}}
                                 <div class="flex flex-col gap-1 w-auto">

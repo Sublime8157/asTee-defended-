@@ -234,7 +234,8 @@
                                             {{-- product details  --}}
                                                <div>
                                                 {{-- image  --}}
-                                                    <img src="{{ asset('images/' . $item->image_path) }}" alt="" class="md:w-40 w-20 bg-gray-200 rounded  ">
+                                               
+                                                    <img src="{{ asset('storage/images/' . $item->image_path) }}" alt="no image " class="md:w-40 w-20 bg-gray-200 rounded  ">
                                                </div>
                                                <div class="flex flex-col gap-1">
                                                 {{-- details  --}}

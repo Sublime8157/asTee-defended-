@@ -89,7 +89,7 @@ class adminOnHandsController extends Controller
 
     // display all the data from the on_hand table, store in variable storehand and use it to the blade 
     public function onHand(){
-        OnHand::where('quantity', 0)->delete();
+        $delete = OnHand::where('quantity', 0)->delete();
         $filterOnHand = OnHand::paginate(20);
         return view('admin.products.onHand', compact('filterOnHand'));
     }

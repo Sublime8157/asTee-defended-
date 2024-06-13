@@ -127,7 +127,6 @@ public function toPay($status) {
             "userId" => "required",
             "amount" => "required",
             "quantity" => "required",
-         
         ]);
         // get the id of the product 
         $productId = $validated["productId"];
@@ -144,6 +143,7 @@ public function toPay($status) {
             "amount" => $validated["amount"],
             "quantity" => $validated["quantity"],
         ]);
+
 
         
         //insert to sold products
@@ -166,10 +166,15 @@ public function toPay($status) {
             "quantity" => 'required|integer',
             "image" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-        $filename = $validated['image']->getClientOriginalName();
-        $validated['image']->storeAs('public/images', $filename); 
+        $filename = ""; 
+        if(!empty($validated['image'])){
+            $filename = $validated['image']->getClientOriginalName();
+            $validated['image']->storeAs('public/images', $filename); 
+        }
+
+
+        
         // insert into feedback table 
-       
         // insert to table products all the after reviewing 
         $storeToProducts = Products::create([
             'userId' => $validated['userId'],
@@ -191,6 +196,9 @@ public function toPay($status) {
             "featured" => 1,
             "image" => $filename,
         ]);
+
+        
+
         // remove from orders 
         $deleteFromOrders = orders::where('productId', $request->productId);
         $deleteFromOrders->delete();
