@@ -273,7 +273,7 @@
 
         $('#downloadCanvas').click(function(){
           downloadCustomDesign();
-        })
+        });
 
         // remove object 
         $(document).on('keyup', function(event){

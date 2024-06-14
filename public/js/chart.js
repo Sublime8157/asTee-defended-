@@ -29,14 +29,14 @@ new Chart(ctx, {
 });
 
 const ctx2 = document.getElementById('salesChart');
-new Chart(ctx2, {
+let salesChart = new Chart(ctx2, {
     type: 'line',
     data: {
       labels: soldMonths,
       datasets: [{
         label: 'Sales',
         data: totalAmount,
-        borderWidth: 2
+        borderWidth: 2,
        
       }]
     },
@@ -77,3 +77,40 @@ new Chart(returnCancel, {
       }
     }
   });
+
+  function updateSales(data){
+    salesChart.data.labels = data.dates; // update the salesChart from our parameter retrieve from the ajax response 
+    salesChart.data.datasets[0].data = data.sales;  // update the sales 
+    salesChart.update(); // render the data 
+  }
+
+  $(document).ready(() => {
+    $('#filterSales').on('click', () => {
+       var dateFrom = $('#dateSalesFrom').val(); 
+       var dateTo = $('#dateSalesTo').val();
+       var datesToFilter = {
+          dateFrom: dateFrom,
+          dateTo: dateTo
+       };
+      
+       $.ajax({
+            url: '/filterSalesDate',
+            method: 'GET',
+            data: datesToFilter,
+            success: function(response){
+              updateSales(response);  
+            } 
+       })
+    })
+  });
+
+
+  $('#downloadSales').on('click', () => {
+    var canvas = ctx2.toDataURL('image/jpg'); 
+    var a = document.createElement('a');
+    a.href = canvas; 
+    a.download = 'Sales_report.jpg'; 
+    document.body.appendChild(a); 
+    a.click();
+    document.body.removeChild(a);
+  }); 

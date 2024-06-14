@@ -76,6 +76,7 @@ Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
 
 // All these routes are responsible for admin panel
 Route::get('/dashboard', [dashboardController::class, 'dashboard'])->middleware('admin');
+Route::get('/filterSalesDate', [dashboardController::class, 'filterSales']); 
 Route::get('/products/feedbacks', [adminIndexController::class, 'feedbacks'])->middleware('admin');
 Route::patch('/featureReview/{id}',[adminIndexController::class, 'toFeature'])->name('featureReview');
 

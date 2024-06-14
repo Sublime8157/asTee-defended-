@@ -6,6 +6,7 @@
 <x-nav />
 
         <div>
+          
             <div class="text-right pe-8 pt-4 ">
                 <div class="text-sm flex items-center gap-1  justify-end flex-row">
                     <p>
@@ -74,8 +75,21 @@
                 </div>
                 <h1 class="text-sm opacity-70 ps-5 w-full bg-gray-300 rounded shadow-lg py-2 mt-2">SALES</h1>
                 <div class="flex flex-row justify-evenly mt-2  gap-4 px-10 rounded w-full">                 
-                    <div class="shadow-xl rounded p-10 bg-white">
-                        <canvas id="salesChart" style="width: 650px; height: 250px;"></canvas>
+                    <div class="shadow-xl rounded p-5 bg-white">
+                        <div class="text-right flex flex-row justify-between w-full">
+                           <div class="flex flex-row items-center">
+                                <label for="" class="text-xs">From</label>
+                                <input type="date" name="dateFrom" id="dateSalesFrom" class=" bg-none text-xs border-0 w-10 rounded shadow-md ">
+                                <label for="" class="text-xs">To:</label>
+                                <input type="date" name="dateTo" id="dateSalesTo" class=" bg-none text-xs border-0 w-10 rounded shadow-md ">
+                                <button class="text-sm shadow  rounded py-1 px-2 hover:bg-gray-100 " id="filterSales">Filter</button>
+                           </div>
+                           <div>
+                                 <ion-icon name="download-outline" class="text-xl rounded-full p-1 hover:bg-gray-200 cursor-pointer" id="downloadSales"></ion-icon>
+                           </div>
+                        </div>
+                        <canvas id="salesChart" style="width: 650px; height: 250px;" class="bg-white"> </canvas>
+                        
                     </div>             
                     <div class=" shadow-xl bg-white px-5 py-2 flex items-center justify-center flex-col">     
                         <p class="text-xs ps-5">Return & cancel</p>       
@@ -86,7 +100,7 @@
                 <h1 class="text-sm opacity-70 ps-5 w-full bg-gray-300 rounded  shadow-lg py-2">STOCKS</h1>
                 <div class="flex w-full justify-start flex-row gap-2">
                     {{-- on hand  --}}
-                    <div class=" flex flex-col bg-blue-800 justify-between py-2 shadow-xl h-32 rounded w-96 ">
+                    <div class=" flex flex-col bg-slate-700 justify-between py-2 shadow-xl h-32 rounded w-96 ">
                         <div class=" flex justify-between items-center px-5 pt-2">
                             <div>
                                 <span class="text-5xl text-white">{{$onhandCount}}</span>
@@ -102,7 +116,7 @@
                         </div>
                     </div>
                     {{-- processing --}}
-                    <div class="flex flex-col bg-green-500 justify-between py-2 shadow-xl h-32 rounded w-96 ">
+                    <div class="flex flex-col bg-neutral-700 justify-between py-2 shadow-xl h-32 rounded w-96 ">
                         <div class=" flex justify-between items-center px-5 pt-2">
                             <div>
                                 <span class="text-5xl text-white">{{$onProcessCount}}</span>
@@ -118,7 +132,7 @@
                         </div>
                     </div>
                     {{-- cancel or return --}}
-                    <div class="flex flex-col bg-yellow-400 justify-between py-2 shadow-xl h-32 rounded w-96 ">
+                    <div class="flex flex-col bg-stone-400 justify-between py-2 shadow-xl h-32 rounded w-96 ">
                         <div class=" flex justify-between items-center px-5 pt-2">
                             <div>
                                 <span class="text-5xl text-white">{{$oncancelReturnCount}}</span>
@@ -176,8 +190,6 @@
                         </div>
                    </div>
                 </div>
-                {{-- sales section --}}
-               
         </div>
     </div>
 </div>

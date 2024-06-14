@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OnHand;
 use App\Models\Processing;
 use App\Models\CancelReturn;
+use App\Models\payment_history;
 use Carbon\Carbon;
 class dashboardController extends Controller
 {
@@ -115,6 +116,37 @@ class dashboardController extends Controller
         return view('admin.dashboard', compact('userCount','blockedUserCount','onhandCount','onProcessCount','oncancelReturnCount','data','months','monthCount','wrongProduct','differentColors','wrongDesign','reason1','reason2','reason3','reason4','soldMonths','totalAmount','totalSales','totalSalesToday','totalSalesThisWeek','totalSalesThisYear'));
     }
 
-  
+    public function filterSales(Request $request) {
+        $filterFrom = $request->input('dateFrom'); 
+        $filterTo = $request->input('dateTo');
+    
+        $data = []; 
+    
+        if (!empty($filterFrom) && !empty($filterTo)) { // check if it not empty 
+            $result = Sales::select('created_at', 'amount', 'quantity') // select columns 
+                            ->whereBetween('created_at', [$filterFrom, $filterTo]) // select the user filtered 
+                            ->get();  
+    
+            $salesByMonth = $result->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('Y-M'); // group the result by month 
+            });
+    
+            $totalSales = $salesByMonth->map(function($row) { // map to the result assign to $row the sum of computing the amount and quantity 
+                return $row->sum(function($item) { 
+                    return $item->amount * $item->quantity;
+                });
+            });
+    
+            $data = [
+                'dates' => $salesByMonth->keys()->toArray(), // let the dates be the key 
+                'sales' => $totalSales->values()->toArray() // let the values become the value of keys 
+            ];
+        }
+    
+        return response()->json($data); // return the response as a json 
+    }
+    
+    
+    
   
 }
