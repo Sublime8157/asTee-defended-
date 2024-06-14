@@ -1,5 +1,5 @@
 @foreach ($data as $list )
-<tr class="text-center {{ $list->paid === 'not_paid' ? 'bg-red-300' : ' ' }} ">
+<tr class="text-center {{ $list->paid === 'not_paid' ? 'bg-red-200' : ' ' }} ">
         <td class="text-sm py-2">{{$list->id}}</td>
         <td class="text-sm">{{$list->userId}}</td>
         <td class="text-sm">{{$list->address}}</td>

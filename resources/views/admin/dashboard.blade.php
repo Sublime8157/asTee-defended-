@@ -7,7 +7,7 @@
 
         <div>
           
-            <div class="text-right pe-8 pt-4 ">
+            <div class="text-right pe-4 pt-4 ">
                 <div class="text-sm flex items-center gap-1  justify-end flex-row">
                     <p>
                         <input type="date" name="" id="" class="text-xs  border-none w-4 p-0" style="background-color: #f9f6f6">
@@ -100,7 +100,7 @@
                 <h1 class="text-sm opacity-70 ps-5 w-full bg-gray-300 rounded  shadow-lg py-2">STOCKS</h1>
                 <div class="flex w-full justify-start flex-row gap-2">
                     {{-- on hand  --}}
-                    <div class=" flex flex-col bg-slate-700 justify-between py-2 shadow-xl h-32 rounded w-96 ">
+                    <div class=" flex flex-col bg-gray-800 justify-between py-2 shadow-xl h-32 rounded w-96 ">
                         <div class=" flex justify-between items-center px-5 pt-2">
                             <div>
                                 <span class="text-5xl text-white">{{$onhandCount}}</span>
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                     {{-- processing --}}
-                    <div class="flex flex-col bg-neutral-700 justify-between py-2 shadow-xl h-32 rounded w-96 ">
+                    <div class="flex flex-col bg-gray-500 justify-between py-2 shadow-xl h-32 rounded w-96 ">
                         <div class=" flex justify-between items-center px-5 pt-2">
                             <div>
                                 <span class="text-5xl text-white">{{$onProcessCount}}</span>
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     {{-- cancel or return --}}
-                    <div class="flex flex-col bg-stone-400 justify-between py-2 shadow-xl h-32 rounded w-96 ">
+                    <div class="flex flex-col bg-gray-300 justify-between py-2 shadow-xl h-32 rounded w-96 ">
                         <div class=" flex justify-between items-center px-5 pt-2">
                             <div>
                                 <span class="text-5xl text-white">{{$oncancelReturnCount}}</span>
@@ -168,7 +168,7 @@
                                 <ion-icon name="play" class="text-white text-xs opacity-70"></ion-icon></a> 
                             </div>
                         </div>   
-                        <div class="flex flex-col bg-gray-600 justify-between py-2 shadow-lg h-32 rounded w-96 ">
+                        <div class="flex flex-col bg-orange-400 justify-between py-2 shadow-lg h-32 rounded w-96 ">
                             <div class=" flex justify-between items-center px-5 pt-2">
                                 <div>
                                     <span class="text-5xl text-white">{{$blockedUserCount}}</span>

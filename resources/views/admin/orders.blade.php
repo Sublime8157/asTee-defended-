@@ -44,11 +44,11 @@
         </div> 
         <div class="flex flex-row gap-2 ">
              <div class="flex flex-row items-center ">
-                <ion-icon name="ellipse" class="text-gray-100 "></ion-icon> 
+                <ion-icon name="ellipse" class="text-gray-200 "></ion-icon> 
                 <span class="text-xs">Paid</span>
              </div>
              <div class="flex flex-row items-center">
-                <ion-icon name="ellipse" class="text-red-300" ></ion-icon>
+                <ion-icon name="ellipse" class="text-red-400" ></ion-icon>
                 <span class="text-xs">Not Paid</span>
              </div>
         </div>
@@ -66,7 +66,7 @@
                 </tr>
                 <tbody id="orderTableBody">
                     @foreach ($data as $list )
-                        <tr class="text-center  {{ $list->paid === 'not_paid' ? 'bg-red-300' : ' ' }} ">
+                        <tr class="text-center  {{ $list->paid === 'not_paid' ? 'bg-red-200' : ' ' }} ">
                                 <td class="text-sm py-2 ">{{$list->id}}</td>
                                 <td class="text-sm">{{$list->userId}}</td>
                                 <td class="text-sm">{{$list->address}}</td>
