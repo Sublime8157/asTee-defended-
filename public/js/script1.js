@@ -3,6 +3,11 @@ var showSignupForm =  document.getElementById('signup_container');
 var esc = $('#escape');
 var navbar_main = $('#navbar-main');
 
+$(window).on('load', () => {
+    $('#loading').addClass('hidden'); 
+    $('#loading').addClass('opacity-0');
+})
+
 // Fix the navbar to the top when scrolling
 window.addEventListener("scroll", function(){
     var navbar = document.getElementById('navbar');

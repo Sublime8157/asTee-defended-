@@ -260,6 +260,7 @@ class UserController extends Controller
         return redirect()->route('myPurchase',['userId' => $request->userId])->with('Success','Order has been made successfully, an order invoice has been sent to you emal please check your inbox or spam. Thank you!');
     }
 
+
    
 }
     

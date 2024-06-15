@@ -3,7 +3,8 @@
 @section('docu', 'DIY')
 <x-header />
 <x-navbar />
-<div class="h-auto ">
+
+<div class="h-auto " id="content">
     <div class=" bottom-0 right-0 m-10 rounded-full fixed">
         <div class="flex flex-row-reverse gap-2 items-center ">
             <a href="https://www.facebook.com/messages/t/112072543884939" target="_blank">

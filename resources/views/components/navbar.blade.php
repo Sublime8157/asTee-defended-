@@ -1,4 +1,14 @@
-    {{-- Red part on top  that is only visible in dekstop view--}}
+<div class="fixed h-screen w-screen  top-0   " id="loading" style="z-index:  100000">
+    <div class="bg-white gap-2 h-full  flex-col w-full flex items-center justify-center ">
+            <div>
+                <p class="italic text-3xl"><span class="text-4xl text-blue-300 font-semibold">A</span>'s <span class="text-blue-300 font-semibold">T</span>ee</p>  
+            </div>
+           <div class="loader">
+
+           </div>
+    </div>
+</div>
+{{-- Red part on top  that is only visible in dekstop view--}}
     <div class="hidden md:flex justify-between  h-auto" style="background-color: #f87b1f;">
         <div class="ms-10"> 
             <span class="font-extralight text-white text-xs">
