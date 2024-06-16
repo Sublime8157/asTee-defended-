@@ -15,6 +15,7 @@ class orders extends Model
         'productId',
         'contact',
         'mop',
+        'total',
         'paid',
         'created_at'
     ];

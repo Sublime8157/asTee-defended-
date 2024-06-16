@@ -222,19 +222,13 @@ class UserController extends Controller
                 }   
                
                 $processingId[] = $processing->id;
-                // Sales::create([
-                //     'productId' => $processing->id,
-                //     'userId' => $validated['userId'],
-                //     "amount" => $total,
-                //     'quantity' => 1
-                // ]);
-
                 $orders = orders::create([
                     'userId' => $validated['userId'],
                     'productId' => json_encode($processingId),
                     'address' => $validated['address'],
                     'contact' => $validated['contact'],
-                    'mop' => $request->mop
+                    'mop' => $request->mop,
+                    'total' =>  $request->total
                 ]);
             }
           

@@ -60,14 +60,21 @@
                         <div class="bg-blue-100 m-2 border border-blue-500 rounded w-auto text-xs p-2 hidden" id="successMessageBox">
                            <p id="successMessage"></p>
                         </div>
+                        {{-- form for adding reciept  --}}
                     <form  class="flex flex-col gap-2  w-full p-4"  id="paymentSubmitForm">
                         @csrf
                         <div class="gap-2 flex flex-row">
                             <div class="flex text-sm flex-col">
                                 <label for="">Order ID*</label>
-                                <input type="text" name="orders_id" >
+                                <select name="orders_id" id="orders">
+                                    <option value="000"></option>
+                                    @foreach ($ordersId as $id)
+                                        <option value="{{$id->id}}">{{$id->id}}</option>
+                                    @endforeach
+                                </select>
                                 <label for="">Amount*</label>
-                                <input type="text" name="amount" >
+                                <input type="text" name="amount" id="amount">
+                                <input type="hidden" id="userId" name="userId">
                             </div>
                             <div class="flex text-sm flex-col">
                                 <label for="">Bank*</label>
@@ -91,6 +98,7 @@
                         <tr class="w-full text-center">
                             <th class="">
                                 <input type="checkbox" name="" id="checkAll" class="cursor-pointer">
+                                {{-- form for removing  --}}
                                 <form action="{{route('removePayments')}}" method="POST" id="removingPaymentForm">
                                     @csrf
                                     <input type="hidden" name="toRemove" id="toRemove" value="">
@@ -138,6 +146,7 @@
                               
                                 <td class="">{{$paymentData->created_at}}</td>
                                 <td><ion-icon name="trash-outline" class="text-xl  cursor-pointer" onclick="if(confirm('Are you sure you want to delete this record?')) { document.getElementById('removeRecord').submit() }"></ion-icon></td>
+                                {{-- form for removing specific  --}}
                                 <form action="{{route('deleteRecordPayments')}}" method="POST" id="removeRecord">
                                     @csrf
                                     <input type="hidden" name="toDelete" value="{{$paymentData->id}}">

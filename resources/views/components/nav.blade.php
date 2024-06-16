@@ -156,8 +156,26 @@
                         </li>     
                     </a>             
                 </ul>      
+                <ul class="flex justify-center items-start flex-col">
+                    <li class="text-xs text-gray-200 ps-2 mt-2 hover:bg-gray-800 ">
+                        SALES
+                    </li>
+                    <a href="{{route('salesDisplay')}}" class="w-full">
+                        <li class="flex items-start justify-between w-full flex-row cursor-pointer py-2 ps-5 rounded sideNav {{ request()->is('sales') ? 'sideNavBG' : ' ' }}">
+                            <div class="text-xs text-gray-400 flex items-center flex-row ">
+                                <ion-icon name="timer-outline" class="text-gray-400  text-sm self-center iconPadding"></ion-icon>
+                                    <div class="text-gray-400 text-xs">
+                                        Sales 
+                                    </div>
+                            </div>
+                               
+                        </li>     
+                    </a>                    
+                </ul>      
+                
                 {{-- FORMS --}}
         </div>
+
         <div class="w-screen flex flex-col h-screen" style="overflow-y: auto">     
             <div class="bg-gray-50 min-h-12 shadow-md mt-2  rounded  flex justify-between items-center">
                 <div class="flex flex-row  items-center text-lg ps-5">

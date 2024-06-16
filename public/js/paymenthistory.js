@@ -122,3 +122,18 @@ $(document).ready(() => {
 
     })
 })
+
+$(document).ready(() => {
+    $('#orders').on('change', () => {
+        var ids = $('#orders').val(); 
+        $.ajax({
+            url: '/ordersIdAmount',
+            method: 'GET',
+            data: { ids: ids},
+            success: function(response) {
+              $('#userId').val(response.userId);
+              $('#amount').val(response.total);  
+            }
+        })
+    })
+})

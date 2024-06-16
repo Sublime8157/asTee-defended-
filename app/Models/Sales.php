@@ -10,10 +10,9 @@ class Sales extends Model
     protected $table = 'sales';
     protected $fillable = [
         'id',
-        'productId',
+        'ordersId',
         'userId',
         'amount',
-        'quantity',
         'created_at'
     ];
     use HasFactory;

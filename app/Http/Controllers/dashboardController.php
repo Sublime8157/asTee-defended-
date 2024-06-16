@@ -31,7 +31,7 @@ class dashboardController extends Controller
         }
        
        // Collect all the data with column id, created_at, quantity, and amount from the Sales model
-        $soldData = Sales::select('id', 'created_at', 'quantity', 'amount')->get();
+        $soldData = Sales::select('id', 'created_at','amount')->get();
 
         // Group the data based on month and assign it to $salesByMonth
         $salesByMonth = $soldData->groupBy(function($data) {
@@ -47,21 +47,15 @@ class dashboardController extends Controller
 
         // sales today 
         $salesToday = Sales::whereDate('created_at', Carbon::today())->get(); // get the date using carbon 
-        $totalSalesToday = $salesToday->sum(function($sales){ // create a callback function assign to $sales, $sales will holds all the records from $salesToday  
-           return  $sales->amount * $sales->quantity; 
-        });
+        $totalSalesToday = $salesToday->sum('amount'); 
      
         // sales this month  
         $salesThisWeek = Sales::whereBetween('created_at',[ $weekStart, $weekEnd])->get(); // get the date using carbon 
-        $totalSalesThisWeek = $salesThisWeek->sum(function($sales){ // create a callback function assign to $sales, $sales will holds all the records from $salesToday  
-           return  $sales->amount * $sales->quantity; 
-        });
+        $totalSalesThisWeek = $salesThisWeek->sum('amount');
 
         // sales this year 
         $salesThisYear = Sales::whereYear('created_at', $yearToday)->get(); // get the date using carbon 
-        $totalSalesThisYear = $salesThisYear->sum(function($sales){ // create a callback function assign to $sales, $sales will holds all the records from $salesToday  
-           return  $sales->amount * $sales->quantity; 
-        });
+        $totalSalesThisYear = $salesThisYear->sum('amount'); 
 
         
 
@@ -107,11 +101,9 @@ class dashboardController extends Controller
         $onProcessCount = Processing::count();
         $oncancelReturnCount = CancelReturn::count();
 
-
-        $sales = Sales::select('amount','quantity')->get();
-        $totalSales = $sales->sum(function($totaledSales){
-            return $totaledSales->amount * $totaledSales->quantity; 
-        });
+        
+        $sales = Sales::select('amount')->get();
+        $totalSales = $sales->sum('amount'); 
 
         return view('admin.dashboard', compact('userCount','blockedUserCount','onhandCount','onProcessCount','oncancelReturnCount','data','months','monthCount','wrongProduct','differentColors','wrongDesign','reason1','reason2','reason3','reason4','soldMonths','totalAmount','totalSales','totalSalesToday','totalSalesThisWeek','totalSalesThisYear'));
     }

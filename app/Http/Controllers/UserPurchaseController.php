@@ -134,18 +134,7 @@ public function toPay($status) {
         // update the product status from toRecieve(3) to toReview(4)
         $product->update([
             "productStatus" => 4
-        ]);
-
-        // when the user recieved the order insert the product into sales table 
-        Sales::create([
-            "productId" => $validated["productId"],
-            "userId" => $validated["userId"],
-            "amount" => $validated["amount"],
-            "quantity" => $validated["quantity"],
-        ]);
-
-
-        
+        ]);        
         //insert to sold products
         return redirect()->back()->with('success', 'Order Moved to Feedback');
     }

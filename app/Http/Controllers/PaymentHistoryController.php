@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 use App\Models\payment_history; 
 use App\Models\orders; 
+use App\Models\Sales; 
 use Illuminate\Http\Request;
 
 class PaymentHistoryController extends Controller
 {
     public function display() {
         $data = payment_history::paginate('20');
-
-        return view('admin.payments', compact('data'));
+        $ordersId = orders::select('id')->where('paid','not_paid')->get(); 
+        return view('admin.payments', compact('data','ordersId'));
     }
 
     public function store(Request $request) {
@@ -35,8 +36,16 @@ class PaymentHistoryController extends Controller
             $request->file('proof')->storeAs('public/images', $filename);  // store to public/images 
             $validated['proof'] = $filename; 
             payment_history::create($validated);    
+            Sales::create([
+                'ordersId' => $validated['orders_id'],
+                'amount' => $validated['amount'],
+                'userId' => $request->userId
+            ]);
+
             return response()->json(['status' => 'success', 'message' => 'Successfully Inserted']); 
+            
         }
+       
     }
 
     public function sort(Request $request) {
@@ -146,4 +155,16 @@ class PaymentHistoryController extends Controller
 
         return redirect()->back()->with(['success' => 'Deletion Completed']); 
     }
+
+    public function ordersIdAmount(Request $request) {
+        $ordersId = $request->input('ids'); 
+        $amount = []; 
+        $amount = orders::select('total','userId')->where('id', $ordersId)->first(); 
+        $amount = [
+            'total' => $amount->total,
+            'userId' => $amount->userId
+        ];
+        return response()->json($amount); 
+    }
+     
 }

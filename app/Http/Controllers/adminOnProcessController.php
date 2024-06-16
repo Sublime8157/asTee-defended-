@@ -205,13 +205,13 @@ class adminOnProcessController extends Controller
 
     public function updateStatus(Request $request, $id){
         $product = Processing::findOrFail($id);
-
+        
         $product->update([
             'productStatus' => $request->productStatus
         ]);
         
-        
-        
+
+
     }
   
     public function removeMultiple(Request $request) {
