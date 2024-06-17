@@ -20,7 +20,7 @@
     <div class="flex justify-betweeen  md:justify-evenly  h-full w-full  items-center md:items-start">
         <div class=" flex-col self-start  md:relative top-0 left-0  items-start gap-2 md:w-48 w-16 flex border-r border-gray-100 mt-5 ">
            <div class="flex-row hidden md:flex items-center gap-2">
-                <img src="{{asset('storage/images/' . session('profile') )}}" alt="" class="rounded-full max-h-20" style="width: 80px">
+                <img src="{{asset('storage/images/' . session('profile') )}}" alt="" class="rounded-full w-16 h-16">
                 <p class=" font-bold ">{{session('username')}}</p>
            </div>
            <div class="ps-2 pt-2">

@@ -22,6 +22,7 @@ $(document).ready(function() {
                     $('#successMessageBox').removeClass('hidden');
                     $('#failMessageBox').addClass('hidden'); 
                     $('#successMessage').html(response.message); 
+                    refresh(); 
                 }
             },
             error: function(error) {
@@ -137,3 +138,15 @@ $(document).ready(() => {
         })
     })
 })
+
+function refresh() {
+    $(document).ready(() => {
+            $.ajax({
+                url: '/refresh',
+                method: 'GET',
+                success: function(response){
+                    $('#paymentData').html(response); 
+                }
+            })
+    })
+}

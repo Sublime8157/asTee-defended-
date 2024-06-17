@@ -52,7 +52,7 @@ class productsController extends Controller
         $user = [
             'id' => session('id'),
         ];
-         $data = OnHand::all();  
+         $data = OnHand::where('quantity', '>', 0)->get();  
          // limit the prouct description into 10 words 
          foreach($data as $product) {
             $product->displayDescription = Str::words($product->description, 10);

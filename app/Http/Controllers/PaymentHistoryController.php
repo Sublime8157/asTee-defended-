@@ -14,6 +14,14 @@ class PaymentHistoryController extends Controller
         return view('admin.payments', compact('data','ordersId'));
     }
 
+    public function refresh() {
+        $data = payment_history::paginate('20');
+        $ordersId = orders::select('id')->where('paid','not_paid')->get(); 
+        return view('admin.results.paymentResult', compact('data','ordersId'));
+    }
+   
+
+        
     public function store(Request $request) {
         $validated = $request->validate([
             'orders_id' => 'required|exists:orders,id|integer',

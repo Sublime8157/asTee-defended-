@@ -88,6 +88,7 @@ Route::get('/filterDate', [OrderHistoryController::class, 'filterDate']);
 
 //route for payments history 
 Route::get('/payments', [PaymentHistoryController::class, 'display']);
+Route::get('/refresh', [PaymentHistoryController::class, 'refresh']); 
 Route::post('/paymentForm', [PaymentHistoryController::class, 'store'])->name('paymentForm');
 Route::get('/filterPayments', [PaymentHistoryController::class, 'sort']);
 Route::get('/filterPaymentsDate', [PaymentHistoryController::class, 'filterDate']); 
