@@ -5,13 +5,19 @@ use App\Models\payment_history;
 use App\Models\orders; 
 use App\Models\Sales; 
 use Illuminate\Http\Request;
+use App\Traits\Filter; 
 
 class PaymentHistoryController extends Controller
 {
+    use Filter; 
+    
+    public function sort(Request $request) {
+        return $this->sortTrait($request, payment_history::class, 'admin.results.paymentResult'); 
+    }
+
+
     public function display() {
-        $data = payment_history::paginate('20');
-        $ordersId = orders::select('id')->where('paid','not_paid')->get(); 
-        return view('admin.payments', compact('data','ordersId'));
+        return $this->displayTrait(payment_history::class, 'admin.payments', orders::class);
     }
 
     public function refresh() {
@@ -56,32 +62,12 @@ class PaymentHistoryController extends Controller
        
     }
 
-    public function sort(Request $request) {
-        $sortBy = $request->input('sortBy'); 
-        $orderBy = $request->input('orderBy'); 
-
-        $result = payment_history::query(); 
-        $result->orderBy($sortBy, $orderBy);
-        
-        $data = $result->get(); 
-        return view('admin.results.paymentResult', compact('data'));   
-    }
-
+   
     public function filterDate(Request $request) {
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
-
-       if(!empty($startDate) || !empty($endDate)) {
-            $result = payment_history::query(); 
-            $result->whereBetween('created_at', [$startDate, $endDate]);
-            $data = $result->get(); 
-       }
-       else {
-        $data = payment_history::paginate('20');
-       }
-       
-        return view('admin.results.paymentResult', compact('data'));   
+        return $this->filterDateTrait($request, payment_history::class, 'admin.results.paymentResult'); 
     }
+
+
     public function filterBanks(Request $request) {
         $bank = $request->input('bank'); 
 
@@ -134,12 +120,13 @@ class PaymentHistoryController extends Controller
             $orderId = orders::whereIn('id', $ordersId)->get(); 
 
             foreach($orderId  as $orderedID){
+                Sales::whereIn('ordersId', $orderedID)->delete(); 
                 $orderedID->update([
                     'paid' => 'not_paid'
                 ]);
-                Sales::where('ordersId', $orderedID)->delete(); 
+                
             }
-
+           
             payment_history::whereIn('id', $toDelete)->delete(); 
 
             return redirect()->back()->with(['success' => 'Deletion Completed']); 
@@ -151,7 +138,7 @@ class PaymentHistoryController extends Controller
         $toDeleteRecord = $request->toDelete;
 
         $idToDelete = payment_history::where('id', $toDeleteRecord)->first();
-        $orderID = $idToDelete->pluck('orders_id')->unique(); 
+        $orderID = $idToDelete->orders_id; 
         $toUpdateOrder = orders::where('id', $orderID)->first(); 
 
         $toUpdateOrder->update([
