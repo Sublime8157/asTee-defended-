@@ -137,10 +137,10 @@ class PaymentHistoryController extends Controller
                 $orderedID->update([
                     'paid' => 'not_paid'
                 ]);
+                Sales::where('ordersId', $orderedID)->delete(); 
             }
 
             payment_history::whereIn('id', $toDelete)->delete(); 
-           
 
             return redirect()->back()->with(['success' => 'Deletion Completed']); 
        }
@@ -151,7 +151,6 @@ class PaymentHistoryController extends Controller
         $toDeleteRecord = $request->toDelete;
 
         $idToDelete = payment_history::where('id', $toDeleteRecord)->first();
-
         $orderID = $idToDelete->pluck('orders_id')->unique(); 
         $toUpdateOrder = orders::where('id', $orderID)->first(); 
 
@@ -159,8 +158,8 @@ class PaymentHistoryController extends Controller
             'paid' => 'not_paid'
         ]); 
 
-        $idToDelete->delete(); 
-
+        Sales::where('ordersId', $orderID)->delete(); 
+        $idToDelete->delete();
         return redirect()->back()->with(['success' => 'Deletion Completed']); 
     }
 

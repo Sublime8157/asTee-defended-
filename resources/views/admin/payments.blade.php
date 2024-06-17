@@ -139,7 +139,7 @@
                                 <td>{{$paymentData->amount}}</td>
                                 <td class="">
                                     <img src="{{asset('storage/images/' . $paymentData->proof )}}" alt="" class="w-12 cursor-pointer" onclick="document.getElementById('proofImage').showModal(); ">
-                                    <dialog class="modal" id="proofImage">
+                                    <dialog class="modal" id="proofImage{{$paymentData->id}}">
                                         <img src="{{asset('storage/images/' . $paymentData->proof )}}" alt=""> 
                                     </dialog>
                                 </td>

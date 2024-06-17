@@ -92,10 +92,10 @@ class adminOnHandsController extends Controller
         $delete = OnHand::where('quantity', 0)->get(); // get the products with 0 quantity 
         $idToDelete = $delete->pluck('id')->unique(); // get it id 
 
-        // foreach($idToDelete as $id) {
-        //     cart::where('productId', $id)->delete(); 
-        //     OnHand::where('id', $id)->delete(); 
-        // }
+        foreach($idToDelete as $id) {
+            cart::where('productId', $id)->delete(); 
+            OnHand::where('id', $id)->delete(); 
+        }
         $filterOnHand = OnHand::paginate(20);
         return view('admin.products.onHand', compact('filterOnHand'));
     }
