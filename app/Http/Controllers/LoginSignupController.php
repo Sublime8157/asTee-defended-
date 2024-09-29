@@ -48,6 +48,8 @@ class LoginSignupController extends Controller
             ->uncompromised()
       ]
       ]);
+      // Added Comment 1 
+      
       // bycrpt the user password or hash to protect the user password  
       $validated['password'] = bcrypt($validated['password']);
       $validated['profile'] = 'default.png';
