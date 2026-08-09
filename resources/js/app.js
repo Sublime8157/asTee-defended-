@@ -1,6 +1,3 @@
-import './bootstrap';
-import 'flowbite';
-import 'fabric-history';
-
-
-
+import "./bootstrap";
+import "flowbite";
+import "fabric-history";
