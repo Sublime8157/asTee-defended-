@@ -1,5 +1,11 @@
 ## Fill this with the files deleted
 
+Per-phase copies live in the phase folders:
+[Phase 0](Phase%200/deleted.md) ·
+[Phase 1](Phase%201/deleted.md) ·
+[Phase 2a](Phase%202a/deleted.md) ·
+[Phase 2c](Phase%202c/deleted.md)
+
 ### Phase 0 — repo hygiene (branch `chore/business-ready-phase-0`)
 
 **Untracked from git, kept on disk**
@@ -32,6 +38,17 @@
 | `resources/views/layouts/app.blade.php` | Extended by the live reset views above. |
 | `app/Http/Controllers/HomeController.php`, `resources/views/user/homepage.blade.php` | `HomeController@index` is routed at `routes/web.php:195` and renders the real storefront homepage. |
 | `app/Models/{Genders,Sizes,Status,UserStatus,Variations,productStatus}.php` | Only used by `database/seeders/`. Deleting the models without the seeders breaks `db:seed`. Deferred to Phase 3, where models, seeders and lookup tables are removed together as PHP enums replace them. |
+
+### Phase 1 — Laravel 10 → 12
+
+**Dependencies:** `guzzle/guzzle ^3.8` (abandoned 2015, unused),
+`spatie/laravel-ignition` (not in the L11+ skeleton), `fabric-history` (pins
+`fabric <7`, never called), and ~80 hand-listed transitive npm deps.
+
+**Framework files removed by the slim skeleton:** `app/Http/Kernel.php`,
+`app/Console/Kernel.php`, `app/Exceptions/Handler.php`, 4 providers, and 9 stock
+middleware verified byte-identical to the framework's own copies. Details in
+[Phase 1/deleted.md](Phase%201/deleted.md).
 
 ### Phase 2a — route protection
 
@@ -78,3 +95,10 @@ the real `auth` middleware.
 | `Auth::routes()` ×2 | Duplicated, and its `password.reset`/`password.update` names collided with the admin reset controller. Nothing live used them. |
 | `GET /updateTable` | `adminOnProcessController::updateTable` does not exist — 500 on every hit. |
 | `GET /invoice`, `/newOrder`, `/feedback`, `/passwordResetEmail`, `/emailVerification` | Raw mail templates, publicly reachable. Now registered only in local/development. |
+
+### Phase 2c — containerisation
+
+Nothing deleted; the work was additive. Effectively neutralised rather than
+deleted: the root `.htaccess` — with DocumentRoot at `public/` it is no longer
+served, so it can no longer expose `.env` or the SQL dump. It stays on disk for
+the shared-hosting deploy that still relies on it.

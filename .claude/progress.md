@@ -2,12 +2,19 @@
 
 Plan: [plan.md](plan.md) · Conventions: [checklist.md](checklist.md)
 
+Per-phase notes (featured / deleted / progress / refactor) live in the phase folders:
+[Phase 0](Phase%200/progress.md) ·
+[Phase 1](Phase%201/progress.md) ·
+[Phase 2a](Phase%202a/progress.md) ·
+[Phase 2c](Phase%202c/progress.md)
+
 | Phase | Status | Branch |
 |---|---|---|
 | 0 — Repo hygiene & exposure | ✅ done | `chore/business-ready-phase-0` |
 | 1 — Laravel 10 → 12 | ✅ done | `chore/business-ready-phase-0` |
 | 2a — Route protection & auth hardening | ✅ done | `chore/business-ready-phase-0` |
 | 2b — Identity unification, private files, policies | ⬜ folded into Phase 3 | |
+| 2c — Containerisation (Docker) | ✅ done | `chore/business-ready-phase-0` |
 | 3 — Schema rebuild & domain model | ⬜ | |
 | 4 — Checkout & PayMongo payments | ⬜ | |
 | 5 — DIY designer as orderable product | ⬜ | |
@@ -69,6 +76,20 @@ These parts of Phase 2 touch controllers that the schema rebuild rewrites, so do
 - Private storage for valid-ID scans and payment proofs (still world-readable with guessable filenames — **Critical, still open**).
 - Ownership policies for the cart/order IDORs.
 - Admin roles.
+
+### Phase 2c — done
+
+Not in the original plan — added because Phase 1 left local MySQL unavailable and
+Phase 3's `migrate:fresh` needs a reproducible database
+(commit `619b132 feat: containerise the app with Docker`).
+
+- 3-stage `Dockerfile`: Node asset build → Composer vendor → Apache + PHP 8.3 runtime.
+- `docker-compose.yml`: `app` + `db` (MariaDB 10.11), healthchecked, named volumes.
+- `docker/entrypoint.sh`: env bootstrap, DB wait, `storage:link`, cache clear.
+- DocumentRoot moved to `public/`, which neutralises the root `.htaccess` exposure.
+- `.dockerignore` keeps `.env` and `*.sql` out of image layers.
+
+Small working-tree edits to the Docker files and `MakeAdmin.php` are still uncommitted.
 
 ---
 

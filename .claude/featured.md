@@ -1,6 +1,23 @@
 ## Fill this with every feature we update or support
 
-### Phase 2a
+Per-phase copies live in the phase folders:
+[Phase 0](Phase%200/featured.md) ·
+[Phase 1](Phase%201/featured.md) ·
+[Phase 2a](Phase%202a/featured.md) ·
+[Phase 2c](Phase%202c/featured.md)
+
+### Phase 0 — repo hygiene
+
+No user-facing features. Developer-facing: **`.env.example`** created, so the
+project can be bootstrapped without the original `.env`.
+
+### Phase 1 — Laravel 10 → 12
+
+No user-facing features. Developer-facing: `phpunit.xml` now really uses
+in-memory SQLite (it previously ran against the live database), and the build
+surface dropped from ~90 declared npm packages to 10.
+
+### Phase 2a — route protection
 
 **`php artisan astee:make-admin`** — new console command
 (`app/Console/Commands/MakeAdmin.php`).
@@ -24,7 +41,13 @@ php artisan astee:make-admin --email=owner@astee.store --username=owner
 temporary signed URLs valid for 48 hours (`app/Mail/VerificationEmail.php`).
 The link text tells the recipient about the expiry.
 
-### Containerisation
+**Security headers** on every web response
+(`app/Http/Middleware/SecurityHeaders.php`): `X-Content-Type-Options`,
+`X-Frame-Options`, `Referrer-Policy`, `X-Permitted-Cross-Domain-Policies`,
+`Permissions-Policy`, and `Strict-Transport-Security` when the request is
+over TLS.
+
+### Phase 2c — containerisation
 
 **`docker compose up --build`** brings up the whole app — Apache + PHP 8.3 with
 prebuilt Vite assets, and MariaDB 10.11.
@@ -46,24 +69,4 @@ Full notes in [docker/README.md](../docker/README.md).
 | `docker/mysql-init/02-patch.sql` | the columns the production dump predates |
 | `.dockerignore` | keeps `.env` and `*.sql` out of image layers |
 
-*Decisions worth recording:*
-
-- **MariaDB 10.11, not MySQL.** The dump header reads
-  `10.11.7-MariaDB-cll-lve`, the schema uses MariaDB
-  `CHECK (json_valid(...))`, and the patch file uses
-  `ADD COLUMN IF NOT EXISTS` — MariaDB-only syntax that MySQL 8 rejects.
-- **Apache + mod_php over nginx + php-fpm.** One container, one process, and
-  the repo is already Apache-shaped (two `.htaccess` files).
-- **DocumentRoot is `public/`**, which makes the root `.htaccess` — the one
-  that serves the entire project directory including `.env` and the SQL dump —
-  inert. This is the fix the security review asked for.
-- **No automatic migrations.** They fail against this schema, so the entrypoint
-  would crash-loop. The dump is imported instead until Phase 3.
-- **`MAIL_MAILER: log`.** The repo `.env` holds live Hostinger SMTP
-  credentials; a local stack must not be able to mail real customers.
-
-**Security headers** on every web response
-(`app/Http/Middleware/SecurityHeaders.php`): `X-Content-Type-Options`,
-`X-Frame-Options`, `Referrer-Policy`, `X-Permitted-Cross-Domain-Policies`,
-`Permissions-Policy`, and `Strict-Transport-Security` when the request is
-over TLS.
+Decisions behind the stack are in [Phase 2c/refactor.md](Phase%202c/refactor.md).
