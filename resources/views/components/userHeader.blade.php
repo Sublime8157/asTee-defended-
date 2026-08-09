@@ -49,9 +49,12 @@
                    <a href="/home" class="flex items-center gap-1">
                     <ion-icon name="home-outline" class="text-lg text-amber-600 "></ion-icon>
                       <span class="hover:text-orange-800 text-sm hidden md:flex">Home</span></a>
-                   <a href="/logout" class="flex items-center gap-1">
-                    <ion-icon name="exit-outline" class="text-lg text-gray-500 "></ion-icon>
-                      <span class="hover:text-orange-800 text-sm hidden md:flex">Logout</span></a>
+                   <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="flex items-center gap-1">
+                     <ion-icon name="exit-outline" class="text-lg text-gray-500 "></ion-icon>
+                       <span class="hover:text-orange-800 text-sm hidden md:flex">Logout</span></button>
+                   </form>
                 </ul>
            </div>
         </div>

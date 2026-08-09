@@ -76,9 +76,15 @@ class LoginSignupController extends Controller
                               ->where('email', $user->email) // compare to the user input 
                               ->count(); // count 
          if ($user->userStatus == 2) {
-            return redirect()->back()->with(['fail' => 'This user has been blocked by admin, please contact us for more clarification, thank you!']);
-         }                   
-         else if($verifyEmail > 0 ) { // if greater than 0 
+            // auth()->attempt() above already established a session. Without
+            // logging back out, a blocked account stays authenticated for every
+            // code path that uses Auth::check() / Auth::user() — only the
+            // session-flag paths were actually blocked.
+            $this->logout($request);
+
+            return redirect()->route('userLogin')->with(['fail' => 'This user has been blocked by admin, please contact us for more clarification, thank you!']);
+         }
+         else if($verifyEmail > 0 ) { // if greater than 0
             $request->session()->put('isLoggedin', true);
             $request->session()->put('username', $user->username);
             $request->session()->put('id', $user->id);
@@ -88,7 +94,12 @@ class LoginSignupController extends Controller
             return redirect('/home');
          }
          else {
-            return redirect('/verifyEmail2')->with('email', $user->email);
+            // Same problem as the blocked branch: an unverified account would
+            // otherwise remain authenticated on the web guard.
+            $email = $user->email;
+            $this->logout($request);
+
+            return redirect('/verifyEmail2')->with('email', $email);
          }
       }
       
