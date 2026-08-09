@@ -1,27 +1,27 @@
 <?php
 
+use App\Http\Controllers\accountsController;
+use App\Http\Controllers\AdminFileController;
+use App\Http\Controllers\adminIndexController;
+use App\Http\Controllers\AdminOrderItemController;
+use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\Auth\AdminCustomizeForgotPasswordController;
 use App\Http\Controllers\Auth\AdminCustomizeResetPasswordController;
 use App\Http\Controllers\Auth\UserCustomizeForgotPasswordController;
 use App\Http\Controllers\Auth\UserCustomizeResetPasswordController;
+use App\Http\Controllers\blockedAccountsController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginSignupController;
 use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\PendingAccountsController;
+use App\Http\Controllers\productsController;
 use App\Http\Controllers\SalesHistoryController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserPurchaseController;
-use App\Http\Controllers\accountsController;
-use App\Http\Controllers\adminCancelReturnController;
-use App\Http\Controllers\adminIndexController;
-use App\Http\Controllers\adminOnHandsController;
-use App\Http\Controllers\adminOnProcessController;
-use App\Http\Controllers\blockedAccountsController;
-use App\Http\Controllers\dashboardController;
-use App\Http\Controllers\productsController;
 use App\Http\Controllers\userProfileController;
+use App\Http\Controllers\UserPurchaseController;
 use App\Mail\VerificationEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,14 +33,15 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Routes are grouped by who is allowed to reach them. Before this rewrite the
-| file was a flat list in which `middleware('admin')` was attached to eight GET
-| display pages only — every admin write (create/edit/delete product, block or
-| delete a customer, approve an ID, delete payment records) was reachable by an
+| Routes are grouped by who is allowed to reach them. Before the Phase 2a
+| rewrite the file was a flat list in which `middleware('admin')` was attached
+| to eight GET display pages only — every admin write was reachable by an
 | anonymous visitor who knew the URI.
 |
-| URIs and route names are deliberately unchanged: Blade `route()` helpers and
-| the hand-written jQuery in public/js/ hardcode both.
+| Phase 3 removes the customer id from customer-facing URIs. /cart/{userId} and
+| /userProfile/myPurchase/{userId} took whatever id was typed, so one customer
+| could read another's cart and purchase history by editing the address bar.
+| The owner is the signed-in user or there is no owner.
 |
 */
 
@@ -73,10 +74,6 @@ Route::post('/userContact', [ContactUsController::class, 'sendToEmail'])
 
 // ---------------------------------------------------------------------------
 // Public — email verification and password reset
-//
-// /emailVerified/{email} previously had no signature, token or throttle: any
-// visitor could mark any customer's email verified by typing the address into
-// the URL. It is now a signed, expiring link that only the mail recipient holds.
 // ---------------------------------------------------------------------------
 
 Route::get('/emailVerified/{email}', function ($email) {
@@ -139,27 +136,21 @@ Route::middleware('auth')->group(function () {
 
     // Cart and checkout
     Route::post('/storeCart', [UserController::class, 'store'])->name('cart');
-    Route::get('/cart/{userId}', [UserController::class, 'cart']);
-    Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
+    Route::get('/cart', [UserController::class, 'cart'])->name('cart.show');
+    Route::delete('/removeCartItem/{cartItem}', [UserController::class, 'remove'])->name('remove.cart');
     Route::delete('/removeAll', [UserController::class, 'removeAll'])->name('remove.All');
     Route::get('/checkout', [UserController::class, 'checkout'])->name('checkout.process');
     Route::post('/confirmCheckout', [UserController::class, 'confirmCheckout'])->name('confirmCheckout');
 
     // Purchases
-    Route::get('/userProfile/myPurchase/{userId}', [UserPurchaseController::class, 'toPay'])->name('myPurchase');
-    Route::get('userProfile/myPurchase//{status}', [UserPurchaseController::class, 'productStatus'])->name('product.status');
+    Route::get('/userProfile/myPurchase', [UserPurchaseController::class, 'index'])->name('myPurchase');
     Route::post('/submitCancel/{id}', [UserPurchaseController::class, 'submitToCancel'])->name('submitOrder.cancel');
-    Route::post('/orderRecieved', [UserPurchaseController::class, 'orderRecieved'])->name('order.recieved');
+    Route::post('/orderRecieved', [UserPurchaseController::class, 'orderReceived'])->name('order.recieved');
     Route::post('/submitReview', [UserPurchaseController::class, 'submitReview'])->name('submitReview');
 });
 
 // ---------------------------------------------------------------------------
 // Admin — authentication
-//
-// Self-service admin registration (/regsiterAccount, /submitRegistration) and
-// the unsigned /verifyAdmin/{email} route are removed. Together they allowed
-// anyone to create an admin account and mark it verified in two unauthenticated
-// requests. Admin accounts are now created with `php artisan astee:make-admin`.
 // ---------------------------------------------------------------------------
 
 Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
@@ -189,9 +180,14 @@ Route::middleware('admin')->group(function () {
     Route::get('/dashboard', [dashboardController::class, 'dashboard']);
     Route::get('/filterSalesDate', [dashboardController::class, 'filterSales']);
 
-    // Feedback
+    // Reviews
     Route::get('/products/feedbacks', [adminIndexController::class, 'feedbacks']);
     Route::patch('/featureReview/{id}', [adminIndexController::class, 'toFeature'])->name('featureReview');
+
+    // Private files — government IDs and bank transfer proofs. The id is a
+    // record id, not a path, so there is nothing to traverse.
+    Route::get('/admin/files/valid-id/{user}', [AdminFileController::class, 'validId'])->name('admin.file.validId');
+    Route::get('/admin/files/payment-proof/{payment}', [AdminFileController::class, 'paymentProof'])->name('admin.file.paymentProof');
 
     // Order history
     Route::get('/orders', [OrderHistoryController::class, 'showOrderList']);
@@ -199,7 +195,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/sortOrders', [OrderHistoryController::class, 'sortOrders']);
     Route::get('/filterDate', [OrderHistoryController::class, 'filterDate']);
 
-    // Payment history
+    // Payments
     Route::get('/payments', [PaymentHistoryController::class, 'display']);
     Route::get('/refresh', [PaymentHistoryController::class, 'refresh']);
     Route::post('/paymentForm', [PaymentHistoryController::class, 'store'])->name('paymentForm');
@@ -215,42 +211,27 @@ Route::middleware('admin')->group(function () {
     // Sales
     Route::get('/sales', [SalesHistoryController::class, 'display'])->name('salesDisplay');
 
-    // Products — on hand
-    Route::get('/products/onHand', [adminOnHandsController::class, 'onHand']);
-    Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
-    Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');
-    Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHandProducts']);
-    Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
-    Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
-    Route::post('/moveMultipleOnHand', [adminOnHandsController::class, 'moveMultiple'])->name('moveMultipleFrom.onHand');
-    Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
-    Route::delete('/deleteAll', [adminOnHandsController::class, 'removeAllProduct'])->name('deleteFrom.OnHand');
+    // Catalog
+    Route::get('/products/onHand', [AdminProductController::class, 'index']);
+    Route::post('/addProducts', [AdminProductController::class, 'store']);
+    Route::patch('/editProduct/{id}', [AdminProductController::class, 'update'])->name('edit.Product');
+    Route::delete('/removeProduct/{id}', [AdminProductController::class, 'destroy'])->name('product.remove');
+    Route::delete('/deleteAll', [AdminProductController::class, 'destroyMany'])->name('deleteFrom.OnHand');
+    Route::post('/moveProduct/{id}', [AdminProductController::class, 'sell'])->name('move.Product');
+    Route::get('/filterOnHandProducts', [AdminProductController::class, 'filter']);
+    Route::get('/sortProduct', [AdminProductController::class, 'sort']);
 
-    // Products — processing
-    Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
-    Route::post('/storeProcessing', [adminOnProcessController::class, 'storeProcessing']);
-    Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
-    Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
-    Route::post('/updateMultiple', [adminOnProcessController::class, 'multipleUpdate'])->name('updateMultiple.status');
-    Route::post('/moveMultipleProcessing', [adminOnProcessController::class, 'moveMultiple'])->name('moveMutipleFrom.Processing');
-    Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
-    Route::get('/sortProcessingProduct', [adminOnProcessController::class, 'sortProduct']);
-    Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStatus'])->name('update.status');
-    Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
-    Route::delete('/removeMultiple', [adminOnProcessController::class, 'removeMultiple'])->name('deleteFrom.Processing');
-    Route::get('/filterDateProcessing', [adminOnProcessController::class, 'filterDate']);
-
-    // Products — cancel / return
-    Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']);
-    Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
-    Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
-    Route::post('/moveCancelReturn/{id}', [adminCancelReturnController::class, 'moveProduct'])->name('move.cancelReturnProduct');
-    Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCancelReturn']);
-    Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, 'removeProduct'])->name('cancelReturn.remove');
-    Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sortProduct']);
-    Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'removeMultiple'])->name('deleteFrom.cancel');
-    Route::post('/moveMultiple.cancel', [adminCancelReturnController::class, 'moveMultiple'])->name('moveMultipleFrom.cancel');
-    Route::get('/filterReturnedCancelDate', [adminCancelReturnController::class, 'filterDate']);
+    // Order lines — the Processing and Cancel/Return tabs are one query with a
+    // different status filter, not two tables.
+    Route::get('/products/proccessing', [AdminOrderItemController::class, 'processing']);
+    Route::get('/products/cancelReturn', [AdminOrderItemController::class, 'cancelReturn']);
+    Route::patch('/updateStatus/{id}', [AdminOrderItemController::class, 'updateStatus'])->name('update.status');
+    Route::post('/updateMultiple', [AdminOrderItemController::class, 'updateStatusMany'])->name('updateMultiple.status');
+    Route::delete('/removeProcessing/{id}', [AdminOrderItemController::class, 'destroy'])->name('productProcess.remove');
+    Route::delete('/removeMultiple', [AdminOrderItemController::class, 'destroyMany'])->name('deleteFrom.Processing');
+    Route::get('/filterProcessingProducts', [AdminOrderItemController::class, 'filter']);
+    Route::get('/sortProcessingProduct', [AdminOrderItemController::class, 'sort']);
+    Route::get('/filterDateProcessing', [AdminOrderItemController::class, 'filterDate']);
 
     // Accounts — active
     Route::get('/accounts/active', [accountsController::class, 'displayUsers']);
@@ -274,9 +255,6 @@ Route::middleware('admin')->group(function () {
 
 // ---------------------------------------------------------------------------
 // Local-only mail template previews
-//
-// These render raw mail templates and were publicly reachable in production
-// with no middleware.
 // ---------------------------------------------------------------------------
 
 if (app()->environment(['local', 'development'])) {

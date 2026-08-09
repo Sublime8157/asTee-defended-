@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\AdminUser;
+use App\Models\User;
+
 return [
 
     /*
@@ -17,7 +20,6 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
-    
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +47,7 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        
+
     ],
 
     /*
@@ -68,13 +70,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => User::class,
         ],
         'admins' => [
             'driver' => 'eloquent',
-            'model' => App\Models\adminLogin::class,
+            'model' => AdminUser::class,
         ],
-       
 
         // 'users' => [
         //     'driver' => 'database',

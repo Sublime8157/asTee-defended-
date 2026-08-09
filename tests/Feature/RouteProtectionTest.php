@@ -37,9 +37,9 @@ class RouteProtectionTest extends TestCase
     {
         // Any route pointing at an admin-only controller must carry the guard.
         $adminControllers = [
-            'adminOnHandsController',
-            'adminOnProcessController',
-            'adminCancelReturnController',
+            'AdminProductController',
+            'AdminOrderItemController',
+            'AdminFileController',
             'accountsController',
             'blockedAccountsController',
             'PendingAccountsController',

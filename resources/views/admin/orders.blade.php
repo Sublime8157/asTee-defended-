@@ -5,7 +5,7 @@
 <x-nav />
 <x-notification />
 <div class="p-3">
-    {{ $data->links('pagination::simple-tailwind') }}
+    {{ $orders->links('pagination::simple-tailwind') }}
 </div>
 <div class="w-full px-5">
     <div class="w-full px-5 bg-white rounded   my-5 flex flex-col">
@@ -59,30 +59,14 @@
                     <th>ID</th>
                     <th>User ID</th>
                      <th>Address</th>
-                    <th>Product ID's</th>
+                    <th>Items</th>
                     <th>Contact</th>
                     <th>MOP</th>
                     <th>Total</th>
                     <th>Date</th>
                 </tr>
                 <tbody id="orderTableBody">
-                    @foreach ($data as $list )
-                        <tr class="text-center  {{ $list->paid === 'not_paid' ? 'bg-red-200' : ' ' }} ">
-                                <td class="text-sm py-2 ">{{$list->id}}</td>
-                                <td class="text-sm">{{$list->userId}}</td>
-                                <td class="text-sm">{{$list->address}}</td>
-                                <td class="text-sm">{{$list->productId}}</td>
-                                <td class="text-sm">{{$list->contact}}</td>
-                                <td class="text-sm">{{$list->mop}}</td>
-                                <td class="text-sm">{{$list->total}}</td>
-                                <td class="text-sm">{{$list->created_at}}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="7">
-                                <hr class="bg-gray-50">
-                            </td>
-                        </tr>
-                    @endforeach
+                    @include('admin.orderSearchResult')
                 </tbody>
             </table>
         </div>

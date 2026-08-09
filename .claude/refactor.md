@@ -4,7 +4,8 @@ Per-phase copies live in the phase folders:
 [Phase 0](Phase%200/refactor.md) ·
 [Phase 1](Phase%201/refactor.md) ·
 [Phase 2a](Phase%202a/refactor.md) ·
-[Phase 2c](Phase%202c/refactor.md)
+[Phase 2c](Phase%202c/refactor.md) ·
+[Phase 3](Phase%203/refactor.md)
 
 ### Phase 0 — repo hygiene & exposure
 
@@ -212,3 +213,10 @@ the routes closely:
   would crash-loop. The dump is imported instead until Phase 3.
 - **`MAIL_MAILER: log`.** The repo `.env` holds live Hostinger SMTP credentials;
   a local stack must not be able to mail real customers.
+
+### Phase 3 — schema rebuild
+
+Decisions recorded in [Phase 3/refactor.md](Phase%203/refactor.md), including why enums are
+string-backed rather than int-backed, why `carts` and `custom_designs` were skipped from the plan's
+table list, why `sales` was dropped rather than ported, and why the ₱60 shipping fee became a
+constant rather than disappearing.

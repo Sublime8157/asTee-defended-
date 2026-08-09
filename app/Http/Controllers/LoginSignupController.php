@@ -2,139 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Models\User;
-use App\Http\Controllers\Hash;
-use App\Http\Controllers\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
-use App\Models\cart;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\UserCustomResetPasswordMail;
 use App\Mail\VerificationEmail;
-
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class LoginSignupController extends Controller
 {
-   // Show the login form 
-   
-   public  function LoginSignup() {
-      // incorrect symbol 
-    return view('login.registration.login');
+    public function LoginSignup()
+    {
+        return view('login.registration.login');
+    }
 
-   }
-   
-// Store the data into the database 
-   public function store(Request $request){
-      // validate the user inputs 
-      $validated = $request->validate([
-         "fname" => 'required',
-         "lname" => 'required',
-         "mname",
-         "profile",
-         'contact' => 'required|numeric',
-         "birthday" => 'required|date',
-         'address' => 'required',
-         "userStatus" => 'required|numeric',
-         "email" => ['required', 'email', Rule::unique('customers', 'email')],
-         "username" => ['required', Rule::unique('customers', 'username')],
-         "password" => ['required','confirmed', 
-         Password::min(8)
-            ->letters()
-            ->mixedCase()
-            ->numbers()
-            ->symbols()
-            ->uncompromised()
-      ]
-      ]);
-      // bycrpt the user password or hash to protect the user password  
-      $validated['password'] = bcrypt($validated['password']);
-      $validated['profile'] = 'default.png';
-      // inser the information when validating is success 
-      $user = User::create($validated);
-      
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'fname' => ['required', 'string', 'max:255'],
+            'mname' => ['nullable', 'string', 'max:255'],
+            'lname' => ['required', 'string', 'max:255'],
+            'contact' => ['required', 'string', 'max:20'],
+            'birthday' => ['required', 'date', 'before:today'],
+            'address' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('customers', 'email')],
+            'username' => ['required', 'string', 'max:255', Rule::unique('customers', 'username')],
+            'password' => ['required', 'confirmed', Password::min(8)
+                ->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
+        ]);
 
-      // verify the email we are passing the user email inputs to the VerificationEmail.php 
-      Mail::to($user->email)->send(new VerificationEmail($user->email));
+        // `userStatus` was `required|numeric` and came from the registration
+        // form, so the account's blocked state was picked by whoever signed up.
+        $user = User::create($validated + ['profile' => 'default.png']);
 
-      return view('user.emailSent');
-   }
-   
+        Mail::to($user->email)->send(new VerificationEmail($user->email));
 
-   //Login Function 
-   public function process(Request $request) {
-      $validated = $request->validate([
-         "username" => 'required',
-         "password" => 'required','current_password'
-      ]);
-     
-      if(auth()->attempt($validated)) {
-         // authenticate the user 
-         $user = auth()->user();        
-         $verifyEmail = User::whereNotNull('email_verified_at') // find the email_verified_at column that is not null or empty 
-                              ->where('email', $user->email) // compare to the user input 
-                              ->count(); // count 
-         if ($user->userStatus == 2) {
-            // auth()->attempt() above already established a session. Without
-            // logging back out, a blocked account stays authenticated for every
-            // code path that uses Auth::check() / Auth::user() — only the
-            // session-flag paths were actually blocked.
+        return view('user.emailSent');
+    }
+
+    public function process(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => ['required'],
+            'password' => ['required'],
+        ]);
+
+        if (! auth()->attempt($validated)) {
+            return back()->withErrors(['username' => 'Invalid Credentials'])->withInput();
+        }
+
+        $user = auth()->user();
+
+        if ($user->isBlocked()) {
             $this->logout($request);
 
-            return redirect()->route('userLogin')->with(['fail' => 'This user has been blocked by admin, please contact us for more clarification, thank you!']);
-         }
-         else if($verifyEmail > 0 ) { // if greater than 0
-            $request->session()->put('isLoggedin', true);
-            $request->session()->put('username', $user->username);
-            $request->session()->put('id', $user->id);
-            $request->session()->put('profile', $user->profile);
-            $request->session()->put('verification', $user->verification);
-            $request->session()->regenerate();
-            return redirect('/home');
-         }
-         else {
-            // Same problem as the blocked branch: an unverified account would
-            // otherwise remain authenticated on the web guard.
+            return redirect()->route('userLogin')->with([
+                'fail' => 'This user has been blocked by admin, please contact us for more clarification, thank you!',
+            ]);
+        }
+
+        if ($user->email_verified_at === null) {
             $email = $user->email;
             $this->logout($request);
 
             return redirect('/verifyEmail2')->with('email', $email);
-         }
-      }
-      
-      return back()->withErrors(['username' => 'Invalid Credentials'])->withInput();
-     
-   }
+        }
 
+        // The parallel session keys (isLoggedin, id, username, profile,
+        // verification) are gone. Views and middleware read the guard, so there
+        // is only one place a session can disagree with the database.
+        $request->session()->regenerate();
 
-// Logout Function
-   public function logout(Request $request) {
-      auth()->logout();
+        return redirect('/home');
+    }
 
-      $request->session()->invalidate();
-      $request->session()->regenerateToken();
+    public function logout(Request $request)
+    {
+        auth()->logout();
 
-      return redirect('/');
-   }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-   // search user function 
-   public function searchUser(Request $request) {
-      $findUser = $request->search; 
-      $validated = $request->validate([
-         'search' => 'required'
-      ]);
-      $userData = User::query(); 
-      if($findUser) {
-         $userData = $userData->where(function($query) use ($findUser) {
-            $query->where('username', 'LIKE' ,"%{$findUser}%")
-                  ->orWhere('email','LIKE',"%{$findUser}%");
-         });
-      }
-      $userData = $userData->get();
-      if($userData->isEmpty()) {
-         return redirect()->back()->with(['noResult' => 'No user found, make sure to input the correct username or email']);
-      }
-      return redirect()->route('foundUser')->with('userData', $userData);
-   }
+        return redirect('/');
+    }
+
+    /**
+     * "Find my account" before a password reset.
+     *
+     * Was a LIKE %input% that returned every partial match and rendered each
+     * one — profile photo, username and email — onto a public page, with the
+     * email in an editable input: an account enumeration endpoint with a
+     * built-in send button.
+     *
+     * It now looks up the one exact account, sends the reset link itself if
+     * there is one, and returns the same page either way.
+     */
+    public function searchUser(Request $request)
+    {
+        $validated = $request->validate([
+            'search' => ['required', 'string', 'max:255'],
+        ]);
+
+        $user = User::where('username', $validated['search'])
+            ->orWhere('email', $validated['search'])
+            ->first();
+
+        if ($user) {
+            // Rules\Password is imported above for the registration rules, so
+            // the broker facade is named in full here.
+            \Illuminate\Support\Facades\Password::broker('users')->sendResetLink(
+                ['email' => $user->email],
+                fn (User $user, string $token) => Mail::to($user->email)
+                    ->send(new UserCustomResetPasswordMail($token, $user->email))
+            );
+        }
+
+        return redirect()->route('foundUser');
+    }
 }

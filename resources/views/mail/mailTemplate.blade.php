@@ -111,8 +111,10 @@
                     <table>
                         <tr>
                             <td>
-                                <b>Product ID:</b> {{$invoiceData['processing']}} <br>
-                                <b>User ID:</b> {{$invoiceData['userId']}} <br>
+                                <b>Items:</b><br>
+                                @foreach($invoiceData['items'] as $item)
+                                    &nbsp;&nbsp;{{ $item->quantity }} &times; {{ $item->description }} — &#x20B1;{{ $item->line_total }}<br>
+                                @endforeach
                                 <b>Address:</b> {{$invoiceData['address']}} <br>
                                 <b>Contact:</b> {{$invoiceData['contact']}}
                             </td>

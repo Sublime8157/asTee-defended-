@@ -106,6 +106,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Internal Inboxes
+    |--------------------------------------------------------------------------
+    |
+    | Addresses that receive operational mail. These were hardcoded in the
+    | controllers, so a developer running checkout locally emailed the live
+    | shop's order inbox. Phase 0 added the env keys; this wires them up.
+    |
+    */
+
+    'inboxes' => [
+        'orders' => env('MAIL_ORDERS_ADDRESS', 'orders@example.com'),
+        'feedback' => env('MAIL_FEEDBACK_ADDRESS', 'feedback@example.com'),
+        'accounts' => env('MAIL_ACCOUNTS_ADDRESS', 'accounts@example.com'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Markdown Mail Settings
     |--------------------------------------------------------------------------
     |

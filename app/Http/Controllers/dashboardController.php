@@ -1,144 +1,105 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Enums\CancelReason;
+use App\Enums\OrderStatus;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\User;
-use App\Models\Sales;
-use Illuminate\Http\Request;
-use App\Models\OnHand;
-use App\Models\Processing;
-use App\Models\CancelReturn;
-use App\Models\payment_history;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 class dashboardController extends Controller
 {
+    public function dashboard()
+    {
+        // Was six separate ->get() calls that pulled the whole sales table into
+        // PHP to sum a scalar, plus a seventh for the chart. Now one aggregate
+        // row and two grouped queries.
+        $totals = Order::paid()
+            ->selectRaw('
+                SUM(total) as all_time,
+                SUM(CASE WHEN DATE(paid_at) = ? THEN total ELSE 0 END) as today,
+                SUM(CASE WHEN paid_at BETWEEN ? AND ? THEN total ELSE 0 END) as this_week,
+                SUM(CASE WHEN paid_at BETWEEN ? AND ? THEN total ELSE 0 END) as this_year
+            ', [
+                Carbon::today()->toDateString(),
+                Carbon::today()->startOfWeek(), Carbon::today()->endOfWeek(),
+                Carbon::today()->startOfYear(), Carbon::today()->endOfYear(),
+            ])
+            ->first();
 
-    public function dashboard() {
-        
-        // retrieve the column id and created_at from the User model and group by based on the created_at and format using carbon 
-        // the $data instance the created_at from the model 
-        $data = User::select('id', 'created_at')->get()->groupBy(function($data){
-            return Carbon::parse($data->created_at)->format('M');
-        });
-        // declare a array 
-        $months = [];
-        $monthCount = [];
+        // The old chart grouped by format('M'), so January 2024 and January
+        // 2025 landed in the same bar.
+        $salesByMonth = $this->groupByMonth(Order::paid(), 'paid_at', 'SUM(total)');
+        $signupsByMonth = $this->groupByMonth(User::query(), 'created_at', 'COUNT(*)');
 
-        // iterate trough data variable so retrieved data we will assign the $month key to the formatted created at and the $values to the counted id 
-       
-        foreach($data as $month => $values){
-            $months[] = $month;
-            $monthCount[]=count($values);
-        }
-       
-       // Collect all the data with column id, created_at, quantity, and amount from the Sales model
-        $soldData = Sales::select('id', 'created_at','amount')->get();
+        $cancelCounts = OrderItem::where('status', OrderStatus::Cancelled)
+            ->selectRaw('cancel_reason, COUNT(*) as total')
+            ->groupBy('cancel_reason')
+            ->pluck('total', 'cancel_reason');
 
-        // Group the data based on month and assign it to $salesByMonth
-        $salesByMonth = $soldData->groupBy(function($data) {
-            return Carbon::parse($data->created_at)->format('Y-M');
-        });
+        return view('admin.dashboard', [
+            'totalSales' => $totals->all_time ?? 0,
+            'totalSalesToday' => $totals->today ?? 0,
+            'totalSalesThisWeek' => $totals->this_week ?? 0,
+            'totalSalesThisYear' => $totals->this_year ?? 0,
 
-        $weekStart = Carbon::today()->startOfWeek(); 
-        $weekEnd = Carbon::today()->endOfWeek(); 
-        $yearToday = Carbon::today()->year; 
+            'soldMonths' => $salesByMonth->keys(),
+            'totalAmount' => $salesByMonth->values(),
+            'months' => $signupsByMonth->keys(),
+            'monthCount' => $signupsByMonth->values(),
 
-        
-        
+            // Was seven hand-numbered variables, a fourth copy of the reason
+            // list after the lookup table, the Types trait and the two views.
+            'cancelReasons' => collect(CancelReason::cases())
+                ->mapWithKeys(fn (CancelReason $r) => [$r->label() => $cancelCounts[$r->value] ?? 0]),
 
-        // sales today 
-        $salesToday = Sales::whereDate('created_at', Carbon::today())->get(); // get the date using carbon 
-        $totalSalesToday = $salesToday->sum('amount'); 
-     
-        // sales this month  
-        $salesThisWeek = Sales::whereBetween('created_at',[ $weekStart, $weekEnd])->get(); // get the date using carbon 
-        $totalSalesThisWeek = $salesThisWeek->sum('amount');
-
-        // sales this year 
-        $salesThisYear = Sales::whereYear('created_at', $yearToday)->get(); // get the date using carbon 
-        $totalSalesThisYear = $salesThisYear->sum('amount'); 
-
-        
-
-        // Declare arrays
-        $soldMonths = [];
-        $totalAmount = [];
-
-        // For each $salesByMonth, assign to an array with key and value ($month is the key and $sales is the value)
-        foreach ($salesByMonth as $month => $sales) {
-            // Assign the month to $soldMonths
-            $soldMonths[] = $month;
-            // Calculate the total amount for the month
-            $totalAmount[] = $sales->sum(function($item) {
-                return $item->amount;
-            });
-        }
-
-        // Check if the arrays are correct
-       
-
-
-        // count the return products based on the reason 
-        $counts = CancelReturn::selectRaw('reason, count(*) as count')
-        ->whereIn('reason', [1, 2, 3, 4, 5, 6, 7]) // Add more reasons if needed
-        ->groupBy('reason')
-        ->get()
-        ->pluck('count', 'reason');
-    
-        $wrongProduct = $counts->get(1, 0);
-        $differentColors = $counts->get(2, 0);
-        $wrongDesign = $counts->get(3, 0);
-        $reason1 = $counts->get(4, 0);
-        $reason2 = $counts->get(5, 0);
-        $reason3 = $counts->get(6, 0);
-        $reason4 = $counts->get(7, 0);
-        // Add more variables for other reasons as needed
-        
-       
-
-        $userCount = User::where('userStatus', '=', '1')->count();
-        $blockedUserCount = User::where('userStatus', '=', '2')->count();
-        $onhandCount = OnHand::count();
-        $onProcessCount = Processing::count();
-        $oncancelReturnCount = CancelReturn::count();
-
-        
-        $sales = Sales::select('amount')->get();
-        $totalSales = $sales->sum('amount'); 
-
-        return view('admin.dashboard', compact('userCount','blockedUserCount','onhandCount','onProcessCount','oncancelReturnCount','data','months','monthCount','wrongProduct','differentColors','wrongDesign','reason1','reason2','reason3','reason4','soldMonths','totalAmount','totalSales','totalSalesToday','totalSalesThisWeek','totalSalesThisYear'));
+            'userCount' => User::active()->count(),
+            'blockedUserCount' => User::blocked()->count(),
+            'onhandCount' => Product::inStock()->count(),
+            'onProcessCount' => OrderItem::whereIn('status', [
+                OrderStatus::ToPay, OrderStatus::ToShip, OrderStatus::ToReceive, OrderStatus::ToReview,
+            ])->count(),
+            'oncancelReturnCount' => OrderItem::where('status', OrderStatus::Cancelled)->count(),
+        ]);
     }
 
-    public function filterSales(Request $request) {
-        $filterFrom = $request->input('dateFrom'); 
-        $filterTo = $request->input('dateTo');
-    
-        $data = []; 
-    
-        if (!empty($filterFrom) && !empty($filterTo)) { // check if it not empty 
-            $result = Sales::select('created_at', 'amount', 'quantity') // select columns 
-                            ->whereBetween('created_at', [$filterFrom, $filterTo]) // select the user filtered 
-                            ->get();  
-    
-            $salesByMonth = $result->groupBy(function($date) {
-                return Carbon::parse($date->created_at)->format('Y-M'); // group the result by month 
-            });
-    
-            $totalSales = $salesByMonth->map(function($row) { // map to the result assign to $row the sum of computing the amount and quantity 
-                return $row->sum(function($item) { 
-                    return $item->amount * $item->quantity;
-                });
-            });
-    
-            $data = [
-                'dates' => $salesByMonth->keys()->toArray(), // let the dates be the key 
-                'sales' => $totalSales->values()->toArray() // let the values become the value of keys 
-            ];
-        }
-    
-        return response()->json($data); // return the response as a json 
+    public function filterSales(Request $request)
+    {
+        $validated = $request->validate([
+            'dateFrom' => ['required', 'date'],
+            'dateTo' => ['required', 'date', 'after_or_equal:dateFrom'],
+        ]);
+
+        // The old version summed amount × quantity, but `amount` on the sales
+        // row was already the order total — every filtered figure was inflated
+        // by the quantity.
+        $sales = $this->groupByMonth(
+            Order::paid()->whereBetween('paid_at', [$validated['dateFrom'], $validated['dateTo']]),
+            'paid_at',
+            'SUM(total)'
+        );
+
+        return response()->json([
+            'dates' => $sales->keys(),
+            'sales' => $sales->values(),
+        ]);
     }
-    
-    
-    
-  
+
+    /**
+     * ponytail: DATE_FORMAT is MySQL/MariaDB syntax, which is what this app
+     * deploys on (docker-compose pins MariaDB 10.11). Swap for a driver
+     * switch if the dashboard ever needs to run on SQLite or Postgres.
+     */
+    private function groupByMonth($query, string $column, string $aggregate)
+    {
+        return $query
+            ->selectRaw("DATE_FORMAT({$column}, '%Y-%m') as period, {$aggregate} as total")
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period');
+    }
 }

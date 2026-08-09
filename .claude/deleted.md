@@ -4,7 +4,8 @@ Per-phase copies live in the phase folders:
 [Phase 0](Phase%200/deleted.md) ·
 [Phase 1](Phase%201/deleted.md) ·
 [Phase 2a](Phase%202a/deleted.md) ·
-[Phase 2c](Phase%202c/deleted.md)
+[Phase 2c](Phase%202c/deleted.md) ·
+[Phase 3](Phase%203/deleted.md)
 
 ### Phase 0 — repo hygiene (branch `chore/business-ready-phase-0`)
 
@@ -102,3 +103,11 @@ Nothing deleted; the work was additive. Effectively neutralised rather than
 deleted: the root `.htaccess` — with DocumentRoot at `public/` it is no longer
 served, so it can no longer expose `.env` or the SQL dump. It stays on disk for
 the shared-hosting deploy that still relies on it.
+
+### Phase 3 — schema rebuild
+
+4 controllers (894 lines of triplicated lifecycle + a dead PayMaya stub), 8 models, 2 traits,
+4 views, 19 migrations. The bulk "Move" action and the two "add an order line by hand" dialogs go
+with them — a line comes from a customer checking out or from the catalog's Sell action.
+
+Details: [Phase 3/deleted.md](Phase%203/deleted.md).

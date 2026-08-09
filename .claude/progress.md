@@ -6,16 +6,17 @@ Per-phase notes (featured / deleted / progress / refactor) live in the phase fol
 [Phase 0](Phase%200/progress.md) ·
 [Phase 1](Phase%201/progress.md) ·
 [Phase 2a](Phase%202a/progress.md) ·
-[Phase 2c](Phase%202c/progress.md)
+[Phase 2c](Phase%202c/progress.md) ·
+[Phase 3](Phase%203/progress.md)
 
 | Phase | Status | Branch |
 |---|---|---|
 | 0 — Repo hygiene & exposure | ✅ done | `chore/business-ready-phase-0` |
 | 1 — Laravel 10 → 12 | ✅ done | `chore/business-ready-phase-0` |
 | 2a — Route protection & auth hardening | ✅ done | `chore/business-ready-phase-0` |
-| 2b — Identity unification, private files, policies | ⬜ folded into Phase 3 | |
+| 2b — Identity unification, private files, policies | ✅ done (in Phase 3) | `feat/business-ready-phase-3` |
 | 2c — Containerisation (Docker) | ✅ done | `chore/business-ready-phase-0` |
-| 3 — Schema rebuild & domain model | ⬜ | |
+| 3 — Schema rebuild & domain model | ✅ done | `feat/business-ready-phase-3` |
 | 4 — Checkout & PayMongo payments | ⬜ | |
 | 5 — DIY designer as orderable product | ⬜ | |
 | 6 — UI redesign | ⬜ | |
@@ -90,6 +91,40 @@ Phase 3's `migrate:fresh` needs a reproducible database
 - `.dockerignore` keeps `.env` and `*.sql` out of image layers.
 
 Small working-tree edits to the Docker files and `MakeAdmin.php` are still uncommitted.
+
+---
+
+### Phase 3 — done
+
+The physical-table-move lifecycle is gone: `product_on_hand` → `product_on_process` →
+`product_on_return_cancel` → `sales` collapse into `products` (catalog) plus
+`order_items.status`. 894 lines of triplicated lifecycle controller become ~360 across two
+controllers split by responsibility rather than by destination table.
+
+| Before | After |
+|---|---|
+| Browser computed the order total, server wrote `$request->total` | `OrderService` reads `products.price` under `lockForUpdate` in one transaction |
+| `DB::transaction` appeared 0 times in `app/` | Every multi-write is wrapped |
+| 0 Eloquent relationships | Relationships on all 8 models; deleting a customer is one cascade |
+| Money in `int(11)`, cast to `(float)` on write | `decimal(12,2)` with `decimal:2` casts |
+| Lookup domains in 3 places each, drifted | 5 backed enums, single source across every call site |
+| `/cart/{userId}`, `/myPurchase/{userId}` took any id | Owner comes from the guard |
+| IDs and payment proofs world-readable by filename | Private disk, hashed names, streamed behind the admin gate |
+| 16 models, 19 migrations | 8 models, 14 migrations |
+
+Phase 2b folded in as planned — identity unification, private files and the cart/order IDORs all
+lived in controllers this phase rewrote.
+
+**Verified:** `migrate:fresh --seed` clean on scratch MariaDB; guest, admin and customer walked
+through every screen; checkout posted with `total=1&price=1` produced an order priced from the
+catalog with stock decremented correctly; `phpunit` 17 tests green.
+
+Incidental: checkout mail is now wrapped in a try/catch — SMTP being unreachable used to turn an
+already-committed order into a 500. Phase 4 moves it to the queue.
+
+> Tests run against the containerised MariaDB locally: `pdo_sqlite` is commented out in
+> `C:\php\php.ini`, so the in-memory SQLite connection `phpunit.xml` asks for cannot be opened on
+> this machine. Uncommenting `extension=pdo_sqlite` fixes it; nothing in the repo needs to change.
 
 ---
 

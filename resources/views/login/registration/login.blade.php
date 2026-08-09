@@ -5,7 +5,7 @@
 <body class="bg-blue-100 ">
   <x-navbar />
   {{-- This is Login Section --}}
-  @if(session('isLoggedin') != true)
+  @if(auth()->guest())
     <div class=" flex justify-evenly   flex-col   md:flex-row items-center h-screen w-full">
       <div class="">
         <img src="{{ asset('images/companyLogo.png') }}" alt="Logo" class="md:w-80 w-72">
@@ -61,7 +61,6 @@
             {{-- Form for registration/singup --}}
             <form action="/store" method="POST" class="flex flex-wrap" id="regForm">
               @csrf
-                <input type="text" value="1" class="hidden" name="userStatus">
                 <input type="text" name="fname" placeholder="Firstname" class="w-80 m-1 p-2 border-none text-xs rounded focus:outline-blue-50" > 
                 <input type="text" name="mname" placeholder="Middlename" class="w-80 m-1 p-2  border-none text-xs rounded focus:outline-blue-50" >   
                 <input type="text" name="lname" placeholder="Lastname" class="w-80 m-1 p-2 border-none text-xs rounded focus:outline-blue-50" >

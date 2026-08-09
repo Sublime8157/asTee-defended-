@@ -70,11 +70,11 @@
                                 </tr>
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #dddddd;"><strong>Product ID:</strong></td>
-                                    <td style="width: 350px; padding: 10px; border: 1px solid #dddddd;">{{$invoiceData['processing']}}</td>
+                                    <td style="width: 350px; padding: 10px; border: 1px solid #dddddd;">@foreach($invoiceData['items'] as $item){{ $item->quantity }} &times; {{ $item->description }}<br>@endforeach</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #dddddd;"><strong>Customer Name:</strong></td>
-                                    <td style="padding: 10px; border: 1px solid #dddddd;">{{$invoiceData['userId']}}</td>
+                                    <td style="padding: 10px; border: 1px solid #dddddd;">{{ $invoiceData['contact'] }}</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #dddddd;"><strong>Contact:</strong></td>

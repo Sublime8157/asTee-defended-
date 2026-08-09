@@ -4,7 +4,8 @@ Per-phase copies live in the phase folders:
 [Phase 0](Phase%200/featured.md) ·
 [Phase 1](Phase%201/featured.md) ·
 [Phase 2a](Phase%202a/featured.md) ·
-[Phase 2c](Phase%202c/featured.md)
+[Phase 2c](Phase%202c/featured.md) ·
+[Phase 3](Phase%203/featured.md)
 
 ### Phase 0 — repo hygiene
 
@@ -70,3 +71,12 @@ Full notes in [docker/README.md](../docker/README.md).
 | `.dockerignore` | keeps `.env` and `*.sql` out of image layers |
 
 Decisions behind the stack are in [Phase 2c/refactor.md](Phase%202c/refactor.md).
+
+### Phase 3 — schema rebuild
+
+**Server-authoritative checkout**, **order history that survives being reviewed**, **stock that
+comes back on cancellation**, an admin **"sell to a named customer"** action, one order-line screen
+for both Processing and Cancel/Return, **private document handling** for IDs and payment proofs,
+and a **non-enumerating** forgot-password lookup.
+
+Details and the reasoning: [Phase 3/featured.md](Phase%203/featured.md).
