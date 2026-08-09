@@ -22,6 +22,10 @@ yarn-error.log
 # email addresses, bcrypt password hashes). Never commit these.
 *.sql
 !database/**/*.sql
+# Container bootstrap SQL is tracked, except the production dump copied in by
+# hand as 01-schema.sql (see docker/README.md).
+!docker/mysql-init/*.sql
+docker/mysql-init/01-schema.sql
 
 # Local tooling / build artefacts that don't belong in version control
 composer.phar
