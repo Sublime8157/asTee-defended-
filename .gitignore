@@ -17,3 +17,12 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Database dumps — contain customer PII (names, addresses, contact numbers,
+# email addresses, bcrypt password hashes). Never commit these.
+*.sql
+!database/**/*.sql
+
+# Local tooling / build artefacts that don't belong in version control
+composer.phar
+*.zip
