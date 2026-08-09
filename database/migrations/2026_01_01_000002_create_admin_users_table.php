@@ -7,31 +7,27 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Replaces `admin_login`, which had `age` and `mname` NOT NULL with no
+     * default and nothing that ever read them, plus a `profie` typo.
      */
     public function up(): void
     {
-        Schema::create('admin_login', function (Blueprint $table) {
+        Schema::create('admin_users', function (Blueprint $table) {
             $table->id();
-            $table->string('profie')->nullable();
             $table->string('fname');
-            $table->string('mname');
             $table->string('lname');
-            $table->integer('age');
             $table->string('email')->unique();
             $table->string('username')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('role')->default('staff');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('admin_login');
+        Schema::dropIfExists('admin_users');
     }
 };
