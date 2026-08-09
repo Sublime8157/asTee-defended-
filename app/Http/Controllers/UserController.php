@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -140,9 +141,16 @@ class UserController extends Controller
             'orderDate' => $order->created_at->format('Y-m-d'),
         ];
 
-        // Still synchronous — Phase 4 moves the Mailables onto the queue.
-        Mail::to(Auth::user()->email)->send(new InvoicePaymentMail($invoice));
-        Mail::to(config('mail.inboxes.orders'))->send(new NewOrderMadeMail($invoice));
+        // Still synchronous — Phase 4 moves the Mailables onto the queue. Until
+        // then this is wrapped: the order is already committed at this point, so
+        // an unreachable SMTP server used to turn a placed order into a 500 and
+        // invite the customer to order again.
+        try {
+            Mail::to(Auth::user()->email)->send(new InvoicePaymentMail($invoice));
+            Mail::to(config('mail.inboxes.orders'))->send(new NewOrderMadeMail($invoice));
+        } catch (\Throwable $e) {
+            Log::error('Order confirmation mail failed', ['order' => $order->id, 'error' => $e->getMessage()]);
+        }
 
         return redirect()->route('myPurchase')->with(
             'success',

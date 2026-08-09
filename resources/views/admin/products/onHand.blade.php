@@ -17,14 +17,7 @@
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
-                            <x-removeMultiple route="{{route('deleteFrom.OnHand')}}" status="hidden" 
-                            toMoveRoute="{{route('moveMultipleFrom.onHand')}}"
-                            processing="enabled"
-                            cancelReturn="enabled"
-                            onHand="disabled"
-                            userId="block"
-                            > 
-                            </x-removeMultiple>
+                            <x-removeMultiple route="{{ route('deleteFrom.OnHand') }}" status="hidden" />
                             <th class="adminTable">ID</th>
                             <th class="adminTable w-20">Image</th>
                             <th class="adminTable">Variation</th>
