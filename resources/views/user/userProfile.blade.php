@@ -17,7 +17,10 @@
                     <li class="cursor-pointer py-2 rounded text-white hover:bg-gray-400 ">Orders</li>
                     <li class="cursor-pointer py-2 rounded text-white hover:bg-gray-400 bg-gray-400">Settings</li>   
                     <li class="cursor-pointer py-2 rounded text-white hover:bg-gray-400 ">Password</li>   
-                    <a href="/logout"><li class="cursor-pointer text-white py-2 rounded hover:bg-gray-400 ">Logout</li></a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left cursor-pointer text-white py-2 rounded hover:bg-gray-400">Logout</button>
+                    </form>
                 </ul>
             </div>
         </div>

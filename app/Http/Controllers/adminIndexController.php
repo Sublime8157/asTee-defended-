@@ -6,13 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\adminLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use App\Models\feedback;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\AdminVerificationEmail;
 
 class adminIndexController extends Controller
 {
@@ -20,36 +16,8 @@ class adminIndexController extends Controller
     public function login() {
         return view('admin.login');
     }
-    public function registerAccount() {
-        return view('admin.registration');
-    }
     public function managePassword() {
         return view('admin.managePassword');
-    }
-    public function submitRegistration(Request $request) {
-        $validated = $request->validate([
-            'fname'  => "required|string",
-            'mname' => "required|string",
-            'lname' => "required|string",
-            'age' => "required|numeric",
-            'email' => ['required', 'email', Rule::unique('admin_login', 'email')],
-            'username' => ['required',  Rule::unique('admin_login', 'username')],
-            "password" => ['required','confirmed', 
-            Password::min(8)
-               ->letters()
-               ->mixedCase()
-               ->numbers()
-               ->symbols()
-               ->uncompromised()],
-        ]);
-        
-        $validated['password'] = bcrypt($validated['password']);
-        $validated['profile'] = 'adminIcon.png';
-        adminLogin::create($validated);
-     
-        Mail::to('manage_accounts@astee.store')->send(new AdminVerificationEmail($validated['email']));
-        return redirect()->back()->with(['success' => 'The verification was sent to the admin, please verify that this registration was aware of admin, thank you.']);
-
     }
     // changing password 
     public function changePassword(Request $request) {

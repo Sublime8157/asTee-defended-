@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Shell scripts run inside Linux containers — CRLF breaks the shebang.
+*.sh text eol=lf
+
 *.blade.php diff=html
 *.css diff=css
 *.html diff=html

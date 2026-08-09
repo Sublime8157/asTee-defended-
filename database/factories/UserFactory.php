@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'mname' => $faker->name(),
             'lname' => $faker->lastName(),
             'email' => $faker->unique()->safeEmail(),
-            // 'birthday' => $faker->date($format = 'Y-m-d', $max = 'now'),
+            'birthday' => $faker->date($format = 'Y-m-d', $max = 'now'),
             'username' => $faker->unique()->userName(),
             'address' => 'philippines',
             'userStatus' => $faker->numberBetween($min = 1, $max = 2),

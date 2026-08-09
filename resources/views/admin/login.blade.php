@@ -59,7 +59,9 @@
                                     <a href="/adminforgotPassword" class="underline text-xs text-gray-400 font-bold">Forgot Password?</a>
                                 </span>
                                 <span>
-                                    <a href="{{route('registration')}}" class="underline text-xs text-gray-400 font-bold">Register an Account?</a>
+                                    {{-- Self-service admin registration was removed: it was unauthenticated,
+                                         and combined with the unsigned /verifyAdmin/{email} route it let anyone
+                                         create a verified admin account. Use `php artisan astee:make-admin`. --}}
                                 </span>
                         </div>
                         {{-- Button --}}
