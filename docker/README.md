@@ -63,11 +63,15 @@ Compose reads these from a `.env` in the project root, all with defaults:
 |---|---|---|
 | `APP_PORT` | `8000` | Host port for the storefront |
 | `APP_KEY` | *(empty)* | Generated on first boot. Set it to keep sessions valid across rebuilds. |
-| `DB_DATABASE` | `asTeeFinal` | |
-| `DB_USERNAME` | `astee` | |
-| `DB_PASSWORD` | `secret` | |
-| `DB_ROOT_PASSWORD` | `root` | |
-| `DB_PORT` | `3306` | Bound to `127.0.0.1` only |
+| `DB_PORT_HOST` | `3306` | Host port for the database, bound to `127.0.0.1` only |
+
+The database credentials (`astee` / `secret`, root password `root`, database
+`asTeeFinal`) are **hardcoded in `docker-compose.yml`**, not overridable. Compose
+interpolates `${...}` from the very same `.env` Laravel reads, where
+`DB_USERNAME=root` and `DB_PASSWORD` is empty — that leaked in as
+`MARIADB_USER=root`, which MariaDB refuses, killing first-boot initialisation
+before the schema import ran. `DB_PORT_HOST` is named to dodge the same
+collision. Nothing here is reachable outside the compose network.
 
 `MAIL_MAILER` is forced to `log` — the repo's `.env` carries live Hostinger SMTP
 credentials, and a local stack must not be able to mail real customers. Sent

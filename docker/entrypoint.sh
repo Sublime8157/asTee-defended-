@@ -24,16 +24,17 @@ fi
 #
 # depends_on with a healthcheck covers most of this, but a container restarting
 # faster than the database can still race it.
+#
+# Probed with PDO, not mysqladmin. php:8.3-apache is Debian trixie, whose
+# default-mysql-client is MariaDB 11.8 — that client requires TLS by default and
+# dies against the non-TLS 10.11 server with "SSL is required, but the server
+# does not support it", so the loop could never succeed. pdo_mysql is the driver
+# Laravel itself connects with, which makes this the honest readiness check.
 # -----------------------------------------------------------------------------
 if [ -n "${DB_HOST:-}" ]; then
     echo "[entrypoint] waiting for ${DB_HOST}:${DB_PORT:-3306}"
     for i in $(seq 1 60); do
-        if mysqladmin ping \
-            --host="${DB_HOST}" \
-            --port="${DB_PORT:-3306}" \
-            --user="${DB_USERNAME:-root}" \
-            --password="${DB_PASSWORD:-}" \
-            --silent >/dev/null 2>&1; then
+        if php -r 'new PDO("mysql:host=".getenv("DB_HOST").";port=".(getenv("DB_PORT") ?: "3306").";dbname=".getenv("DB_DATABASE"), getenv("DB_USERNAME"), getenv("DB_PASSWORD"));' 2>/dev/null; then
             echo "[entrypoint] database is up"
             break
         fi

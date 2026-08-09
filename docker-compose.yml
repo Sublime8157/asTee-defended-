@@ -27,12 +27,18 @@ services:
       # explicitly to keep sessions valid across container rebuilds.
       APP_KEY: "${APP_KEY:-}"
 
+      # Hardcoded, NOT "${DB_USERNAME:-astee}". Compose interpolates ${...} from
+      # the project's .env — the same file Laravel uses, where DB_USERNAME=root
+      # and DB_PASSWORD is empty. That leaked in as MARIADB_USER=root, which the
+      # MariaDB entrypoint refuses (root already exists), aborting first-boot
+      # initialisation before the schema import ever ran. These credentials are
+      # local-only and reach nothing outside this compose network.
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: "3306"
-      DB_DATABASE: "${DB_DATABASE:-asTeeFinal}"
-      DB_USERNAME: "${DB_USERNAME:-astee}"
-      DB_PASSWORD: "${DB_PASSWORD:-secret}"
+      DB_DATABASE: asTeeFinal
+      DB_USERNAME: astee
+      DB_PASSWORD: secret
 
       # Writes mail to the container log instead of sending it. The repo's .env
       # carries live Hostinger SMTP credentials; a local stack must not be able
@@ -57,13 +63,15 @@ services:
     # uses MariaDB's ALTER TABLE ... ADD COLUMN IF NOT EXISTS.
     image: mariadb:10.11
     environment:
-      MARIADB_DATABASE: "${DB_DATABASE:-asTeeFinal}"
-      MARIADB_USER: "${DB_USERNAME:-astee}"
-      MARIADB_PASSWORD: "${DB_PASSWORD:-secret}"
-      MARIADB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-root}"
+      MARIADB_DATABASE: asTeeFinal
+      MARIADB_USER: astee
+      MARIADB_PASSWORD: secret
+      MARIADB_ROOT_PASSWORD: root
     ports:
-      # Exposed so you can point a GUI client at it. Loopback only.
-      - "127.0.0.1:${DB_PORT:-3306}:3306"
+      # Exposed so you can point a GUI client at it. Loopback only. DB_PORT_HOST
+      # rather than DB_PORT: the latter is set in the project's .env, which
+      # Compose reads, so the name would collide with Laravel's own config.
+      - "127.0.0.1:${DB_PORT_HOST:-3306}:3306"
     volumes:
       - astee-db:/var/lib/mysql
       # Scripts here run once, in filename order, on an empty data directory.

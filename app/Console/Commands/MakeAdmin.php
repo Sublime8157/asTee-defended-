@@ -54,9 +54,16 @@ class MakeAdmin extends Command
             return self::FAILURE;
         }
 
+        // mname and age are NOT NULL with no default in admin_login, but nothing
+        // in the admin panel ever reads them — they are copied from the customer
+        // table's shape. Filled with empties rather than prompted for. Making
+        // them nullable belongs to the Phase 3 migration set, and would not help
+        // an existing production database anyway.
         adminLogin::create([
             'fname' => $fname,
+            'mname' => '',
             'lname' => $lname,
+            'age' => 0,
             'email' => $email,
             'username' => $username,
             'password' => Hash::make($password),
