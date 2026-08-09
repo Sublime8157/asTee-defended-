@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class VerificationEmail extends Mailable
 {
@@ -34,8 +35,18 @@ class VerificationEmail extends Mailable
     public function build()
     {
       return $this
-        ->subject('Emai Verification')
+        ->subject('Verify your email address')
         ->markdown('emails.verification')
-        ->with(['email' => $this->userEmail]);
+        ->with([
+          'email' => $this->userEmail,
+          // Signed and expiring. The route previously took the address straight
+          // from the URL with no signature, so anyone could verify any account
+          // by typing the email into the address bar.
+          'verifyUrl' => URL::temporarySignedRoute(
+            'verified',
+            now()->addHours(48),
+            ['email' => $this->userEmail]
+          ),
+        ]);
     }
 }

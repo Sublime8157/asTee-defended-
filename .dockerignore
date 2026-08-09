@@ -1,0 +1,46 @@
+# Secrets — never bake the developer's real credentials into an image layer.
+# The container gets its configuration from compose environment variables.
+.env
+.env.*
+!.env.example
+
+# Database dumps contain real customer PII.
+*.sql
+
+# Rebuilt inside the image by the vendor and assets stages.
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/storage
+
+# Runtime state — must not be copied from the host.
+/storage/app/public/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# Not needed at runtime.
+/tests
+/.git
+/.github
+/.claude
+.gitignore
+.gitattributes
+.editorconfig
+phpunit.xml
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editor / OS noise
+/.idea
+/.vscode
+/.fleet
+.DS_Store
+Thumbs.db
+npm-debug.log
+yarn-error.log

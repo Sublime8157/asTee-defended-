@@ -1,254 +1,288 @@
 <?php
 
-namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Mail\VerificationEmail;
-use Illuminate\Support\Facades\Mail;
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Auth\AdminCustomizeResetPasswordController;
 use App\Http\Controllers\Auth\AdminCustomizeForgotPasswordController;
+use App\Http\Controllers\Auth\AdminCustomizeResetPasswordController;
 use App\Http\Controllers\Auth\UserCustomizeForgotPasswordController;
 use App\Http\Controllers\Auth\UserCustomizeResetPasswordController;
-use App\Models\adminLogin;
+use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginSignupController;
+use App\Http\Controllers\OrderHistoryController;
+use App\Http\Controllers\PaymentHistoryController;
+use App\Http\Controllers\PendingAccountsController;
+use App\Http\Controllers\SalesHistoryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPurchaseController;
+use App\Http\Controllers\accountsController;
+use App\Http\Controllers\adminCancelReturnController;
+use App\Http\Controllers\adminIndexController;
+use App\Http\Controllers\adminOnHandsController;
+use App\Http\Controllers\adminOnProcessController;
+use App\Http\Controllers\blockedAccountsController;
+use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\productsController;
+use App\Http\Controllers\userProfileController;
+use App\Mail\VerificationEmail;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Routes are grouped by who is allowed to reach them. Before this rewrite the
+| file was a flat list in which `middleware('admin')` was attached to eight GET
+| display pages only — every admin write (create/edit/delete product, block or
+| delete a customer, approve an ID, delete payment records) was reachable by an
+| anonymous visitor who knew the URI.
+|
+| URIs and route names are deliberately unchanged: Blade `route()` helpers and
+| the hand-written jQuery in public/js/ hardcode both.
 |
 */
 
-// Route::get('/', function(){
-//     return view('welcome');
-// });
-Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
-Route::post('/loggingIn', [adminIndexController::class, 'adminLogin']);
-Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
-Route::get('/managePassword', [adminIndexController::class, 'managePassword'])->middleware('admin');
-Route::post('/changePassword',[adminIndexController::class, 'changePassword'])->name('changeAdmin.password')->middleware('admin');
-Route::get('/regsiterAccount', [adminIndexController::class, 'registerAccount'])->name('registration');
-Route::post('/submitRegistration', [adminIndexController::class, 'submitRegistration'])->name('registerAdmin.Account');
-Route::view('/adminVerified', 'admin.emailverified');
-Route::get('/verifyAdmin/{email}', function($email){
-    $admin = adminLogin::where('email', $email)->first();
-    if($admin) {
-        $admin->email_verified_at = now();
-        $admin->save();
-    }
-    return view('admin.emailverified');
-})->name('verifyAdminRegistration');
+// ---------------------------------------------------------------------------
+// Public — storefront browsing and the login/registration entry points
+// ---------------------------------------------------------------------------
 
-// Route for logging out 
-Route::get('/logout',  [LoginSignupController::class, 'logout']);
-// Default rouse that shows the login form 
 Route::get('/', [LoginSignupController::class, 'LoginSignup'])->name('userLogin');
-Auth::routes(['verify' => true]);
 
-// Route for logging in proccess
-Route::post('/login/process', [LoginSignupController::class, 'process'])->name('loginProcess')->middleware('throttle:5,1');
-// Route for registering a user 
-Route::post('/store', [LoginSignupController::class, 'store']);
+Route::post('/login/process', [LoginSignupController::class, 'process'])
+    ->name('loginProcess')
+    ->middleware('throttle:5,1');
 
-// Route for homepage
-// Route::get('/homepage', [UserController::class, 'home']);
-// Route for about us page
+Route::post('/store', [LoginSignupController::class, 'store'])
+    ->middleware('throttle:5,1');
+
+Route::post('/logout', [LoginSignupController::class, 'logout'])->name('logout');
+
 Route::get('/about-us', [UserController::class, 'about_us']);
-// Route for product tab
-Route::get('/filterProducts', [productsController::class, 'filterProducts']);
 Route::get('/Product', [productsController::class, 'displayOnHandsProducts']);
-// for contact us 
-Route::view('/contact-us','user.contact_us');
-// Route for DIY page
-Route::get('/DIY',  [UserController::class, 'DIY']);
-Route::view('/licensing', 'user.licensing')->name('licensing');
-// These routes was for updating the user Profile
-Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
-Route::post('/uploadID',[userProfileController::class,'uploadID'])->name('upload.validID');
-Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
-Route::get('/checkout',[UserController::class, 'checkout'])->name('checkout.process');
-Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
-Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
-
-// All these routes are responsible for admin panel
-Route::get('/dashboard', [dashboardController::class, 'dashboard'])->middleware('admin');
-Route::get('/filterSalesDate', [dashboardController::class, 'filterSales']); 
-Route::get('/products/feedbacks', [adminIndexController::class, 'feedbacks'])->middleware('admin');
-Route::patch('/featureReview/{id}',[adminIndexController::class, 'toFeature'])->name('featureReview');
-
-// route for order history 
-Route::get('/orders', [OrderHistoryController::class, 'showOrderList']);
-Route::get('/searchOrder', [OrderHistoryController::class, 'filterOrders']);
-Route::get('/sortOrders', [OrderHistoryController::class, 'sortOrders']); 
-Route::get('/filterDate', [OrderHistoryController::class, 'filterDate']);
-
-//route for payments history 
-Route::get('/payments', [PaymentHistoryController::class, 'display']);
-Route::get('/refresh', [PaymentHistoryController::class, 'refresh']); 
-Route::post('/paymentForm', [PaymentHistoryController::class, 'store'])->name('paymentForm');
-Route::get('/filterPayments', [PaymentHistoryController::class, 'sort']);
-Route::get('/filterPaymentsDate', [PaymentHistoryController::class, 'filterDate']); 
-Route::get('/filterbyBank', [PaymentHistoryController::class, 'filterBanks']);
-Route::get('/filterPrice', [PaymentHistoryController::class, 'filterPrice']);
-Route::get('/searchIdPayments', [PaymentHistoryController::class, 'searchById']);
-Route::delete('/removePayments', [PaymentHistoryController::class, 'removePaymentsRecords'])->name('removePayments');
-Route::delete('/deleteRecordPayments', [PaymentHistoryController::class, 'removeRecord'])->name('deleteRecordPayments');
-Route::get('/ordersIdAmount', [PaymentHistoryController::class,'ordersIdAmount']); 
-    
-Route::get('/sales', [SalesHistoryController::class, 'display'])->name('salesDisplay'); 
-
-// Routes for admin products panel tab 
-// for onhnad products tab 
-Route::get('/products/onHand', [adminOnHandsController:: class, 'onHand'])->middleware('admin');
-Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
-// remove product
-Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');
-// for filter products for admin panel 
-Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHandProducts']);
-// for editing the products in onhand 
-Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
-Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
-Route::post('/moveMultipleOnHand', [adminOnHandsController::class, 'moveMultiple'])->name('moveMultipleFrom.onHand');
-// sort on hands product table 
-Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
-//delte all
-Route::delete('/deleteAll',[adminOnHandsController::class, 'removeAllProduct'])->name('deleteFrom.OnHand');
-// For processing tab
-Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing'])->middleware('admin');
-Route::post('/storeProcessing ', [adminOnProcessController::class, 'storeProcessing']);
-Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
-Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
-Route::get('/updateTable', [adminOnProcessController::class, 'updateTable'])->name('updateTable');
-Route::post('/updateMultiple',[adminOnProcessController::class, 'multipleUpdate'])->name('updateMultiple.status');
-Route::post('/moveMultipleProcessing',[adminOnProcessController::class, 'moveMultiple'])->name('moveMutipleFrom.Processing');
-// move a product
-Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
-// sort a product
-Route::get('/sortProcessingProduct', [adminOnProcessController::class, 'sortProduct']);
-// change a product status 
-Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStatus'])->name('update.status');
-// filter products in processign tab 
-Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
-Route::delete('/removeMultiple', [adminOnProcessController::class, 'removeMultiple'])->name('deleteFrom.Processing');
-Route::get('/filterDateProcessing', [adminOnProcessController::class, 'filterDate']);
-// for cancel or return tab
-Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return'])->middleware('admin');
-Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
-Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
-Route::post('/moveCancelReturn/{id}', [adminCancelReturnController::class, 'moveProduct'])->name('move.cancelReturnProduct');
-// filter products in cancel or return
-Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCancelReturn']);
-Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, 'removeProduct'])->name('cancelReturn.remove');
-// sort products in cancel or return 
-Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sortProduct']);
-Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'removeMultiple'])->name('deleteFrom.cancel');
-Route::post('/moveMultiple.cancel',[adminCancelReturnController::class, 'moveMultiple'])->name('moveMultipleFrom.cancel');
-Route::get('/filterReturnedCancelDate', [adminCancelReturnController::class, 'filterDate']); 
-
-
-// Route for accounts admin panel tab 
-Route::get('/accounts/active', [accountsController::class, 'displayUsers'])->middleware('admin');
-// search a suer 
-Route::get('/searchUser', [accountsController::class, 'searchUsers']);
-// sort user by name, email or id and if descend or ascend 
-Route::get('/sortUsers', [accountsController::class, 'sortUsers']);
-// block a user 
-Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('users.block');
-
-// remove a user 
-Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
-Route::patch('/userVerifyID/{id}',[accountsController::class,'verifyID'])->name('users.verifyID');
-
-Route::get('/accounts/blocked', [blockedAccountsController::class, 'display'])->middleware('admin');
-Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
-Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
-Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);
-
-Route::get('/accounts/pending', [PendingAccountsController::class, 'displayUsers'])->middleware('admin');
-Route::get('/sortPendingUsers',[PendingAccountsController::Class, 'sortPendingUsers']);
-Route::get('/searchPendingUsers',[PendingAccountsController::Class, 'searchPendingUsers']);
-
-// product details 
+Route::get('/filterProducts', [productsController::class, 'filterProducts']);
 Route::get('/productDetails/{id}', [productsController::class, 'details']);
-// user cart 
-Route::post('/storeCart', [UserController::class, 'store'])
-                                                    ->middleware('cart')
-                                                    ->name('cart');
-Route::get('/cart/{userId}', [UserController::class, 'cart']);
-Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
-Route::delete('/removeAll',[UserController::class, 'removeAll'])->name('remove.All');
-Route::post('/confirmCheckout',[UserController::class, 'confirmCheckout'])->name('confirmCheckout');
-Auth::routes();
+Route::get('/DIY', [UserController::class, 'DIY']);
+Route::view('/contact-us', 'user.contact_us');
+Route::view('/licensing', 'user.licensing')->name('licensing');
 
-// for mypurchase controller 
-Route::post('/submitCancel/{id}', [UserPurchaseController::class, 'submitToCancel'])->name('submitOrder.cancel');
-Route::get('/userProfile/myPurchase/{userId}', [UserPurchaseController::class, 'toPay'])->name('myPurchase');
-Route::get('userProfile/myPurchase//{status}',[UserPurchaseController::class, 'productStatus'])->name('product.status');
-Route::post('/orderRecieved', [UserPurchaseController::class, 'orderRecieved'])->name('order.recieved');
-Route::post('/submitReview', [UserPurchaseController::class, 'submitReview'])->name('submitReview');
+Route::post('/userContact', [ContactUsController::class, 'sendToEmail'])
+    ->name('sendFeedback')
+    ->middleware('throttle:5,1');
 
+// ---------------------------------------------------------------------------
+// Public — email verification and password reset
+//
+// /emailVerified/{email} previously had no signature, token or throttle: any
+// visitor could mark any customer's email verified by typing the address into
+// the URL. It is now a signed, expiring link that only the mail recipient holds.
+// ---------------------------------------------------------------------------
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::get('/emailVerification', function(){
-    return view('emails.verification');
-});
-
-// always checks the middleware :) 
-Route::view('/adminforgotPassword', 'adminForgotPassword');
-Route::post('admin/password/email', [AdminCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
-Route::get('/admin/password/reset/{token}', [AdminCustomizeResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/admin/password/reset', [AdminCustomizeResetPasswordController::class, 'reset'])->name('password.update');
-
-// verify Email 
-Route::get('/emailVerified/{email}', function($email){
+Route::get('/emailVerified/{email}', function ($email) {
     $user = User::where('email', $email)->first();
 
-    if($user) {
+    if ($user) {
         $user->email_verified_at = now();
         $user->save();
     }
 
     return view('user.verified');
-})->name('verified');
+})->name('verified')->middleware('signed');
 
-// view for email 
 Route::view('/emailSent', 'user.emailSent');
 
-// view for sending email when user did not verify on their first registration  
-Route::get('verifyEmail2', function(){
-    $userEmail = session('email');
+Route::get('verifyEmail2', function () {
     return view('user.verifyEmail2')->with('email', session('email'));
 });
-// email verification for users that doesnt verify their email on ther registration 
-Route::post('/emailVerification2', function(Request $request){
-    $userEmail = $request->email;
-    
-    Mail::to($userEmail)->send(new VerificationEmail($userEmail));
+
+Route::post('/emailVerification2', function (Request $request) {
+    $validated = $request->validate([
+        'email' => ['required', 'email', 'exists:customers,email'],
+    ]);
+
+    Mail::to($validated['email'])->send(new VerificationEmail($validated['email']));
 
     return view('user.emailSent');
-})->name('verifyAgain');
-// route for user changing password 
-Route::post('userChangePassword', [userProfileController::class, 'changePassword'])->name('userChange.Password');
-// view for finding user 
+})->name('verifyAgain')->middleware('throttle:3,1');
+
 Route::view('/findUser', 'user.findUser')->name('findUser');
-Route::post('/searchedUser', [LoginSignupController::class, 'searchUser'])->name('submit.search');
-// reset password 
+Route::post('/searchedUser', [LoginSignupController::class, 'searchUser'])
+    ->name('submit.search')
+    ->middleware('throttle:5,1');
 Route::view('/userFound', 'user.foundUser')->name('foundUser');
-Route::post('user/password/email', [UserCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])->name('user.password.email');
+
+Route::post('user/password/email', [UserCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('user.password.email')
+    ->middleware('throttle:5,1');
 Route::view('/userEmailSent', 'user.sentEmail')->name('userSent.Email');
-Route::get('password/reset/{token}', [UserCustomizeResetPasswordController::class, 'showResetForm'])->name('userPassword.reset');
-Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'reset'])->name('userPassword.update');
-Route::view('passwordResetEmail', 'emails.customPasswordReset');
-// invoice mail 
-Route::view('/invoice','mail.mailTemplate');
-Route::view('/newOrder', 'mail.newOrderMade');
+Route::get('password/reset/{token}', [UserCustomizeResetPasswordController::class, 'showResetForm'])
+    ->name('userPassword.reset');
+Route::post('password/reset', [UserCustomizeResetPasswordController::class, 'reset'])
+    ->name('userPassword.update')
+    ->middleware('throttle:5,1');
 
-// user feedback 
-Route::post('/userContact', [ContactUsController::class, 'sendToEmail'])->name('sendFeedback');
-Route::view('/feedback', 'mail.newUserFeedback');
+// ---------------------------------------------------------------------------
+// Authenticated customers
+// ---------------------------------------------------------------------------
 
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // Profile
+    Route::get('/userProfile/myAccount', [UserController::class, 'userProfile']);
+    Route::get('/userProfile/myPassword', [UserController::class, 'userPassword']);
+    Route::post('/updateProfile', [userProfileController::class, 'updateUserInfo']);
+    Route::post('/userProfileUpdate', [userProfileController::class, 'updateProfile'])->name('update.profile');
+    Route::post('/uploadID', [userProfileController::class, 'uploadID'])->name('upload.validID');
+    Route::post('userChangePassword', [userProfileController::class, 'changePassword'])->name('userChange.Password');
+
+    // Cart and checkout
+    Route::post('/storeCart', [UserController::class, 'store'])->name('cart');
+    Route::get('/cart/{userId}', [UserController::class, 'cart']);
+    Route::delete('/removeCartItem/{productId}', [UserController::class, 'remove'])->name('remove.cart');
+    Route::delete('/removeAll', [UserController::class, 'removeAll'])->name('remove.All');
+    Route::get('/checkout', [UserController::class, 'checkout'])->name('checkout.process');
+    Route::post('/confirmCheckout', [UserController::class, 'confirmCheckout'])->name('confirmCheckout');
+
+    // Purchases
+    Route::get('/userProfile/myPurchase/{userId}', [UserPurchaseController::class, 'toPay'])->name('myPurchase');
+    Route::get('userProfile/myPurchase//{status}', [UserPurchaseController::class, 'productStatus'])->name('product.status');
+    Route::post('/submitCancel/{id}', [UserPurchaseController::class, 'submitToCancel'])->name('submitOrder.cancel');
+    Route::post('/orderRecieved', [UserPurchaseController::class, 'orderRecieved'])->name('order.recieved');
+    Route::post('/submitReview', [UserPurchaseController::class, 'submitReview'])->name('submitReview');
+});
+
+// ---------------------------------------------------------------------------
+// Admin — authentication
+//
+// Self-service admin registration (/regsiterAccount, /submitRegistration) and
+// the unsigned /verifyAdmin/{email} route are removed. Together they allowed
+// anyone to create an admin account and mark it verified in two unauthenticated
+// requests. Admin accounts are now created with `php artisan astee:make-admin`.
+// ---------------------------------------------------------------------------
+
+Route::get('/loginAdmin', [adminIndexController::class, 'login'])->name('loginAdmin');
+Route::post('/loggingIn', [adminIndexController::class, 'adminLogin'])
+    ->middleware('throttle:5,1');
+
+Route::view('/adminforgotPassword', 'adminForgotPassword');
+Route::post('admin/password/email', [AdminCustomizeForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('admin.password.email')
+    ->middleware('throttle:5,1');
+Route::get('/admin/password/reset/{token}', [AdminCustomizeResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+Route::post('/admin/password/reset', [AdminCustomizeResetPasswordController::class, 'reset'])
+    ->name('password.update')
+    ->middleware('throttle:5,1');
+
+// ---------------------------------------------------------------------------
+// Admin — everything below requires an authenticated admin
+// ---------------------------------------------------------------------------
+
+Route::middleware('admin')->group(function () {
+    Route::post('adminLogout', [adminIndexController::class, 'adminLogout']);
+    Route::get('/managePassword', [adminIndexController::class, 'managePassword']);
+    Route::post('/changePassword', [adminIndexController::class, 'changePassword'])->name('changeAdmin.password');
+
+    // Dashboard
+    Route::get('/dashboard', [dashboardController::class, 'dashboard']);
+    Route::get('/filterSalesDate', [dashboardController::class, 'filterSales']);
+
+    // Feedback
+    Route::get('/products/feedbacks', [adminIndexController::class, 'feedbacks']);
+    Route::patch('/featureReview/{id}', [adminIndexController::class, 'toFeature'])->name('featureReview');
+
+    // Order history
+    Route::get('/orders', [OrderHistoryController::class, 'showOrderList']);
+    Route::get('/searchOrder', [OrderHistoryController::class, 'filterOrders']);
+    Route::get('/sortOrders', [OrderHistoryController::class, 'sortOrders']);
+    Route::get('/filterDate', [OrderHistoryController::class, 'filterDate']);
+
+    // Payment history
+    Route::get('/payments', [PaymentHistoryController::class, 'display']);
+    Route::get('/refresh', [PaymentHistoryController::class, 'refresh']);
+    Route::post('/paymentForm', [PaymentHistoryController::class, 'store'])->name('paymentForm');
+    Route::get('/filterPayments', [PaymentHistoryController::class, 'sort']);
+    Route::get('/filterPaymentsDate', [PaymentHistoryController::class, 'filterDate']);
+    Route::get('/filterbyBank', [PaymentHistoryController::class, 'filterBanks']);
+    Route::get('/filterPrice', [PaymentHistoryController::class, 'filterPrice']);
+    Route::get('/searchIdPayments', [PaymentHistoryController::class, 'searchById']);
+    Route::delete('/removePayments', [PaymentHistoryController::class, 'removePaymentsRecords'])->name('removePayments');
+    Route::delete('/deleteRecordPayments', [PaymentHistoryController::class, 'removeRecord'])->name('deleteRecordPayments');
+    Route::get('/ordersIdAmount', [PaymentHistoryController::class, 'ordersIdAmount']);
+
+    // Sales
+    Route::get('/sales', [SalesHistoryController::class, 'display'])->name('salesDisplay');
+
+    // Products — on hand
+    Route::get('/products/onHand', [adminOnHandsController::class, 'onHand']);
+    Route::post('/addProducts', [adminOnHandsController::class, 'storeOnhand']);
+    Route::delete('/removeProduct/{id}', [adminOnHandsController::class, 'removeProduct'])->name('product.remove');
+    Route::get('/filterOnHandProducts', [adminOnHandsController::class, 'filterOnHandProducts']);
+    Route::patch('/editProduct/{id}', [adminOnHandsController::class, 'editProduct'])->name('edit.Product');
+    Route::post('/moveProduct/{id}', [adminOnHandsController::class, 'moveProduct'])->name('move.Product');
+    Route::post('/moveMultipleOnHand', [adminOnHandsController::class, 'moveMultiple'])->name('moveMultipleFrom.onHand');
+    Route::get('/sortProduct', [adminOnHandsController::class, 'sortProducts']);
+    Route::delete('/deleteAll', [adminOnHandsController::class, 'removeAllProduct'])->name('deleteFrom.OnHand');
+
+    // Products — processing
+    Route::get('/products/proccessing', [adminOnProcessController::class, 'proccessing']);
+    Route::post('/storeProcessing', [adminOnProcessController::class, 'storeProcessing']);
+    Route::delete('/removeProcessing/{id}', [adminOnProcessController::class, 'removeProduct'])->name('productProcess.remove');
+    Route::patch('/editProcessingProduct/{id}', [adminOnProcessController::class, 'editProcessingProduct'])->name('productProcess.edit');
+    Route::post('/updateMultiple', [adminOnProcessController::class, 'multipleUpdate'])->name('updateMultiple.status');
+    Route::post('/moveMultipleProcessing', [adminOnProcessController::class, 'moveMultiple'])->name('moveMutipleFrom.Processing');
+    Route::post('/processMoveProduct/{id}', [adminOnProcessController::class, 'moveProduct'])->name('move.processProduct');
+    Route::get('/sortProcessingProduct', [adminOnProcessController::class, 'sortProduct']);
+    Route::patch('/updateStatus/{id}', [adminOnProcessController::class, 'updateStatus'])->name('update.status');
+    Route::get('/filterProcessingProducts', [adminOnProcessController::class, 'filterProcessing']);
+    Route::delete('/removeMultiple', [adminOnProcessController::class, 'removeMultiple'])->name('deleteFrom.Processing');
+    Route::get('/filterDateProcessing', [adminOnProcessController::class, 'filterDate']);
+
+    // Products — cancel / return
+    Route::get('/products/cancelReturn', [adminCancelReturnController::class, 'cancel_return']);
+    Route::post('/storeCancelReturn', [adminCancelReturnController::class, 'storeCancelReturn']);
+    Route::patch('/editCancelReturnProduct/{id}', [adminCancelReturnController::class, 'editCancelReturn'])->name('edit.cancelReturn');
+    Route::post('/moveCancelReturn/{id}', [adminCancelReturnController::class, 'moveProduct'])->name('move.cancelReturnProduct');
+    Route::get('/filterCancelReturn', [adminCancelReturnController::class, 'filterCancelReturn']);
+    Route::delete('/removeReturnCancel/{id}', [adminCancelReturnController::class, 'removeProduct'])->name('cancelReturn.remove');
+    Route::get('/sortCancelReturnProduct', [adminCancelReturnController::class, 'sortProduct']);
+    Route::delete('/removeMultipleCancel', [adminCancelReturnController::class, 'removeMultiple'])->name('deleteFrom.cancel');
+    Route::post('/moveMultiple.cancel', [adminCancelReturnController::class, 'moveMultiple'])->name('moveMultipleFrom.cancel');
+    Route::get('/filterReturnedCancelDate', [adminCancelReturnController::class, 'filterDate']);
+
+    // Accounts — active
+    Route::get('/accounts/active', [accountsController::class, 'displayUsers']);
+    Route::get('/searchUser', [accountsController::class, 'searchUsers']);
+    Route::get('/sortUsers', [accountsController::class, 'sortUsers']);
+    Route::patch('/userBlock/{id}', [accountsController::class, 'block'])->name('users.block');
+    Route::delete('/users/{id}', [accountsController::class, 'destroy'])->name('users.destroy');
+    Route::patch('/userVerifyID/{id}', [accountsController::class, 'verifyID'])->name('users.verifyID');
+
+    // Accounts — blocked
+    Route::get('/accounts/blocked', [blockedAccountsController::class, 'display']);
+    Route::get('/sortBlockUsers', [blockedAccountsController::class, 'sortBlockUsers']);
+    Route::patch('/unblock/{id}', [blockedAccountsController::class, 'unblock'])->name('users.unblock');
+    Route::get('/searchBlockedUsers', [blockedAccountsController::class, 'searchBlockedUsers']);
+
+    // Accounts — pending
+    Route::get('/accounts/pending', [PendingAccountsController::class, 'displayUsers']);
+    Route::get('/sortPendingUsers', [PendingAccountsController::class, 'sortPendingUsers']);
+    Route::get('/searchPendingUsers', [PendingAccountsController::class, 'searchPendingUsers']);
+});
+
+// ---------------------------------------------------------------------------
+// Local-only mail template previews
+//
+// These render raw mail templates and were publicly reachable in production
+// with no middleware.
+// ---------------------------------------------------------------------------
+
+if (app()->environment(['local', 'development'])) {
+    Route::view('/emailVerification', 'emails.verification');
+    Route::view('/passwordResetEmail', 'emails.customPasswordReset');
+    Route::view('/invoice', 'mail.mailTemplate');
+    Route::view('/newOrder', 'mail.newOrderMade');
+    Route::view('/feedback', 'mail.newUserFeedback');
+}

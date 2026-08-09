@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('userId')->nulalble();
+            $table->unsignedBigInteger('userId')->nullable();
             $table->unsignedBigInteger('productId');
             $table->integer('starCountAll');
             $table->integer('starCountQuality');

@@ -96,7 +96,10 @@
                         </div>
                         <div class="absolute bottom-0 p-5 flex items-center gap-2 w-full">
                             <ion-icon name="exit" class="text-lg"></ion-icon>
-                            <a href="/logout">Logout</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit">Logout</button>
+                            </form>
                         </div>
                    </div>
                  </div>
@@ -130,12 +133,13 @@
                                             <span class="text-sm">Manage Account</span>
                                             
                                         </a>
-                                        <a href="/logout" class="flex items-center hover:bg-gray-200 gap-2 py-2 px-4
-                                        w-full">
-                                            <ion-icon name="exit" class="text-base"></ion-icon>
-                                            <span class="text-sm">Logout</span>
-                                            
-                                        </a>
+                                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                                            @csrf
+                                            <button type="submit" class="flex items-center hover:bg-gray-200 gap-2 py-2 px-4 w-full">
+                                                <ion-icon name="exit" class="text-base"></ion-icon>
+                                                <span class="text-sm">Logout</span>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
 
