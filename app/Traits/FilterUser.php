@@ -1,99 +1,78 @@
-<?php 
-namespace App\Traits; 
+<?php
+
+namespace App\Traits;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Models\User; 
-use App\Models\cart;
-use App\Models\orders;
-use App\Models\Processing;
-use App\Models\feedback;
-use App\Models\CancelReturn;
 
+/**
+ * Shared list behaviour for the three account screens (active, blocked,
+ * pending), each of which is otherwise a ~30-line controller.
+ *
+ * The scope is now passed as a closure rather than as a `userStatus` integer.
+ * The pending screen used to pass '3' — a status value that never existed in
+ * the data — so the pending list was permanently empty.
+ */
+trait FilterUser
+{
+    use SortsQueries;
 
-trait FilterUser {
-    public function searchUserTrait(Request $request, $userStatus, $searchInput){
-            // get the value of input field with name attribute of searchById
-            $searchById = $request->input($searchInput);
-            // use the query() when you will build a data before displaying 
-            $userData = User::query();
-    
-            // check if the input field for search id is not empty if it is not empty run the search 
-            // take note that the $query callback function use to group all the where 
-            if ($searchById) {
-                $userData = $userData->where(function($query) use ($searchById) {
-                    $query->where('fname', 'LIKE', "%{$searchById}%")
-                          ->orWhere('email', 'LIKE', "%{$searchById}%")
-                          ->orWhere('id', $searchById);
-                });
-            }
-            
-    
-            // assign the builded data to userData variable 
-            $userData->where('userStatus',  $userStatus);
-            $userData = $userData->get();
-    
-    
-            // display the result in idSearchResult a result in ajax 
-            return view('admin.accounts.searchActives.idSearchResult', compact('userData'));
+    private const SORTABLE = ['id', 'fname', 'lname', 'email', 'username', 'created_at'];
+
+    public function searchUserTrait(Request $request, callable $scope, string $searchInput)
+    {
+        $search = $request->input($searchInput);
+
+        $userData = User::query()
+            ->tap($scope)
+            ->when($search, fn (Builder $query) => $query->where(function (Builder $q) use ($search) {
+                $q->where('fname', 'LIKE', "%{$search}%")
+                    ->orWhere('lname', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('id', $search);
+            }))
+            ->get();
+
+        return view('admin.accounts.searchActives.idSearchResult', compact('userData'));
     }
 
-    public function sortUserTrait(Request $request, $userStatus, $sortUsersBy, $orderUsersBy) {
-           // get the sortBy input 
-           $sortUsers = $request->input($sortUsersBy);
-           // get the orderBy input 
-           $orderBy = strtolower($request->input($orderUsersBy));
-   
-           // starts a building query 
-           $userData = User::query();
-           // order the users data based on the value of sort users with orderby
-           $userData->orderBy($sortUsers, $orderBy);
-           // get the result 
-           $userData->where('userStatus', $userStatus);
-           $userData = $userData->get();
-           return view('admin.accounts.searchActives.idSearchResult', compact('userData'));
+    public function sortUserTrait(Request $request, callable $scope, string $sortKey, string $orderKey)
+    {
+        $userData = $this->applySort(
+            User::query()->tap($scope),
+            $request,
+            self::SORTABLE,
+            $sortKey,
+            $orderKey
+        )->get();
+
+        return view('admin.accounts.searchActives.idSearchResult', compact('userData'));
     }
 
-    public function displayUserTrait($userStatus, $verified, $view) {
-        $userData = User::query();
-        $userData->where('userStatus', '=', $userStatus)
-                ->$verified('email_verified_at');
-        $userData = $userData->paginate(10);
-        return view($view, compact('userData'));
-    }
-
-    public function blockUnblockTrait($id, $userStatus, $result) {
-        $user = User::findOrFail($id);
-        $user->update([
-            'userStatus' => $userStatus,
+    public function displayUserTrait(callable $scope, string $view)
+    {
+        return view($view, [
+            'userData' => User::query()->tap($scope)->paginate(10),
         ]);
+    }
+
+    public function blockUnblockTrait(int $id, ?string $blockedAt, string $result)
+    {
+        User::findOrFail($id)->update(['blocked_at' => $blockedAt]);
 
         return redirect()->back()->with('blocked', $result);
     }
 
-    public function destroyTrait($id) {
-         // remove from orders
-         $cart = cart::where('userId', $id);
-         $cart->delete();
+    /**
+     * The old version deleted from carts, orders, processing, feedback and
+     * cancel-return by hand, one query each, with no transaction — and missed
+     * payments entirely. Every one of those is now an ON DELETE CASCADE.
+     */
+    public function destroyTrait(int $id)
+    {
+        User::findOrFail($id)->delete();
 
-         // remove from orders
-         $orders = orders::where('userId', $id);
-         $orders->delete();
-         //remove from processsing 
-         $processing = Processing::where('userId', $id);            
-         $processing->delete();
-         // remove from feedback
-         $feedback = feedback::where('userId', $id);
-         $feedback->delete();
-         // remove from cancel return 
-         $cancelReturn = CancelReturn::where('userId', $id);
-         $cancelReturn->delete();
-         // and finally remove from user 
-         $user = User::findOrFail($id);
-         $user->delete();
-
-         
-         return redirect()->back()->with('success', 'User deleted successfully');
+        return redirect()->back()->with('success', 'User deleted successfully');
     }
 }
-
-
-?>

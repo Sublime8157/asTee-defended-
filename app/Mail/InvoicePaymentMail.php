@@ -3,8 +3,8 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -12,8 +12,9 @@ use Illuminate\Queue\SerializesModels;
 class InvoicePaymentMail extends Mailable
 {
     use Queueable, SerializesModels;
- 
+
     public $invoiceData;
+
     /**
      * Create a new message instance.
      */
@@ -45,15 +46,16 @@ class InvoicePaymentMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {
         return [];
     }
 
-    public function build() {
+    public function build()
+    {
         return $this->view('mail.mailTemplate')
-                    ->with(['invoiceData' => $this->invoiceData]);
+            ->with(['invoiceData' => $this->invoiceData]);
     }
 }

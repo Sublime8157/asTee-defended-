@@ -1,27 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Validator;
+
+use App\Mail\UserFeedbackMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\UserFeedbackMail;
 
 class ContactUsController extends Controller
 {
-    public function sendToEmail(Request $request) {
+    public function sendToEmail(Request $request)
+    {
         $validated = $request->validate([
-            'name' => 'required',
-            'message' => 'required'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'message' => ['required', 'string', 'max:2000'],
         ]);
 
-        $feedbackInfo = [
-            'name' => $validated['name'],
-            'message' => $validated['message'],
-            'email' => $request->email
-        ];
-
-        Mail::to('asteefeedbacks@astee.store')->send(new UserFeedbackMail($feedbackInfo));
+        Mail::to(config('mail.inboxes.feedback'))->send(new UserFeedbackMail($validated));
 
         return redirect()->back()->with(['Success' => 'Thank you for your feedback!']);
-    }   
+    }
 }

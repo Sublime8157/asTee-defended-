@@ -36,6 +36,14 @@ return [
             'throw' => false,
         ],
 
+        // Government ID scans and bank payment proofs. Never symlinked into
+        // public/ — they are streamed by a controller behind the admin gate.
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

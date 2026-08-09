@@ -1,200 +1,150 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\Products;
-use App\Models\Processing;
-use App\Models\OnHand;
-use App\Models\CancelReturn;
-use App\Models\Variations;
-use Illuminate\Support\Facades\Validator;
-use App\Models\User;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Route;
-use App\Models\orders;
-use Illuminate\Support\Str;
-use App\Models\Sales;
-use App\Models\feedback;
-use Illuminate\Support\Facades\DB;
 
+use App\Enums\CancelReason;
+use App\Enums\OrderStatus;
+use App\Models\OrderItem;
+use App\Models\Review;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class UserPurchaseController extends Controller
 {
+    /**
+     * The customer's purchase tabs.
+     *
+     * Replaces toPay() and productStatus(), which were the same method twice
+     * and read the user id from session('id') rather than from the guard.
+     */
+    public function index(Request $request)
+    {
+        $status = OrderStatus::tryFrom((string) $request->query('status')) ?? OrderStatus::ToPay;
 
-        
-//     // show the to pay products of user 
-public function toPay($status) {
-    $productStatus = $status;
-    $userId = session('id');
+        $items = $this->ownedItems()
+            ->with('order')
+            ->where('status', $status)
+            ->latest()
+            ->get();
 
-    $product = Processing::where('userId', $userId)
-                            ->where('productStatus', 1)->get();
-    $orderDetails = orders::select('mop','address','contact')
-                            ->where('userId', $userId)->get();
-    
-    $orderDetails = $orderDetails->first();
-    
-    $product->transform(function ($item) use ($orderDetails) {
-        $item->mop = $orderDetails->mop;
-        $item->address = $orderDetails->address;
-        return $item;
-    });
-    foreach ($product as $item) {
-        $item->displayDescription = Str::words($item->description, 6);
+        // One grouped query. This was four separate count() queries, and the
+        // order details were re-fetched inside a per-row transform() closure.
+        $counts = $this->ownedItems()
+            ->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        return view('user.userProfile.myPurchase', compact('items', 'counts', 'status'));
     }
 
-    $toPayCount = Processing::where('userId', $userId)->where('productStatus', 1)->count();
-    $toShipCount = Processing::where('userId', $userId)->where('productStatus', 2)->count();
-    $toRecieveCount = Processing::where('userId', $userId)->where('productStatus', 3)->count();
-    $feedBackCount = Processing::where('userId', $userId)->where('productStatus', 4)->count();
-
-    return view('user.userProfile.myPurchase', compact('orderDetails','product', 'toPayCount', 'toShipCount', 'toRecieveCount', 'feedBackCount'));
-  
-}
-
-    //filter the products 
-    public function productStatus($status) {
-        $productStatus = $status;
-        $userId = session('id');
-        $product = Processing::where('userId', $userId)
-                                ->where('productStatus', $productStatus)->get();
-    
-        $toPayCount = Processing::where('userId', $userId)->where('productStatus', 1)->count();
-        $toShipCount = Processing::where('userId', $userId)->where('productStatus', 2)->count();
-        $toRecieveCount  = Processing::where('userId', $userId)->where('productStatus', 3)->count();
-        $feedBackCount = Processing::where('userId', $userId)->where('productStatus', 4)->count();
-    
-        $product->transform(function ($item) use ($userId) {
-            $orderDetails = orders::select('mop', 'address', 'contact')
-                                    ->where('userId', $userId)->first();
-    
-            $item->mop = $orderDetails->mop;
-            $item->address = $orderDetails->address;
-            $item->displayDescription = Str::words($item->description, 6);
-    
-            return $item;
-        });
-    
-        return view('user.userProfile.myPurchase', compact('product', 'toPayCount', 'toShipCount', 'toRecieveCount', 'feedBackCount'));
-    }
-    
-    
-
-    
-
-    // remove a product then submit to canel or return 
-    public function submitToCancel(Request $request, $id) {
+    /** Cancel a line and put the stock back. */
+    public function submitToCancel(Request $request, int $id)
+    {
         $validated = $request->validate([
-            'userId' => 'required|exists:customers,id',
-            'image_path' => 'required',
-            'variation_id' => 'required|numeric',
-            'description' => 'required',
-            'reason' => 'required',
-            'gender' => 'required|numeric',
-            'size' => 'required|numeric',
-            'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'total' => 'required|numeric'
+            'reason' => ['required', Rule::enum(CancelReason::class)],
+            'specify' => ['nullable', 'string', 'max:255'],
         ]);
 
-        CancelReturn::create([
-            'userId' => $validated['userId'],
-            'image_path' => $validated['image_path'],
-            'variation_id' => $validated['variation_id'],
-            'description' => $validated['description'],
-            'reason' => $validated['reason'],
-            'specify' => $request->specify,
-            'gender' => $validated['gender'],
-            'size' => $validated['size'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
-            'total' => $validated['total']
-        ]);
+        $item = $this->findOwnedItem($id);
 
-        $idOrders = orders::where('productId',$id);
-        $idOrders->delete();
-        
-        $idProcessing = Processing::findOrFail($id);
-        $idProcessing->delete();
-
-        return redirect()->back()->with('Success','Your Order was Cancelled Successfully');
-    }
-    // user recieving confirming order recieved 
-    public function orderRecieved(Request $request) {
-        // validate the text boxes
-        $validated = $request->validate([
-            "productId" => "required",
-            "userId" => "required",
-            "amount" => "required",
-            "quantity" => "required",
-        ]);
-        // get the id of the product 
-        $productId = $validated["productId"];
-        $product = Processing::findOrFail($productId);
-        // update the product status from toRecieve(3) to toReview(4)
-        $product->update([
-            "productStatus" => 4
-        ]);        
-        //insert to sold products
-        return redirect()->back()->with('success', 'Order Moved to Feedback');
-    }
-
-    
-    // submit the review 
-    public function submitReview(Request $request) {
-        // validate the inputs 
-        $validated = $request->validate([
-            "userId" => 'required|integer|exists:customers,id',
-            "productId" => 'required',
-            "starCountAll" => 'required|integer',
-            "starCountQuality" => 'required|integer',
-            "starCountService" => 'required|integer',
-            "image_path" => 'required',
-            "description" => 'required',
-            "price" => 'required|integer',
-            "quantity" => 'required|integer',
-            "image" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-        $filename = ""; 
-        if(!empty($validated['image'])){
-            $filename = $validated['image']->getClientOriginalName();
-            $validated['image']->storeAs('public/images', $filename); 
+        if (! $item->status->isOpen()) {
+            throw ValidationException::withMessages([
+                'reason' => 'This order can no longer be cancelled.',
+            ]);
         }
 
+        DB::transaction(function () use ($item, $validated) {
+            $item->product?->increment('stock', $item->quantity);
 
-        
-        // insert into feedback table 
-        // insert to table products all the after reviewing 
-        $storeToProducts = Products::create([
-            'userId' => $validated['userId'],
-            'productId' => $validated['productId'],
-            'image_path' => $validated['image_path'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity']
-        ]);
-        $storeToProducts->save();
-        $productId = $storeToProducts->id; 
-        feedback::create([
-            "userId" => $validated['userId'],
-            "productId" => $productId,
-            "starCountAll" => $validated['starCountAll'],
-            "starCountQuality" => $validated['starCountQuality'],
-            "starCountService" => $validated['starCountService'],
-            "specify" => $request->specify,
-            "featured" => 1,
-            "image" => $filename,
-        ]);
+            $item->update([
+                'status' => OrderStatus::Cancelled,
+                'cancel_reason' => $validated['reason'],
+                'cancel_note' => $validated['specify'] ?? null,
+            ]);
+        });
 
-        
-
-        // remove from orders 
-        $deleteFromOrders = orders::where('productId', $request->productId);
-        $deleteFromOrders->delete();
-        // remove from processing 
-        $producToDelete = Processing::findOrFail($request->productId);
-        $producToDelete->delete();
-        return redirect()->back()->with('Success', 'Thank you for your feedback');
+        return redirect()->back()->with('success', 'Your order was cancelled successfully');
     }
-    
+
+    public function orderReceived(Request $request)
+    {
+        $validated = $request->validate([
+            'order_item_id' => ['required', 'integer'],
+        ]);
+
+        $this->findOwnedItem($validated['order_item_id'])
+            ->update(['status' => OrderStatus::ToReview]);
+
+        return redirect()->back()->with('success', 'Order moved to feedback');
+    }
+
+    /**
+     * Leave a review and close the line.
+     *
+     * The old version inserted a fresh row into the `products` table purely so
+     * `feedback.productId` had something to point at, then deleted the order
+     * line entirely — the customer's purchase history disappeared the moment
+     * they reviewed it.
+     */
+    public function submitReview(Request $request)
+    {
+        $validated = $request->validate([
+            'order_item_id' => ['required', 'integer'],
+            'rating_overall' => ['required', 'integer', 'between:1,5'],
+            'rating_quality' => ['required', 'integer', 'between:1,5'],
+            'rating_service' => ['required', 'integer', 'between:1,5'],
+            'comment' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $item = $this->findOwnedItem($validated['order_item_id']);
+
+        if ($item->review()->exists()) {
+            throw ValidationException::withMessages([
+                'order_item_id' => 'You have already reviewed this item.',
+            ]);
+        }
+
+        // store() hashes the name. storeAs($clientOriginalName) let one customer
+        // overwrite another's upload by picking the same filename.
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('images', 'public')
+            : null;
+
+        DB::transaction(function () use ($item, $validated, $imagePath) {
+            Review::create([
+                'user_id' => Auth::id(),
+                'order_item_id' => $item->id,
+                'rating_overall' => $validated['rating_overall'],
+                'rating_quality' => $validated['rating_quality'],
+                'rating_service' => $validated['rating_service'],
+                'comment' => $validated['comment'] ?? null,
+                'image_path' => $imagePath,
+            ]);
+
+            $item->update(['status' => OrderStatus::Completed]);
+        });
+
+        return redirect()->back()->with('success', 'Thank you for your feedback');
+    }
+
+    /**
+     * Lines belonging to the signed-in customer.
+     *
+     * submitCancel, orderRecieved and submitReview all previously took an id
+     * from the request and acted on it without tying it to anyone — any
+     * customer could cancel or review any other customer's order.
+     */
+    private function ownedItems()
+    {
+        return OrderItem::whereRelation('order', 'user_id', Auth::id());
+    }
+
+    private function findOwnedItem(int $id): OrderItem
+    {
+        return $this->ownedItems()->whereKey($id)->firstOrFail();
+    }
 }

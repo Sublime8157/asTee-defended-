@@ -2,75 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Gender;
+use App\Enums\ShirtSize;
+use App\Enums\Variation;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\OnHand;
-use App\Models\Variations;
-use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
-
+/** Public storefront browsing. */
 class productsController extends Controller
 {
-//  filtering products 
-   public function filterProducts(Request $request){
-      // Create a variable that holds the products model with variation, gender, and size table 
-      $data = OnHand::query();
-      
-      if($request->filled('variation_id')) {
-          $data->where('variation_id', $request->input('variation_id'));
-      }
-  
-      if($request->filled('size')) {
-          $data->where('size', $request->input('size'));
-      }
-  
-      if($request->filled('gender')) {
-          $data->where('gender', $request->input('gender'));
-      }
+    public function displayOnHandsProducts()
+    {
+        $products = Product::inStock()->latest()->get();
 
-      if ($request->has('priceFrom') && $request->priceFrom != null) {
-        $data->where('price', '>=', $request->priceFrom);
-        }
-
-    if ($request->has('priceTo') && $request->priceTo != null) {
-        $data->where('price', '<=', $request->priceTo);
+        return view('user.Product', ['products' => $products]);
     }
 
-      
-      $filteredData = $data->get();
-  
-      // Truncate description for each product
-      foreach ($filteredData as $product) {
-          $product->displayDescription = Str::words($product->description, 10);
-      }
-  
-      return view('user.productResult', ['filteredData' => $filteredData]);
-  }
+    public function filterProducts(Request $request)
+    {
+        $validated = $request->validate([
+            'variation' => ['nullable', Rule::enum(Variation::class)],
+            'gender' => ['nullable', Rule::enum(Gender::class)],
+            'size' => ['nullable', Rule::enum(ShirtSize::class)],
+            'priceFrom' => ['nullable', 'numeric', 'min:0'],
+            'priceTo' => ['nullable', 'numeric', 'min:0'],
+        ]);
 
-    //display on hands product
-   public function displayOnHandsProducts(){
-    // get the  user id from session for adding to cart purposes 
-        $user = [
-            'id' => session('id'),
-        ];
-         $data = OnHand::where('quantity', '>', 0)->get();  
-         // limit the prouct description into 10 words 
-         foreach($data as $product) {
-            $product->displayDescription = Str::words($product->description, 10);
-         }
-         // display the items in view 
-        return view('user.Product', compact('data','user'));
-   }
-   
-   // product more details 
-   public function details(Request $request, $id) {
-        $user = [
-            'id' => session('id'),
-        ];
-      $product = OnHand::findorFail($id);
+        $products = Product::inStock()
+            ->when($validated['variation'] ?? null, fn ($q, $v) => $q->where('variation', $v))
+            ->when($validated['gender'] ?? null, fn ($q, $v) => $q->where('gender', $v))
+            ->when($validated['size'] ?? null, fn ($q, $v) => $q->where('size', $v))
+            ->when($validated['priceFrom'] ?? null, fn ($q, $v) => $q->where('price', '>=', $v))
+            ->when($validated['priceTo'] ?? null, fn ($q, $v) => $q->where('price', '<=', $v))
+            ->get();
 
-      $productDetails = OnHand::where('id', '=', $id);
-      
-      $productDet = $productDetails->get();
-      return view('user.productDetails', compact('productDet', 'user'));
-   }
+        return view('user.productResult', ['products' => $products]);
+    }
+
+    public function details(int $id)
+    {
+        return view('user.productDetails', ['product' => Product::findOrFail($id)]);
+    }
 }

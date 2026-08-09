@@ -2,31 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\FilterUser;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Traits\FilterUser; 
+
 class blockedAccountsController extends Controller
 {
+    use FilterUser;
 
-    use FilterUser; 
-    // sort blocked users 
-    public function sortBlockUsers(Request $request) {
-        return $this->sortUserTrait($request, '2', 'sortBlockUserBy', 'orderBlockUserBy'); 
+    private function scope(): callable
+    {
+        return fn (Builder $query) => $query->whereNotNull('blocked_at');
     }
 
-    // unblock a user 
-    public function unblock($id) {
-        return $this->blockUnblockTrait($id, '1', 'User successfully unblocked');
+    public function display()
+    {
+        return $this->displayUserTrait($this->scope(), 'admin.accounts.blocked');
     }
 
-    // search users by id. name or gmail 
-    public function searchBlockedUsers(Request $request) {
-      return $this->searchUserTrait($request, '2', 'searchAllBlockedUsers');
+    public function searchBlockedUsers(Request $request)
+    {
+        return $this->searchUserTrait($request, $this->scope(), 'searchAllBlockedUsers');
     }
 
+    public function sortBlockUsers(Request $request)
+    {
+        return $this->sortUserTrait($request, $this->scope(), 'sortBlockUserBy', 'orderBlockUserBy');
+    }
 
-    // display blocked user by default 
-    public function display(){
-      return $this->displayUserTrait('2','whereNotNull', 'admin.accounts.blocked');
+    public function unblock(int $id)
+    {
+        return $this->blockUnblockTrait($id, null, 'User successfully unblocked');
     }
 }

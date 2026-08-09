@@ -1,30 +1,33 @@
 <?php
 
 namespace App\Http\Controllers;
-namespace App\Http\Controllers;
-use App\Models\User;
+
+use App\Traits\FilterUser;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Traits\FilterUser; 
 
 class PendingAccountsController extends Controller
 {
-    use FilterUser; 
-    
-   // display users that is only active 
-   public function displayUsers() {
-      return $this->displayUserTrait('3', 'whereNull', 'admin.accounts.pending'); 
-   }
+    use FilterUser;
 
-    // sort blocked users 
-    public function sortPendingUsers(Request $request) {
-     return $this->sortUserTrait($request, '3', 'sortPendingUsersBy', 'orderPendingUsersBy');
+    /** Signed up but never confirmed their email address. */
+    private function scope(): callable
+    {
+        return fn (Builder $query) => $query->whereNull('email_verified_at');
     }
 
-    
-    public function searchPendingUsers(Request $request) {
-       return $this->searchUserTrait($request, '3', 'searchPendingUsers'); 
+    public function displayUsers()
+    {
+        return $this->displayUserTrait($this->scope(), 'admin.accounts.pending');
     }
 
-    
-    
+    public function searchPendingUsers(Request $request)
+    {
+        return $this->searchUserTrait($request, $this->scope(), 'searchPendingUsers');
+    }
+
+    public function sortPendingUsers(Request $request)
+    {
+        return $this->sortUserTrait($request, $this->scope(), 'sortPendingUsersBy', 'orderPendingUsersBy');
+    }
 }
