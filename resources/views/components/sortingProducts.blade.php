@@ -1,15 +1,13 @@
-@props(['sortProduct', 'orderProduct','filterByDate','display'])
+@props(['sortProduct', 'orderProduct', 'filterByDate', 'display', 'columns' => [], 'newProduct' => false])
 
 <div class="">
     <div class="flex justify-between items-center flex-row p-3">
         <div class="flex flex-row gap-2">
             <div class="me-3">
                 <select name="sortBy" id="sortProductBy" class="{{$sortProduct}} h-8 text-xs cursor-pointer">
-                    <option value="id" selected>ID</option>
-                    <option value="gender">Gender</option>
-                    <option value="size">Size</option>
-                    <option value="price">Price</option>
-                    <option value="quantity">Quantity</option>
+                    @foreach($columns as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
                 </select>
             </div>
             <div>
@@ -23,11 +21,13 @@
                 <label for="" class="text-xs">to:</label><input type="date" name="end" id="endDate" class="{{$filterByDate}} text-xs border-none rounded shadow ">
             </div>
         </div>
+        @if($newProduct)
         <div>
            <div class="flex items-center bg-blue-600 px-4 py-2 cursor-pointer hover:bg-blue-500" onclick="revealForm()">
                 <ion-icon name="add-circle-outline" class="pe-1 text-white text-lg"></ion-icon>
-                <button class="text-xs text-white" >New Product</button>
+                <button class="text-xs text-white">New Product</button>
            </div>
         </div>
+        @endif
     </div>
 </div>

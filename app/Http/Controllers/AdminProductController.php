@@ -131,7 +131,7 @@ class AdminProductController extends Controller
     {
         $products = $this->applySort(Product::query(), $request, self::SORTABLE, 'sortProductBy', 'orderProductBy')->get();
 
-        return view('admin.products.sort.onhandProducts', compact('products'));
+        return view('admin.products.onHandPartial', compact('products'));
     }
 
     private function rules(): array

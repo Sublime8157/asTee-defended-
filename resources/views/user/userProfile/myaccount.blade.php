@@ -51,7 +51,7 @@
                 </div>
                  @endif
                 <div class="relative">
-                    <img src="{{ asset('storage/images/' . $user->profile )}} "  class="rounded-full  h-20 w-20">
+                    <img src="{{ $user->profile ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->profile) : asset('images/default.png') }}"  class="rounded-full  h-20 w-20">
                     <img src="#" alt="" id="imagePreview" class="w-20 h-20 absolute rounded-full top-0 hidden">
                 </div>
                 

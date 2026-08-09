@@ -8,10 +8,13 @@ use App\Enums\OrderStatus;
 use App\Enums\ShirtSize;
 use App\Enums\Variation;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * One ordered line for its whole life. Replaces the Processing, CancelReturn
@@ -50,6 +53,18 @@ class OrderItem extends Model
             'line_total' => 'decimal:2',
             'quantity' => 'integer',
         ];
+    }
+
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->image_path
+            ? Storage::disk('public')->url($this->image_path)
+            : asset('images/placeholder.png'));
+    }
+
+    protected function shortDescription(): Attribute
+    {
+        return Attribute::get(fn () => Str::words($this->description, 6));
     }
 
     public function order(): BelongsTo

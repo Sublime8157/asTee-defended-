@@ -34,11 +34,11 @@
                         Variation
                     </li>
                     <hr class="mb-2">
-                    @foreach(['Couple', 'Solo', 'Family', 'Kid\'s Wear'] as $key => $variation)
+                    @foreach(\App\Enums\Variation::options() as $value => $label)
                         <div class="flex flex-row ps-3 p-1 items-center">
-                            <input type="radio" name="variation_id" value="{{ $key + 1 }}" class="clear w-3 h-3 cursor-pointer me-1"
-                                {{ old('variations') == ($key + 1) ? 'checked' : '' }}>
-                            <label for="{{ strtolower(str_replace('\'', '', $variation)) }}" style="font-size: 11px">{{ $variation }}</label>
+                            <input type="radio" name="variation" value="{{ $value }}" class="clear w-3 h-3 cursor-pointer me-1"
+                                {{ old('variation') === $value ? 'checked' : '' }}>
+                            <label for="{{ $value }}" style="font-size: 11px">{{ $label }}</label>
                         </div>
                     @endforeach
                 </ul>
@@ -48,11 +48,11 @@
                         Sizes
                     </li>
                     <hr class="mb-2">
-                    @foreach(['Extra Small','Small','Medium','Large','XL','2XL','3XL'] as $key => $sizes) 
+                    @foreach(\App\Enums\ShirtSize::options() as $value => $label)
                         <div class="flex flex-row ps-3 p-1 items-center">
-                            <input type="radio" name="size" value="{{ $key + 1 }}" class="clear w-3 h-3 cursor-pointer me-1" 
-                                {{ old('sizes') == ($key + 1) ? 'checked' : '' }}>
-                            <label for=" {{ strtolower(str_replace('\'','', $sizes)) }}" style="font-size: 11px"> {{ $sizes }} </label>
+                            <input type="radio" name="size" value="{{ $value }}" class="clear w-3 h-3 cursor-pointer me-1"
+                                {{ old('size') === $value ? 'checked' : '' }}>
+                            <label for="{{ $value }}" style="font-size: 11px">{{ $label }}</label>
                         </div>
                     @endforeach
                 </ul>
@@ -63,11 +63,12 @@
                             Gender
                         </li>
                         <hr class="mb-2">
-                       @foreach(['Male','Female','Unisex'] as $key => $gender) 
+                       @foreach(\App\Enums\Gender::options() as $value => $label)
                             <div class="flex flex-row ps-3 p-1 items-center">
-                                <input type="radio" name="gender" value=" {{ $key + 1 }}" class="clear w-3 h-3 cursor-pointer me-1"
-                                {{ old('gender') == ($key + 1) ? 'checked' : ''}}>
-                                <label for=" {{ strtolower(str_replace('\'','', $gender))}}" style="font-size: 11px"> {{ $gender }} </label>
+                                {{-- The old markup wrote value=" 1" with a leading space, so the gender filter never matched. --}}
+                                <input type="radio" name="gender" value="{{ $value }}" class="clear w-3 h-3 cursor-pointer me-1"
+                                    {{ old('gender') === $value ? 'checked' : '' }}>
+                                <label for="{{ $value }}" style="font-size: 11px">{{ $label }}</label>
                             </div>
                        @endforeach
                        <a onclick="clearRadio()" class="text-xs text-center cursor-pointer underline text-blue-500 ">Clear Fields</a>
@@ -102,26 +103,25 @@
         {{-- List of available products  --}}
         <div class="w-screen flex justify-center  flex-row flex-wrap h-screen " style="overflow-y: auto" id="filteredData">
             {{-- Get all the data in products table and assign it to filterData variable --}}
-          @if($data->isEmpty()) 
+          @if($products->isEmpty()) 
                <div class="flex justify-center items-center h-screen">
                     <h1>No Available Product</h1>
                </div>
           @else
-                @foreach($data as $table)
+                @foreach($products as $product)
                     <div class="w-80  gap-4 bg-white  flex flex-col border shadow rounded mt-2 border-gray-100 pb-2 me-2" >
                             <div class="relative productImage">   
                                 {{-- product image  --}}
-                                <img src="{{ asset('storage/images/' . $table->image_path) }}" alt="" class="w-full h-80">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->shortDescription }}" class="w-full h-80">
                             <div class=" showIcons h-auto  ">
                                 <div class="flex flex-row absolute left-0 bottom-0">
                                     {{-- cart icon  --}}
-                                    @if(session('isLoggedin'))
+                                    @if(auth()->check())
                                       {{-- add to cart form --}}
-                                    <form class="addToCartForm"  method="POST" id="addToCartForm{{$table->id}}">
+                                    <form class="addToCartForm"  method="POST" id="addToCartForm{{ $product->id }}">
                                         @csrf
-                                        <input type="hidden" name="prodId" value="{{$table->id}}">
-                                        <input type="hidden" name="userId" value="{{$user['id']}}">
-                                        <input type="hidden" name="quantity" value="1">
+                                        {{-- The owner is the signed-in user; userId no longer travels in the body. --}}
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit" class="addToCartBtn"><ion-icon name="cart" class="ps-2 text-green-600 text-xl"></button>
                                     </form> 
                                     @else
@@ -131,7 +131,7 @@
                                     </a>
                                     @endif
                                     {{-- share link icon  --}}
-                                    <a href="/productDetails/{{$table->id}}"  onclick="copyLink(event, {{$table->id}})">
+                                    <a href="/productDetails/{{ $product->id }}"  onclick="copyLink(event, {{ $product->id }})">
                                         <ion-icon name="share-social" class="text-green-600 text-xl"></ion-icon>
                                     </a>
                                 </div>
@@ -141,24 +141,24 @@
                             <div class="px-2 ">
                                 <div class="px-1 mt-3">
                                     {{-- description w/ gender --}}
-                                    <p class="text-sm">{{$table->displayDescription}}| {{$table->genderShirt()}}  | {{$table->variationType()}}</p>                       
+                                    <p class="text-sm">{{ $product->shortDescription }} | {{ $product->gender->label() }} | {{ $product->variation->label() }}</p>                       
                                 </div> 
                                     {{-- Size  --}}
                                 <div class="text-xs px-1">
-                                    <b> Size:</b> {{$table->sizeShirt()}} 
+                                    <b> Size:</b> {{ $product->size->label() }} 
                                 </div>
                                 <div class="text-xs px-1">
-                                    <b> Qty:</b> {{$table->quantity}} 
+                                    <b> Qty:</b> {{ $product->stock }} 
                                 </div>
                                 <div class="px-1">
                                     {{-- Price --}}
                                     <h4 class="text-2xl font-semibold  tracking-wide">
-                                        &#x20B1;{{$table->price}}.00
+                                        &#x20B1;{{ $product->price }}
                                     </h4>
                                 </div>
                                 <div class="px-1">
                                     {{-- link --}}
-                                    <a href="/productDetails/{{$table->id}}" class="text-xs text-blue-700 cursor-pointer hover:underline">More details..</a>
+                                    <a href="/productDetails/{{ $product->id }}" class="text-xs text-blue-700 cursor-pointer hover:underline">More details..</a>
                                 </div>
                                 
                             </div>

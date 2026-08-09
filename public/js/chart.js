@@ -53,7 +53,7 @@ const productReturn = document.getElementById('returnCancel');
 new Chart(returnCancel, {
     type: 'doughnut',
     data: {
-      labels: ['Wrong Product','Different Colors', 'Wrong design', 'Change my mind','Order Details','Change order','Other reasons'],
+      labels: returnProdLabels,
       datasets: [{
         data: returnProdData,
         borderWidth: 1

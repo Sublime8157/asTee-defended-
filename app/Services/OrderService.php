@@ -12,6 +12,14 @@ use Illuminate\Validation\ValidationException;
 class OrderService
 {
     /**
+     * The checkout page has always shown a flat ₱60 shipping fee, but it lived
+     * in a `value="60"` attribute on an editable input and was added to the
+     * total by a two-line script in the page. It is a server-side figure now.
+     * ponytail: a constant until shipping actually varies by destination.
+     */
+    public const SHIPPING_FEE = 60.00;
+
+    /**
      * Turn a selection of the customer's cart into one order.
      *
      * The request supplies product ids, an address, a contact number and a
@@ -118,9 +126,7 @@ class OrderService
 
             $subtotal = round($subtotal, 2);
 
-            // Shipping is not charged yet; the column exists so Phase 4 has
-            // somewhere to put it that is not folded into the total.
-            $shippingFee = 0.0;
+            $shippingFee = self::SHIPPING_FEE;
 
             $order = $user->orders()->create([
                 'address' => $details['address'],

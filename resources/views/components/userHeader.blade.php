@@ -1,7 +1,7 @@
 <x-header />
 
 
-@if(session('verification') == 'not_verified')
+@if(auth()->check() && ! auth()->user()->hasVerifiedId())
     @if(session()->has('submitSuccess'))
     <div class="w-full bg-blue-700  border  py-1  rounded absolute top-0">
         <p class="text-xs md:text-sm text-white text-center">

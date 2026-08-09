@@ -5,7 +5,7 @@
 <x-nav />
 <x-notification />
 <div class="p-3">
-    {{$filterOnHand->links('pagination::simple-tailwind')}} 
+    {{ $products->links('pagination::simple-tailwind') }} 
 </div>
 @if($errors->any()) 
     <div class="text-center py-2 px-2 text-xs font-orange-700 font-bold">
@@ -13,7 +13,7 @@
     </div>
 @endif
    <div class="bg-white my-2 mx-4">
-        <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd" display="hidden" filterByDate=""></x-sortingProducts>
+        <x-sortingProducts sortProduct="sortProd" orderProduct="sortProd" display="hidden" filterByDate="" :columns="['id' => 'ID', 'description' => 'Description', 'price' => 'Price', 'stock' => 'Stock', 'created_at' => 'Date added']" :newProduct="true" />
             <div class="mx-10 pb-10 flex justify-center">
                     <table class="">
                     <tr class="">
@@ -51,35 +51,30 @@
                                     <td class="w-12"></td>
                                     <td class="w-40 ">
                                         {{-- by variation --}}
-                                            <select name="variation_id" id="" class="w-32 h-8 text-xs  cursor-pointer">    
-                                                    <option value=""></option>                        
-                                                    <option value="1">Couple Shirt</option>
-                                                    <option value="2">Solo Shirt</option>
-                                                    <option value="3">Family Shirt</option>
-                                                    <option value="4">Kids Wear</option>                              
+                                            <select name="variation" class="w-32 h-8 text-xs  cursor-pointer">
+                                                <option value=""></option>
+                                                @foreach(\App\Enums\Variation::options() as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
                                             </select>
                                     </td>
                                     <td class="w-32"></td>
                                     <td class="w-20">
                                         {{-- by gender --}}
-                                            <select name="gender" id="" class="w-16 h-8 text-xs  cursor-pointer">
-                                                <option value=""> </option>  
-                                                <option value="1">Male</option>
-                                                <option value="2">Female</option>
-                                                <option value="3">Unisex</option>
+                                            <select name="gender" class="w-16 h-8 text-xs  cursor-pointer">
+                                                    <option value=""></option>
+                                                @foreach(\App\Enums\Gender::options() as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
                                             </select>
                                         </td>
                                     <td class="w-40">
                                         {{-- by size --}}
-                                            <select name="size" class="w-32  h-8 text-xs cursor-pointer" id="">
-                                                <option value=""></option>  
-                                                <option value="1">XS</option>
-                                                <option value="2">Small</option>
-                                                <option value="3">Medium</option>
-                                                <option value="4">Large</option>
-                                                <option value="5">XL</option>
-                                                <option value="6">2XL</option>
-                                                <option value="7">3XL</option>
+                                            <select name="size" class="w-32  h-8 text-xs cursor-pointer">
+                                                    <option value=""></option>
+                                                @foreach(\App\Enums\ShirtSize::options() as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
                                             </select>
                                         </td>
                                         {{-- by price --}}
@@ -90,84 +85,7 @@
                                 </form>
                         </tr>
                         <tbody id="productTableBody">
-                        {{-- the variable onHandProducts is from controller and assigned it to a product variable to query in product table  --}}
-                        {{-- Take note that the words after $product is a table name in product table from database --}}
-                        {{-- We then loop to the database  and each data in product table these code below will execute  --}}
-                        {{-- The  variationType() is a function from model that  convert the number into value--}}
-                            @foreach($filterOnHand as $product)
-                            <tr class="text-xs py-2">
-                                <td></td>
-                                <td><input type="checkbox" name="" id="" value="{{$product->id}}" class="checkBox"></td>
-                                <td class="text-center">{{$product->id}}</td>
-                                <td class="ps-2">
-                                    {{-- pass the productId on revealImage  function --}}
-                                    <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="50px" class="cursor-pointer" 
-                                    onclick="revealImage('{{ $product->id}}')">
-                                    {{-- change the the imageDialog to imageDialog + id --}}
-                                    <dialog class="" id="imageDialog{{ $product->id }}"> 
-                                        <img src="{{ asset('storage/images/' . $product->image_path ) }}" alt="Product Image" width="auto" class="cursor-pointer">
-                                    </dialog>
-                                </td> 
-                                <td class=" text-center">{{$product->variationType()}}</td>
-                                <td class="text-center ps-2 w-60 "> <textarea name="" id="" cols="20" rows="2" placeholder="{{$product->description}}" style=" font-size: 10px" class="border-none " disabled></textarea></td>
-                                <td class="text-center">{{$product->genderShirt()}}</td>
-                                <td class="text-center">{{$product->sizeShirt()}}</td>
-                                <td class="text-center">{{$product->price}}</td>
-                                <td class="text-center">{{$product->quantity}}</td>       
-                                <td class="text-center">
-                                    {{-- remove product form --}}
-                                    <form action="{{ route('product.remove', $product->id) }}" id="removeProduct{{ $product->id }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                    {{-- edit product dialog with form   --}}                                   
-                                    <dialog id="editProductDialog{{$product->id}}" class="w-8/12 p-5 rounded">
-                                        <x-editForm route="edit.Product" :id="$product->id" 
-                                            variation="{{$product->variation_id}}" 
-                                            gender="{{$product->gender}}"
-                                            size="{{$product->size}}"
-                                            price="{{$product->price}}"
-                                            quantity="{{$product->quantity}}"
-                                            description="{{$product->description}}"
-                                            img="{{$product->image_path}}"> </x-editForm>
-                                    </dialog>
-                                    {{-- move product dialog with form  --}}
-                                    <dialog id="moveProductDialog{{$product->id}}" class="rounded">
-                                        <x-moveProduct  route="move.Product" :id="$product->id" 
-                                            selectId="moveProductOption{{$product->id}}"
-                                            onchangeFunction="moveProductOption({{$product->id}})"
-                                            inputTypes="prodIdInput{{$product->id}}"
-                                            option1="Processing"
-                                            option2="Cancel Return"
-                                            inputId="block"
-                                            :cancel="true"
-                                            > 
-                                        </x-moveProduct>
-                                    </dialog>
-                                    {{-- button for showing the menu for edit and remove --}}
-                                    <button type="button" onclick="showMenus({{ $product->id }})" >
-                                        <div class="relative z-20">
-                                            <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
-                                            {{-- menus --}}
-                                            <div class="absolute bg-white hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $product->id }}">
-                                                {{-- edit the product info  --}}
-                                                <a onclick="editProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">Edit</a>
-                                                {{-- move a product  --}}
-                                                <a onclick="moveProduct({{ $product->id }})" class="hover:bg-gray-400 px-6 text-xs" id="editProd">MoveTo</a>
-                                                {{-- remove a product   --}}
-                                                <a onclick="removeProduct({{ $product->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
-                                                
-                                            </div>
-                                        </div>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                {{-- Horizontal line  --}}
-                                 <td colspan="10"><hr class="w-full"></td>
-                            </tr>             
-                           
-                            @endforeach
+                            @include('admin.products.onHandPartial')
                             
                         </tbody>
                     </table> 
@@ -184,52 +102,45 @@
                 <form action="" class="flex justify-center  items-start flex-row-reverse" method="POST" id="submitForm">
                     @csrf 
                     {{-- Hidden input thats hold the value of 1 that is equivalent to on hand  --}}
-                   <div class="hidden">
-                    <input type="text" name="status" value="1" id="status">
-                    <input type="text" name="productStatus" value="1" id="productStatus">
-                   </div>                    
+                   {{-- The hidden status/productStatus inputs are gone: they told the
+                        server which lifecycle table to write the row into. --}}
                    <div class="flex flex-row items-start flex-wrap">
                      {{-- Choose Variation Type --}}
                         <div class="me-2">
                             <label for="" class="text-xs">Variation*</label> <br>
-                             <select name="variation_id" id="variation_id" class="h-10 w-40 rounded text-sm cursor-pointer">
-                                <option value="1">Couple Shirt</option>
-                                <option value="2">Solo Shirt</option>
-                                <option value="3">Family Shirt</option>
-                                <option value="4">Kids Wear</option>
-                            </select>
+                                            <select name="variation" class="h-10 w-40 rounded text-sm cursor-pointer">
+                                                @foreach(\App\Enums\Variation::options() as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
+                                            </select>
                         </div>
                         {{-- Choose t-shirt gender type --}}
                         <div class="me-2">
                             <label for="" class="text-xs">Gender*</label> <br>
-                             <select name="gender" id="gender" class="h-10 w-40 rounded text-sm cursor-pointer">
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
-                                <option value="3">Unisex</option>
-                            </select>
+                             <select name="gender" class="h-10 w-40 rounded text-sm cursor-pointer">
+                                 @foreach(\App\Enums\Gender::options() as $value => $label)
+                                     <option value="{{ $value }}">{{ $label }}</option>
+                                 @endforeach
+                             </select>
                         </div>
                         {{-- Choose size --}}
                         <div class="me-2">
                             <label for="size" class="text-xs">Size*</label> <br>
-                             <select name="size" id="size" class="h-10 w-40 rounded text-sm cursor-pointer">
-                                <option value="1">XS</option>
-                                <option value="2">Small</option>
-                                <option value="3">Medium</option>
-                                <option value="4">Large</option>
-                                <option value="5">XL</option>
-                                <option value="6">2XL</option>
-                                <option value="7">3XL</option>
-                            </select>
+                             <select name="size" class="h-10 w-40 rounded text-sm cursor-pointer">
+                                 @foreach(\App\Enums\ShirtSize::options() as $value => $label)
+                                     <option value="{{ $value }}">{{ $label }}</option>
+                                 @endforeach
+                             </select>
                         </div> 
                         {{-- Input thep price --}}
                         <div class="me-2">
                             <label for="price" class="text-xs">Price*</label> <br>
-                             <input type="text" name="price" class="h-10 w-40 rounded text-sm" id="price">
+                             <input type="number" step="0.01" min="0" name="price" class="h-10 w-40 rounded text-sm" id="price">
                         </div>
                         {{-- input the quantity --}}
                         <div class="me-2">
-                            <label for="quantity" class="text-xs">Quantity*</label> <br>
-                             <input type="text" name="quantity" class="h-10 w-40 rounded text-sm" id="quantity">
+                            <label for="stock" class="text-xs">Stock*</label> <br>
+                             <input type="number" min="0" name="stock" class="h-10 w-40 rounded text-sm" id="stock">
                         </div>
                         {{-- And the description of the product this includes the reason why it's on hand  --}}
                         <div class="me-2">

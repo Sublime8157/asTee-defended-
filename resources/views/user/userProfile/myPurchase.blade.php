@@ -17,47 +17,47 @@
                 {{-- product status  --}}
                 <ul class=" flex gap-2  flex-row md:items-start items-center justify-evenly w-full">
                     {{-- to pay  --}}
-                    <a href="{{ route('product.status', ['status' => 1]) }}" class="flex justify-center  flex-col items-center">
+                    <a href="{{ route('myPurchase', ['status' => 'to_pay']) }}" class="flex justify-center  flex-col items-center">
                         <ion-icon name="wallet-outline" class="md:hidden"></ion-icon>
-                        <li class="status relative  hover:bg-white {{ Route::currentRouteName() == 'product.status' && request()->status == 1 ? 'border-b border-gray-400' : '' }} text-sm ">
+                        <li class="status relative  hover:bg-white {{ $status->value === 'to_pay' ? 'border-b border-gray-400' : '' }} text-sm ">
                             <span class="font-bold absolute bottom-8 md:bottom-3 left-6 md:left-12 text-orange-700 py-1 px-1 text-xs md:text-base rounded-full" >
-                                @if ($toPayCount != 0 )
-                                    {{$toPayCount}}
+                                @if (($counts['to_pay'] ?? 0) != 0)
+                                    {{ $counts['to_pay'] }}
                                 @endif
                             </span><span class="text-xs md:text-sm">To Pay</span>
                         </li>
                     </a>
                     {{-- to ship --}}
-                      <a href="{{ route('product.status', ['status' => 2]) }}" class="flex justify-center  flex-col items-center">
+                      <a href="{{ route('myPurchase', ['status' => 'to_ship']) }}" class="flex justify-center  flex-col items-center">
                         <ion-icon name="cube-outline" class="md:hidden"></ion-icon>
-                        <li class="status relative hover:bg-white {{ Route::currentRouteName() == 'product.status' && request()->status == 2 ? 'border-b border-gray-400' : '' }} text-sm ">
+                        <li class="status relative hover:bg-white {{ $status->value === 'to_ship' ? 'border-b border-gray-400' : '' }} text-sm ">
                             <span class="font-bold absolute bottom-8 md:bottom-3 left-8 md:left-12 text-orange-700 py-1 px-1 text-xs md:text-base rounded-full" >
-                                @if ($toShipCount != 0 )
-                                    {{$toShipCount}}
+                                @if (($counts['to_ship'] ?? 0) != 0)
+                                    {{ $counts['to_ship'] }}
                                 @endif
                             </span>
                             <span class="text-xs md:text-sm">To Ship</span>
                         </li>
                     </a>
                     {{-- to recieve --}}
-                       <a href="{{ route('product.status', ['status' => 3]) }}" class="flex justify-center  flex-col items-center ">
+                       <a href="{{ route('myPurchase', ['status' => 'to_receive']) }}" class="flex justify-center  flex-col items-center ">
                         <img src="{{ asset('images/toRecieveIcon.png') }}" alt="" width="20px" class="md:hidden" style="margin-bottom: 1px;">
-                        <li class="status relative hover:bg-white {{ Route::currentRouteName() == 'product.status' && request()->status == 3 ? 'border-b border-gray-400' : '' }} text-sm ">
+                        <li class="status relative hover:bg-white {{ $status->value === 'to_receive' ? 'border-b border-gray-400' : '' }} text-sm ">
                             <span class="font-bold absolute bottom-8 md:bottom-4 left-10 md:left-20 text-orange-700 py-1 px-1 text-xs md:text-base rounded-full" >
-                                @if ($toRecieveCount != 0 )
-                                    {{$toRecieveCount}}
+                                @if (($counts['to_receive'] ?? 0) != 0)
+                                    {{ $counts['to_receive'] }}
                                 @endif
                             </span>
                             <span class="text-xs md:text-base">To Recieve</span>
                         </li>
                     </a>
                     {{-- to review --}}
-                       <a href="{{ route('product.status', ['status' => 4]) }}" class="flex justify-center  flex-col items-center">
+                       <a href="{{ route('myPurchase', ['status' => 'to_review']) }}" class="flex justify-center  flex-col items-center">
                         <ion-icon name="chatbox-ellipses-outline" class="md:hidden"></ion-icon>
-                        <li class="relative status hover:bg-white {{ Route::currentRouteName() == 'product.status' && request()->status == 4 ? 'border-b border-gray-400' : '' }} text-sm">
+                        <li class="relative status hover:bg-white {{ $status->value === 'to_review' ? 'border-b border-gray-400' : '' }} text-sm">
                             <span class="font-bold absolute bottom-8 md:bottom-3 left-10 md:left-20 text-orange-700 py-1 px-1 text-xs md:text-base rounded-full" >
-                                @if ($feedBackCount != 0 )
-                                    {{$feedBackCount}}
+                                @if (($counts['to_review'] ?? 0) != 0)
+                                    {{ $counts['to_review'] }}
                                 @endif
                             </span>
                             <span class="text-xs md:text-base">To Review</span>
@@ -66,33 +66,33 @@
                 </ul>
                 {{-- products --}}
                 <div id="products" class="flex-col flex w-full justify-between">
-                    @foreach ($product as $item)
+                    @foreach ($items as $item)
                         <div class="flex flex-row gap-4 ">
                             {{-- image --}}
                             <div>
-                                <img src="{{ asset('storage/images/' . $item->image_path) }}" alt="" class="md:w-40 w-20 bg-gray-200 rounded p-2 ">
+                                <img src="{{ $item->image_url }}" alt="" class="md:w-40 w-20 bg-gray-200 rounded p-2 ">
                             </div>
                             <div class="md:text-base text-xs">
                                 {{-- details --}}
-                                    <p>{{$item->displayDescription}} </p>
-                                    <p>{{$item->sizeShirt()}} | {{$item->variationType()}} | {{$item->genderShirt()}}</p>
-                                    <p id="price{{$item->id}}"><b>Price: </b>{{$item->price}}</p>
+                                    <p>{{ $item->shortDescription }} </p>
+                                    <p>{{ $item->size->label() }} | {{ $item->variation->label() }} | {{ $item->gender->label() }}</p>
+                                    <p id="price{{$item->id}}"><b>Price: </b>{{ $item->unit_price }}</p>
                                     <p><b>Qty:</b> <span id="quantity{{$item->id}}">{{$item->quantity}}</span></p> 
-                                    <b>Address: </b>{{$item->address}} <br>
-                                    <b>MOP: </b>{{$item->mop}}
+                                    <b>Address: </b>{{ $item->order->address }} <br>
+                                    <b>MOP: </b>{{ $item->order->payment_method }}
                             </div>
                         </div>
                         <div class="self-end md:text-base text-xs text-orange-700 pe-4">
                             {{-- check if current the url is on toreview or 4  replace the total to review button if true   --}}
-                            @if(request()->status == 4)
+                            @if($status === \App\Enums\OrderStatus::ToReview)
                             {{-- review button in to review tab  --}}
                                  <button class="py-1 px-2 text-sm border-orange-500 border rounded" onclick="reviewButton({{$item->id}})">Review</button>
                             @else
                             {{-- total --}}
-                                 <span class="text-black ">Total: ₱</span><span>{{$item->total}}</span>
+                                 <span class="text-black ">Total: ₱</span><span>{{ $item->line_total }}</span>
                             @endif
                             {{-- cancel button for to pay   --}}
-                            <div class=" py-1 {{ Route::currentRouteName() == 'product.status' && request()->status !=1 ? 'hidden' : 'block' }} ">
+                            <div class=" py-1 {{ $status !== \App\Enums\OrderStatus::ToPay ? 'hidden' : 'block' }} ">
                                 {{-- cancel button that show the dialog  --}}
                                 <a onclick="showCancelForm({{$item->id}})" class="cursor-pointer py-1 px-2 border border-orange-600 rounded text-sm hover:bg-orange-600 hover:text-white ">
                                     Cancel Order
@@ -110,23 +110,23 @@
                                             <div class="flex-col flex gap-4  p-2 md:p-4 ">
                                                 <div class="flex flex-row bg-gray-100  p-4  rounded gap-2">
                                                     <div>
-                                                        <img src="{{ asset('storage/images/' . $item->image_path) }}" alt="Product Image" width="100px">
+                                                        <img src="{{ $item->image_url }}" alt="Product Image" width="100px">
                                                     </div>
                                                     <div class="flex flex-col w-full gap-2">
                                                         <div>
-                                                            <p class="text-black">{{$item->displayDescription}}</p>
+                                                            <p class="text-black">{{ $item->shortDescription }}</p>
                                                         </div>
                                                         <div class="text-gray-600 flex flex-row ">
-                                                            <span>{{$item->variationType()}}</span> | 
-                                                            <span>{{$item->genderShirt()}}</span> | 
-                                                            <span>{{$item->sizeShirt()}}</span> 
+                                                            <span>{{ $item->variation->label() }}</span> | 
+                                                            <span>{{ $item->gender->label() }}</span> | 
+                                                            <span>{{ $item->size->label() }}</span> 
                                                         </div>
                                                         <div>
                                                             <span class="font">Qty: <span>{{$item->quantity}}</span></span>
                                                         </div>
                                                         <div class="flex flex-row w-full md:text-lg text-sm justify-between">
-                                                                <span class="font-bold">₱<span>{{$item->price}}</span></span>
-                                                                <span class="font-bold">₱<span>{{$item->total}}</span></span>
+                                                                <span class="font-bold">₱<span>{{ $item->unit_price }}</span></span>
+                                                                <span class="font-bold">₱<span>{{ $item->line_total }}</span></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,26 +134,16 @@
                                                 <div class="w-full">
                                                     <form action="{{ route('submitOrder.cancel', $item->id ) }}" method="POST" class="bg-gray-100 p-4 h-full flex flex-col justify-between" id="cancelForm{{$item->id}}">
                                                         @csrf
-                                                        <input type="hidden" name="image_path" value="{{$item->image_path}}" >
-                                                        <input type="hidden" name="userId" value="{{$item->userId}}">
-                                                        <input type="hidden" name="description" value="{{$item->description}}">
-                                                        <input type="hidden" name="gender" value="{{$item->gender}}">
-                                                        <input type="hidden" name="variation_id" value="{{$item->variation_id}}">
-                                                        <input type="hidden" name="size" value="{{$item->size}}"> 
-                                                        <input type="hidden" name="price" value="{{$item->price}}">
-                                                        <input type="hidden" name="quantity" value="{{$item->quantity}}">
-                                                        <input type="hidden" name="total" value="{{$item->total}}">
+                                                        {{-- The whole line used to be re-posted as hidden inputs and written to a
+                                                             second table verbatim, price included. The server now looks the line
+                                                             up by id and checks that it is yours. --}}
                                                         <div class="flex flex-col gap-4 ">
                                                             <div>
                                                                 <label for="" class="font-bold ">Cancellation Reason*</label>
-                                                                <select name="reason" id="" class="mt-1 w-full h-10 text-sm ">
-                                                                    <option value="1">Wrong Product</option>
-                                                                    <option value="2">Different Color</option>
-                                                                    <option value="3">Wrong Design</option>
-                                                                    <option value="4">Change my mind </option>
-                                                                    <option value="5">Order Details</option>
-                                                                    <option value="6">Change order </option>
-                                                                    <option value="7">Other reasons</option>
+                                                                <select name="reason" class="mt-1 w-full h-10 text-sm ">
+                                                                    @foreach(\App\Enums\CancelReason::options() as $value => $label)
+                                                                        <option value="{{ $value }}">{{ $label }}</option>
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                             <div>
@@ -193,7 +183,7 @@
                                 {{-- form for processing the cancel  --}}
                             </div>
                             {{-- order recieved button with dialog --}}
-                            <div class="self-end my-2 {{ Route::currentRouteName() == 'product.status' && request()->status == 3 ? 'block' : 'hidden'}}">
+                            <div class="self-end my-2 {{ $status === \App\Enums\OrderStatus::ToReceive ? 'block' : 'hidden'}}">
                                 <a  onclick="showConfirmationDialog({{$item->id}})" class=" py-1 md:py-2 px-2 md:px-4 text-xs md:text-sm bg-orange-500 cursor-pointer text-white rounded hover:opacity-70">
                                     Order Recieved
                                 </a>
@@ -213,10 +203,7 @@
                             {{-- form for recieving order --}}
                             <form action="{{ route('order.recieved') }}" class="hidden" id="orderRecieved{{$item->id}}" method="POST">
                                 @csrf
-                                <input type="hidden" name="productId" value="{{$item->id}}">
-                                <input type="hidden" name="userId" value="{{$item->userId}}">
-                                <input type="hidden" name="amount" value="{{$item->price}}">
-                                <input type="hidden" name="quantity" value="{{$item->quantity}}">
+                                <input type="hidden" name="order_item_id" value="{{ $item->id }}">
                               
                             </form> 
                             {{-- dialog for review  --}}
@@ -235,17 +222,17 @@
                                                <div>
                                                 {{-- image  --}}
                                                
-                                                    <img src="{{ asset('storage/images/' . $item->image_path) }}" alt="no image " class="md:w-40 w-20 bg-gray-200 rounded  ">
+                                                    <img src="{{ $item->image_url }}" alt="no image " class="md:w-40 w-20 bg-gray-200 rounded  ">
                                                </div>
                                                <div class="flex flex-col gap-1">
                                                 {{-- details  --}}
-                                                   <span class="md:text-base text-sm text-black font-semibold">{{$item->displayDescription}}</span>
+                                                   <span class="md:text-base text-sm text-black font-semibold">{{ $item->shortDescription }}</span>
                                                    <div class="flex flex-row text-sm ">
-                                                        <span>{{$item->variationType()}}</span>|<span> {{$item->genderShirt()}}</span> | 
-                                                        <span>{{$item->sizeShirt()}}</span>
+                                                        <span>{{ $item->variation->label() }}</span>|<span> {{ $item->gender->label() }}</span> | 
+                                                        <span>{{ $item->size->label() }}</span>
                                                    </div>
                                                    <div class="text-orange-700 text-sm md:text-base">
-                                                         ₱{{$item->price}}.00
+                                                         ₱{{ $item->unit_price }}
                                                    </div>
                                                </div>
                                                
@@ -255,20 +242,15 @@
                                                     <form action="{{route('submitReview')}}" id="reviewForm{{$item->id}}" method="POST" enctype="multipart/form-data">
                                                         @csrf
                                                          {{-- over all  --}}
-                                                        <x-ratings id="all{{$item->id}}" font="font-bold" title="Overall Ratings" ratingType="overAll" showOtherRatings="showOtherRatings({{$item->id}}" hide="block" input="starCountAll"> </x-ratings>
+                                                        <x-ratings id="all{{$item->id}}" font="font-bold" title="Overall Ratings" ratingType="overAll" showOtherRatings="showOtherRatings({{$item->id}}" hide="block" input="rating_overall"> </x-ratings>
                                                         <div id="productServiceRatings{{$item->id}}" class="hidden">
                                                                 {{-- product quality --}}
-                                                                <x-ratings id="quality{{$item->id}}" font="font-normal"  title="Product Quality " ratingType="quality" input="starCountQuality" showOtherRatings="" hide="opacity-0"> </x-ratings>
+                                                                <x-ratings id="quality{{$item->id}}" font="font-normal"  title="Product Quality " ratingType="quality" input="rating_quality" showOtherRatings="" hide="opacity-0"> </x-ratings>
                                                                 {{-- service  --}}
-                                                                <x-ratings id="service{{$item->id}}" font="font-normal"  title="Seller Service" ratingType="service" input="starCountService" showOtherRatings="" hide="opacity-0"> </x-ratings>
-                                                                <textarea name="specify" id="specifyValue{{$item->id}}" cols="30" rows="10" class="hidden"></textarea>
+                                                                <x-ratings id="service{{$item->id}}" font="font-normal"  title="Seller Service" ratingType="service" input="rating_service" showOtherRatings="" hide="opacity-0"> </x-ratings>
+                                                                <textarea name="comment" id="specifyValue{{$item->id}}" cols="30" rows="10" class="hidden"></textarea>
                                                         </div>
-                                                        <input type="hidden" name="image_path" value="{{$item->image_path}}">
-                                                        <input type="hidden" name="description" value="{{$item->description}}">
-                                                        <input type="hidden" name="price" value="{{$item->price}}">
-                                                        <input type="hidden" name="quantity" value="{{$item->quantity}}">
-                                                        <input type="hidden" value="{{$item->userId}}" name="userId" id="userId{{$item->id}}">
-                                                        <input type="hidden" value="{{$item->id}}" name="productId" id="productId{{$item->id}}">
+                                                        <input type="hidden" value="{{ $item->id }}" name="order_item_id" id="productId{{$item->id}}">
                                                         <input type="file" id="image{{$item->id}}" name="image" value="" class="hidden">
                                                     </form>
                                             </div>

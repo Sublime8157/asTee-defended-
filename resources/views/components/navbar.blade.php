@@ -86,8 +86,8 @@
                       <div class="md:hidden flex-col justify-between h-full items-start flex ">
                         <div class="flex items-center">
                             <ion-icon name="person"></ion-icon>
-                            @if(session('isLoggedin')) 
-                            <a href="/userProfile/myAccount"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+                            @if(auth()->check()) 
+                            <a href="/userProfile/myAccount"><span class="hover:underline text-sm mx-1">{{ auth()->user()->username }}</span></a>
                             @else 
                             <a href="/" class="{{ request()->is('/') ?  'underline text-underline' : ' ' }}">
                                 <span class="hover:underline text-sm mx-1">Login</span>
@@ -109,13 +109,13 @@
                         <li class="px-1 flex flex-col md:flex-row-reverse md:mb-0 mb-5 items-center gap-4">
                             <div class="relative md:block hidden ">
                                 {{-- for desktop view  --}}
-                                @if(session('isLoggedin'))
-                                    <a href="/cart/{{ session('id') }}">
+                                @if(auth()->check())
+                                    <a href="{{ route('cart.show') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
                                         <span class="cart absolute left-5 bottom-5 text-xs  w-4 h-4 text-center rounded-full bg-white cart"></span>
                                     </a>
                                     @else
-                                    <a href="/{{ session('id') }}">
+                                    <a href="/">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
                                         <span class="absolute left-5 bottom-5  w-4 h-4 text-center text-xs  rounded-full bg-white ">0</span>
                                     </a>
@@ -124,9 +124,9 @@
                            <div class="md:flex flex-row items-center hidden">
                                 <ion-icon name="person"></ion-icon>
                                 {{-- display the username when logged in  --}}
-                                @if(session('isLoggedin'))
+                                @if(auth()->check())
                                 <div class="relative">
-                                    <a onclick="userSettings()" class="cursor-pointer"><span class="hover:underline text-sm mx-1">{{ session('username') }}</span></a>
+                                    <a onclick="userSettings()" class="cursor-pointer"><span class="hover:underline text-sm mx-1">{{ auth()->user()->username }}</span></a>
                                     <div class="absolute top-7 right-0 items-start bg-gray-100  shadow  text-base justify-evenly hidden py-2 px-1 rounded font-extralight z-50   flex-col w-60" id="userSettings">
                                         <a href="/userProfile/myAccount" class="py-2 px-4 hover:bg-gray-200 w-full flex items-center gap-2 my-2">
                                             <ion-icon name="settings" class="text-base"></ion-icon>
@@ -158,14 +158,14 @@
                         <div class="md:absolute flex flex-row-reverse relative md:hidden gap-4 text-2xl ">           
                             <ion-icon name="menu" onclick="Menu(this)"></ion-icon>
                             <div class="relative md:hidden block ">
-                                @if(session('isLoggedin'))
-                                    <a href="/cart/{{ session('id') }}">
+                                @if(auth()->check())
+                                    <a href="{{ route('cart.show') }}">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
                                         <span class="cart absolute left-5  w-4 h-4 text-center bottom-5 text-xs  rounded-full bg-white ">0</span>
 
                                     </a>
                                     @else
-                                    <a href="/{{ session('id') }}">
+                                    <a href="/">
                                         <ion-icon name="cart" class="text-2xl"></ion-icon> 
                                         <span class="absolute left-5  w-4 h-4 text-center bottom-5 text-xs  rounded-full bg-white ">0</span>
                                     </a>

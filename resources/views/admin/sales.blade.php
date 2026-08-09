@@ -48,13 +48,13 @@
                     </tr>
                 </thead>
                 <tbody id="salesData">
-                    @foreach ($data as $item)
+                    @foreach ($sales as $order)
                         <tr>
-                            <td>{{$item->id}}</td>
-                            <td>{{$item->ordersId}}</td>
-                            <td>{{$item->userId}}</td>
-                            <td>{{$item->amount}}</td>
-                            <td>{{$item->created_at}}</td>
+                            <td>{{ $order->payments->first()?->id }}</td>
+                            <td>{{ $order->id }}</td>
+                            <td>{{ $order->user_id }}</td>
+                            <td>{{ $order->total }}</td>
+                            <td>{{ $order->paid_at?->format('d M Y') }}</td>
                             <td><ion-icon name="trash-outline" class="text-xl  cursor-pointer"></ion-icon></td>
                         </tr>
                         <tr>

@@ -141,7 +141,7 @@ class AdminOrderItemController extends Controller
             'orderProductBy'
         )->get();
 
-        return view('admin.products.sort.sortProducts', compact('items'));
+        return view('admin.products.processingPartial', compact('items'));
     }
 
     public function filterDate(Request $request)

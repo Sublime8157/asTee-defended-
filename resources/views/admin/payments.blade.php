@@ -14,7 +14,7 @@
                           {{-- sort the data by options  --}}
                           <select name="sortBy" id="sortBy" class="sortPayments shadow text-xs border-gray-100 cursor-pointer">
                                 <option value="id">ID</option>
-                                <option value="orders_id">Orders ID</option>
+                                <option value="order_id">Orders ID</option>
                           </select>
                           {{-- sort the data if ascending or descending  --}}
                           <select name="orderBy" id="orderBy" class="sortPayments shadow text-xs border-gray-100 cursor-pointer">
@@ -66,19 +66,18 @@
                         <div class="gap-2 flex flex-row">
                             <div class="flex text-sm flex-col">
                                 <label for="">Order ID*</label>
-                                <select name="orders_id" id="orders">
+                                <select name="order_id" id="orders">
                                     <option value="000"></option>
-                                    @foreach ($ordersId as $id)
-                                        <option value="{{$id->id}}">{{$id->id}}</option>
+                                    @foreach ($unpaidOrderIds as $id)
+                                        <option value="{{ $id }}">{{ $id }}</option>
                                     @endforeach
                                 </select>
-                                <label for="">Amount*</label>
-                                <input type="text" name="amount" id="amount">
-                                <input type="hidden" id="userId" name="userId">
+                                <label for="">Amount</label>
+                                <input type="text" id="amount" disabled>
                             </div>
                             <div class="flex text-sm flex-col">
                                 <label for="">Bank*</label>
-                                <select name="bank" id="">
+                                <select name="provider" id="">
                                     <option value="Gcash">Gcash</option>
                                     <option value="BPI">BPI</option>
                                 </select>
@@ -130,35 +129,7 @@
                             <th>Action</th>
                         </tr>
                     <tbody id="paymentData" class="w-full">
-                        @foreach($data as $paymentData)
-                            <tr class="w-full ">
-                                <td><input type="checkbox" name="" id="" value="{{$paymentData->id}}" class="checkBox"></td>
-                                <td class="">{{$paymentData->id}}</td>
-                                <td>{{$paymentData->orders_id}}</td>
-                                <td>{{$paymentData->bank}}</td>
-                                <td>{{$paymentData->amount}}</td>
-                                <td class="">
-                                    <img src="{{asset('storage/images/' . $paymentData->proof )}}" alt="" class="w-12 cursor-pointer" onclick="document.getElementById('proofImage'  + {{$paymentData->id}}).showModal(); ">
-                                    <dialog class="modal" id="proofImage{{$paymentData->id}}">
-                                        <img src="{{asset('storage/images/' . $paymentData->proof )}}" alt=""> 
-                                    </dialog>
-                                </td>
-                              
-                                <td class="">{{$paymentData->created_at}}</td>
-                                <td><ion-icon name="trash-outline" class="text-xl  cursor-pointer" onclick="if(confirm('Are you sure you want to delete this record?')) { document.getElementById('removeRecord').submit() }"></ion-icon></td>
-                                {{-- form for removing specific  --}}
-                                <form action="{{route('deleteRecordPayments')}}" method="POST" id="removeRecord">
-                                    @csrf
-                                    <input type="hidden" name="toDelete" value="{{$paymentData->id}}">
-                                    @method('DELETE')
-                                </form>
-                            </tr>
-                            <tr>
-                                <td colspan="7">
-                                    <hr class="w-full bg-gray-50">
-                                </td>
-                            </tr>
-                        @endforeach
+                        @include('admin.results.paymentResult')
                     </tbody>
                 </table>
             </div>

@@ -59,7 +59,7 @@
                    <tbody id="userLists">
                     @foreach($userData as $user)
                         <tr>                
-                            <td><img src=" {{ asset('storage/images/' . $user->profile) }}" alt=""  class="w-16 h-16 rounded-full"></td>      
+                            <td><img src="{{ $user->profile ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->profile) : asset('images/default.png') }}" alt="{{ $user->username }}"  class="w-16 h-16 rounded-full"></td>      
                             <td class=" w-80 text-left">                          
                                 <div class="me-1">
                                     
@@ -67,7 +67,7 @@
                                 <div>
                                     <div class="flex flex-row gap-1 ">
                                         <span class="text-sm font-bold">{{ $user->fname . " ". $user->lname }}</span> 
-                                        @if($user->verification == 'verified')
+                                        @if($user->hasVerifiedId())
                                         <img src="{{asset('images/verify.png')}}" alt="" class="h-4 w-4"> 
                                         @endif
                                     </div>
@@ -77,10 +77,14 @@
                             </td>
                             <td>{{ $user->id }}</td>
                             <td class="">
-                                <img src="{{asset('storage/images/' . $user->validID)}}"  alt="No ID" alt="" onclick="document.getElementById('showValidID' + {{$user->id}}).showModal();" class="cursor-pointer rounded h-12 w-12">
-                                <dialog id="showValidID{{$user->id}}"> 
-                                    <img src="{{asset('storage/images/' . $user->validID)}}" alt="" class="h-96 w-80">
-                                </dialog>
+                                @if($user->valid_id_path)
+                                    <img src="{{ route('admin.file.validId', $user->id) }}" alt="Valid ID" onclick="document.getElementById('showValidID' + {{ $user->id }}).showModal();" class="cursor-pointer rounded h-12 w-12">
+                                    <dialog id="showValidID{{ $user->id }}">
+                                        <img src="{{ route('admin.file.validId', $user->id) }}" alt="Valid ID" class="h-96 w-80">
+                                    </dialog>
+                                @else
+                                    <span class="text-xs text-gray-400">No ID</span>
+                                @endif
                             </td>
                             <td>{{ $user->username }}</td>
                             <td>{{$user->email_verified_at}}</td>
@@ -90,14 +94,14 @@
                                     <div class="relative z-20">
                                         <ion-icon name="ellipsis-horizontal" class="text-2xl cursor-pointer"></ion-icon>
                                         <div class="absolute bg-white hidden right-7 top-0 shadow-lg rounded" id="actionMenu{{ $user->id }}">
-                                            @if($user->userStatus == 1) 
+                                            @if(! $user->isBlocked())
                                                 <a onclick="blockUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Block</a>
                                             @else
                                                 <a onclick="unblockUser({{ $user->id }})" class="hover:bg-gray-400 px-6 text-xs">Unblock</a>
                                             @endif
                                           {{-- set the user id to removeUser parameter to pass it to adminScripts--}}
                                             <a onclick="removeUser({{ $user->id }})" class="hover:bg-gray-400 px-4 text-xs">Remove</a>
-                                            @if($user->verification == 'not_verified')
+                                            @if(! $user->hasVerifiedId())
                                                 <a onclick="document.getElementById('verifyUser' + {{$user->id}}).submit();" class="hover:bg-gray-400 px-4 text-xs">Verify</a>
                                             @endif
                                         </div>

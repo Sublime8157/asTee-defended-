@@ -196,9 +196,11 @@
 <script>
     var listOfMonths = JSON.parse('{!! json_encode($months) !!}');
     var usersCount = JSON.parse('{!! json_encode($monthCount) !!}');
-    var returnProdData = [{{$wrongProduct}}, {{$differentColors}}, {{$wrongDesign}}, {{$reason1}}, {{$reason2}}, {{$reason3}}, {{$reason4}}];
-   
-  
+    // Was seven hand-numbered PHP variables lined up by eye against a
+    // hardcoded label array in chart.js. Both come from CancelReason now.
+    var returnProdLabels = JSON.parse('{!! json_encode($cancelReasons->keys()) !!}');
+    var returnProdData = JSON.parse('{!! json_encode($cancelReasons->values()) !!}');
+
     var totalAmount = JSON.parse('{!! json_encode($totalAmount) !!}');
     var soldMonths = JSON.parse('{!! json_encode($soldMonths) !!}');
 </script>

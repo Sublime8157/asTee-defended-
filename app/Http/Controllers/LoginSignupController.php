@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCustomResetPasswordMail;
 use App\Mail\VerificationEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -89,10 +90,13 @@ class LoginSignupController extends Controller
     /**
      * "Find my account" before a password reset.
      *
-     * Was a LIKE %input% that returned every partial match — id, username and
-     * email — and rendered them into editable inputs on a public page: a user
-     * enumeration endpoint. It now confirms at most the one exact account and
-     * says the same thing either way.
+     * Was a LIKE %input% that returned every partial match and rendered each
+     * one — profile photo, username and email — onto a public page, with the
+     * email in an editable input: an account enumeration endpoint with a
+     * built-in send button.
+     *
+     * It now looks up the one exact account, sends the reset link itself if
+     * there is one, and returns the same page either way.
      */
     public function searchUser(Request $request)
     {
@@ -100,16 +104,20 @@ class LoginSignupController extends Controller
             'search' => ['required', 'string', 'max:255'],
         ]);
 
-        $found = User::where('username', $validated['search'])
+        $user = User::where('username', $validated['search'])
             ->orWhere('email', $validated['search'])
-            ->exists();
+            ->first();
 
-        if (! $found) {
-            return redirect()->back()->with([
-                'noResult' => 'No user found, make sure to input the correct username or email',
-            ]);
+        if ($user) {
+            // Rules\Password is imported above for the registration rules, so
+            // the broker facade is named in full here.
+            \Illuminate\Support\Facades\Password::broker('users')->sendResetLink(
+                ['email' => $user->email],
+                fn (User $user, string $token) => Mail::to($user->email)
+                    ->send(new UserCustomResetPasswordMail($token, $user->email))
+            );
         }
 
-        return redirect()->route('foundUser')->with('account', $validated['search']);
+        return redirect()->route('foundUser');
     }
 }

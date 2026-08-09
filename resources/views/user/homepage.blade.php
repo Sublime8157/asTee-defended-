@@ -247,21 +247,21 @@
             </h1>
         </div>
     <div class="w-full flex justify-center gap-4 flex-wrap flex-row p-10 mt-5">
-        @foreach ($feedback as $userFeedback)
+        @foreach ($reviews as $review)
             <div class="font-extralight shadow-2xl py-2 p-5 w-80 rounded tracking-wider  flex justify-center items-center flex-col" >
                 {{-- social media icons  --}}
                 <div class="sef-start flex flex-col items-center">
                    <div>
-                        <img src="{{asset('storage/images/' . $userFeedback->image_path)}}" alt="" class="w-40">
+                        <img src="{{ $review->orderItem->image_url }}" alt="{{ $review->orderItem->shortDescription }}" class="w-40">
                    </div>
                    <div>
-                       <p class="text-sm"> Price:₱{{$userFeedback->price}}</p>
-                       <p class="text-sm"> Quantity: {{$userFeedback->quantity}}</p>
+                       <p class="text-sm"> Price:₱{{ $review->orderItem->unit_price }}</p>
+                       <p class="text-sm"> Quantity: {{ $review->orderItem->quantity }}</p>
                    </div>
                 </div>
                 {{-- specify textarea  --}}
                     <div class="text-gray-500 w-full h-full text-sm  italic p-4 " style="font-family: Arial, Helvetica, sans-serif">
-                        "{{$userFeedback->specify}}"
+                        "{{ $review->comment }}"
                     </div>
                     {{-- star ratings  --}}
                     <div class="flex flex-row items-center gap-2 self-start">
@@ -273,21 +273,21 @@
                         <div class="flex flex-col">
                             <div class="flex flex-row items-center">
                                 {{-- star ratings  --}}
-                                @for($i = 0; $i < $userFeedback->starCountAll; $i++)
+                                @for($i = 0; $i < $review->rating_overall; $i++)
                                     <ion-icon name="star" class="text-base text-yellow-300"></ion-icon>
                                 @endfor
                             </div>
                             <div class="flex flex-row items-center">
                                 
                                 {{-- star ratings  --}}
-                                @for($i = 0; $i <$userFeedback->starCountQuality; $i++)
+                                @for($i = 0; $i <$review->rating_quality; $i++)
                                     <ion-icon name="star" class="text-base text-yellow-300"></ion-icon>
                                 @endfor
                             </div>
                             <div class="flex flex-row items-center">
                                
                                 {{-- star ratings  --}}
-                                @for($i = 0; $i < $userFeedback->starCountService; $i++)
+                                @for($i = 0; $i < $review->rating_service; $i++)
                                     <ion-icon name="star" class="text-base text-yellow-300"></ion-icon>
                                 @endfor
                             </div>
@@ -296,12 +296,12 @@
                     {{-- user image  --}}
                     <div class="flex flex-row mt-10 gap-2 items-center self-start">
                         <div class="">
-                            <img src="{{asset('storage/images/' . $userFeedback->profile )}}" alt="Customer" class="rounded-full" width="34px">
+                            <img src="{{ $review->user->profile ? \Illuminate\Support\Facades\Storage::disk('public')->url($review->user->profile) : asset('images/default.png') }}" alt="{{ $review->user->username }}" class="rounded-full" width="34px">
                         </div>
                         {{-- user first name and date created  --}}
                         <div>
-                            <h1 class="text-black text-sm" style="font-family: Arial, Helvetica, sans-serif">{{$userFeedback->username}}</h1>
-                            <h1 class="text-xs text-gray-500">{{$userFeedback->created_at}}</h1>
+                            <h1 class="text-black text-sm" style="font-family: Arial, Helvetica, sans-serif">{{ $review->user->username }}</h1>
+                            <h1 class="text-xs text-gray-500">{{ $review->created_at->format("d M Y") }}</h1>
                         </div>
                     </div>
                    

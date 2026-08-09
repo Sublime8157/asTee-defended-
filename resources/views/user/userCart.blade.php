@@ -43,15 +43,15 @@
                            </div>
                     </div>
                     {{-- table body --}}    
-                    @foreach($products as $userCart)
-                    <input type="hidden" value="{{$userCart->id}}" id="productId{{$userCart->id}}" class="prodId">
+                    @foreach($cartItems as $item)
+                    <input type="hidden" value="{{ $item->product_id }}" id="productId{{ $item->product_id }}" class="prodId">
                     <div class="item rounded flex justify-evenly lg:px-6 lg:py-8 items-start lg:items-center mx-2 xl:gap-36 lg:gap-20   w-auto  bg-white shadow flex-col lg:flex-row">
                         {{-- edit btn visible only on mobile --}}
                         <div class="lg:hidden relative border-b border-gray-200 mb-2 w-full  flex-row-reverse p-2 flex text-gray-500 text-xs" >
                             <span id="editBtnCart" class="cursor-pointer">Edit</span>
                             <div class="absolute top-6 bg-white shadow px-2 py-1 hidden " id="removeBtnCart">
-                                <a onclick="removeCartItem({{$userCart->id}})" class="cursor-pointer">Remove</a>
-                                <form action="{{ route('remove.cart', $userCart->id) }}"  id="removeItemForm{{$userCart->id}}" method="POST">
+                                <a onclick="removeCartItem({{ $item->product_id }})" class="cursor-pointer">Remove</a>
+                                <form action="{{ route('remove.cart', $item->id) }}"  id="removeItemForm{{ $item->product_id }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -61,65 +61,65 @@
                            
                             {{-- checkbox --}}
                            <div class="me-4">
-                                <input type="checkbox" name="" onclick="updateCart({{$userCart->id}})" value="{{$userCart->id}}" class="h-4 w-4 cursor-pointer list" id="cart{{$userCart->id}}">
+                                <input type="checkbox" name="" onclick="updateCart({{ $item->product_id }})" value="{{ $item->product_id }}" class="h-4 w-4 cursor-pointer list" id="cart{{ $item->product_id }}">
                            </div>
                             <div class="flex flex-row items-center  gap-2">
                                 {{-- image --}}
                                 <div>
-                                    <img src="{{ asset('images/'. $userCart->image_path) }}"   class="bg-gray-200 w-64 h-48  rounded">
+                                    <img src="{{ $item->product->image_url }}" alt="{{ $item->product->shortDescription }}" class="bg-gray-200 w-64 h-48  rounded">
                                 </div>
                                 {{-- description --}}
                                 <div class="flex flex-col gap-1 w-auto">
-                                        <p class="text-gray-700 text-xs md:text-base lg:text-base mb-1">{{$userCart->description}}</p>
+                                        <p class="text-gray-700 text-xs md:text-base lg:text-base mb-1">{{ $item->product->description }}</p>
                                         {{-- details  --}}
                                    <div>
-                                        <p class="text-gray-500 text-sm flex flex-col">{{$userCart->variationType()}}| {{$userCart->sizeShirt()}} |   {{$userCart->genderShirt()}} </p>
+                                        <p class="text-gray-500 text-sm flex flex-col">{{ $item->product->variation->label() }} | {{ $item->product->size->label() }} | {{ $item->product->gender->label() }} </p>
                                    </div>
                                    {{-- total price (MobileV) --}}
                                    <div class="lg:hidden flex flex-row gap-2 items-center">
                                         <div>
-                                            ₱<span id="textPrice{{$userCart->id}}" class="txtPriceMobile">{{$userCart->price}}</span>
-                                            <input type="hidden" class="total" name="totalPrice" value="{{$userCart->price}}" id="totalPrice{{$userCart->id}}">
+                                            ₱<span id="textPrice{{ $item->product_id }}" class="txtPriceMobile">{{ $item->product->price }}</span>
+                                            <input type="hidden" class="total" name="totalPrice" value="{{ $item->product->price }}" id="totalPrice{{ $item->product_id }}">
                                         </div>
                                         <div class="text-xs text-gray-400 flex flex-row items-center">
-                                            <span>Stock:</span><input type="text" id="stockMobile{{$userCart->id}}" value="{{$prodQty[$userCart->id]}}" class="text-xs w-10  border-none" disabled>
+                                            <span>Stock:</span><input type="text" id="stockMobile{{ $item->product_id }}" value="{{ $item->product->stock }}" class="text-xs w-10  border-none" disabled>
                                         </div>
                                     </div>
                                     {{--  quantity mobile View--}}
                                     
-                                    <div class="lg:hidden flex  items-center  justify-center border p-0  w-24  quantityDivMobile" id="quantityDiv{{$userCart->id}}">
-                                        <button class="border-r minusBtn pe-2 minusButtonMobile" id="minusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>
-                                        <input type="ext" name="quantity" id="quantityValue{{$userCart->id}}" value="1" class="quantityValueMobile w-10 text-center border-none h-4 text-xs" disabled>
-                                        <button class="border-l ps-2 addBtn addButtonMobile"  id="addButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
+                                    <div class="lg:hidden flex  items-center  justify-center border p-0  w-24  quantityDivMobile" id="quantityDiv{{ $item->product_id }}">
+                                        <button class="border-r minusBtn pe-2 minusButtonMobile" id="minusButton{{ $item->product_id }}" onclick="minusButton({{ $item->product_id }})" disabled>-</button>
+                                        <input type="ext" name="quantity" id="quantityValue{{ $item->product_id }}" value="{{ $item->quantity }}" class="quantityValueMobile w-10 text-center border-none h-4 text-xs" disabled>
+                                        <button class="border-l ps-2 addBtn addButtonMobile"  id="addButton{{ $item->product_id }}" onclick="addButton({{ $item->product_id }})" disabled>+</button>
                                     </div>  
                                 </div>
                             </div>
                         </div>
                         {{-- unit price Desktop View--}}
                         <div class="lg:flex hidden">
-                            <span class="" >₱{{$userCart->price}}.00
-                                <input type="hidden" name="price" value="{{$userCart->price}}" id="unitPrice{{$userCart->id}}" class="unitPrice">
+                            <span class="" >₱{{ $item->product->price }}
+                                <input type="hidden" name="price" value="{{ $item->product->price }}" id="unitPrice{{ $item->product_id }}" class="unitPrice">
                             </span>
                         </div>
                         {{-- quantity Desktop View--}}
                         <div class="lg:flex hidden flex-col items-center ">
-                            <div class="flex items-center  justify-center border p-0  w-24 quantityDivDesktop" id="desktopQuantityDiv{{$userCart->id}}">
-                                <button class="border-r pe-2 desktopMinusBtn " id="desktopMinusButton{{$userCart->id}}" onclick="minusButton({{$userCart->id}})" disabled>-</button>    
-                                <input type="text" name="quantity[]" onchange="updateQuantities()" id="desktopQuantityValue{{$userCart->id}}" value="1" class="desktopQuantityValue w-10 text-center border-none h-4 text-xs" disabled>
-                                <button class="border-l ps-2 desktopAddButton"  id="desktopAddButton{{$userCart->id}}" onclick="addButton({{$userCart->id}})" disabled>+</button>
+                            <div class="flex items-center  justify-center border p-0  w-24 quantityDivDesktop" id="desktopQuantityDiv{{ $item->product_id }}">
+                                <button class="border-r pe-2 desktopMinusBtn " id="desktopMinusButton{{ $item->product_id }}" onclick="minusButton({{ $item->product_id }})" disabled>-</button>    
+                                <input type="text" name="quantity[]" onchange="updateQuantities()" id="desktopQuantityValue{{ $item->product_id }}" value="{{ $item->quantity }}" class="desktopQuantityValue w-10 text-center border-none h-4 text-xs" disabled>
+                                <button class="border-l ps-2 desktopAddButton"  id="desktopAddButton{{ $item->product_id }}" onclick="addButton({{ $item->product_id }})" disabled>+</button>
                             </div>  
                             <div class="text-xs text-gray-400 flex flex-row items-center">
-                                <span>Stock:</span><input type="text" id="stockDesktop{{$userCart->id}}" value="{{$prodQty[$userCart->id]}}" class="stockDesktop text-xs w-10  border-none" disabled>
+                                <span>Stock:</span><input type="text" id="stockDesktop{{ $item->product_id }}" value="{{ $item->product->stock }}" class="stockDesktop text-xs w-10  border-none" disabled>
                             </div>
                         </div>
                         {{-- total price Desktop View--}}
                         <div class="lg:flex hidden w-4">
-                            ₱<span id="desktopTextPrice{{$userCart->id}}" class="desktopTextPrice">{{$userCart->price}}</span>
+                            ₱<span id="desktopTextPrice{{ $item->product_id }}" class="desktopTextPrice">{{ $item->product->price }}</span>
                         </div>
                         {{-- action --}}
                         <div class="lg:flex hidden">
-                            <a onclick="removeCartItem({{$userCart->id}})" class="cursor-pointer">Remove</a>
-                            <form action="{{ route('remove.cart', $userCart->id) }}"  id="removeItemForm{{$userCart->id}}" method="POST">
+                            <a onclick="removeCartItem({{ $item->product_id }})" class="cursor-pointer">Remove</a>
+                            <form action="{{ route('remove.cart', $item->id) }}"  id="removeItemForm{{ $item->product_id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                             </form>
@@ -156,10 +156,11 @@
                                 {{-- checkout button --}}
                                 <form action="{{route('checkout.process')}}" method="GET">
                                     @csrf
-                                    <input type="hidden" value="{{$userId}}" name="userId">
+                                    {{-- The owner comes from the guard, and the total is computed
+                                         server-side from products.price. Both used to be editable
+                                         inputs whose values were written straight to the database. --}}
                                     <input type="hidden" value="" id="itemsId" name="items">
                                     <input type="hidden" name="quantity" id="quantitiesInput">
-                                    <input type="hidden" value="" id="totalAmountVal"  name="total">
                                     {{-- <input type="text" value="" id="arrayList"> --}}
                                     <button type="submit" class="  bg-blue-700  text-white text-xs md:text-sm  w-20 md:w-40 text-center rounded hover:opacity-40 px-2 py-1 md:px-4 md:py-2" >
                                         Checkout </button>
